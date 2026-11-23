@@ -1,0 +1,70 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#f5f4ec">
+  <meta name="description" content="广东中职 3＋证书英语备考。从零基础三小课开始，再练点选题和书面作答。">
+  <title>英语起步 · 英语第一步</title>
+  <link rel="stylesheet" href="styles.css">
+  <script defer src="lesson.js"></script>
+  <script defer src="vocab.js"></script>
+  <script defer src="vocab-review.js"></script>
+  <script defer src="paper-2026.js"></script>
+  <script defer src="paper-b.js"></script>
+  <script defer src="paper.js"></script>
+  <script defer src="backup.js"></script>
+  <script defer src="app.js"></script>
+</head>
+<body>
+  <div class="site">
+    <header class="masthead">
+      <div class="brand"><span class="brand-mark" aria-hidden="true">Aa</span><span>英语起步</span></div>
+      <span class="masthead-note">从零开始的英语练习册</span>
+      <button id="return-home" class="course-home" type="button" hidden><span aria-hidden="true">←</span> 返回首页</button>
+    </header>
+
+    <main>
+      <p id="progress" class="progress" hidden></p>
+      <article id="card" class="card" aria-label="课程首页">
+        <p class="loading">正在打开课程…</p>
+      </article>
+      <noscript><p class="noscript">课程需要浏览器启用 JavaScript。启用后重新打开即可练习。</p></noscript>
+    </main>
+
+    <footer class="footer">
+      <span>不用登录，也不用开麦。</span>
+      <span id="storage-note">进度只留在这台设备的浏览器。</span>
+    </footer>
+  </div>
+  <template id="intro-art">
+    <svg class="intro-art" viewBox="0 0 480 340" fill="none" aria-hidden="true" focusable="false">
+      <defs>
+        <pattern id="cover-grid" width="24" height="24" patternUnits="userSpaceOnUse"><path d="M24 0H0V24" stroke="#e0f0df" stroke-opacity=".13"/></pattern>
+      </defs>
+      <rect width="480" height="340" fill="#204d3e"/>
+      <rect width="480" height="340" fill="url(#cover-grid)"/>
+      <circle cx="353" cy="167" r="138" fill="#28604d"/>
+      <circle cx="353" cy="167" r="138" stroke="#8ebda7" stroke-opacity=".55" stroke-dasharray="3 7"/>
+      <text x="33" y="45" fill="#cbe4d3" font-family="Arial,sans-serif" font-size="11" font-weight="700" letter-spacing="3">ENGLISH START</text>
+      <path d="M33 286h414" stroke="#8ebda7" stroke-opacity=".55"/>
+      <text x="33" y="311" fill="#e0eddd" font-family="Arial,sans-serif" font-size="10" letter-spacing="2.8">FIELD NOTES</text>
+      <text x="447" y="311" text-anchor="end" fill="#e0eddd" font-family="Arial,sans-serif" font-size="10" letter-spacing="2.8">01 / HELLO</text>
+      <g transform="rotate(9 283 168)">
+        <rect x="154" y="96" width="255" height="165" rx="13" fill="#132f25"/>
+        <rect x="146" y="87" width="255" height="165" rx="13" fill="#f6efd9"/>
+        <path d="M174 122h196M174 220h196" stroke="#b9c1a3"/>
+        <text x="174" y="110" fill="#3d5946" font-family="Arial,sans-serif" font-size="9" font-weight="700" letter-spacing="3">MY NAME IS</text>
+        <text x="276" y="198" text-anchor="middle" fill="#204d3e" font-family="Georgia,serif" font-style="italic" font-size="76">Lin.</text>
+      </g>
+      <g transform="rotate(-9 132 146)">
+        <path d="M55 98h133a12 12 0 0 1 12 12v73a12 12 0 0 1-12 12h-54l-28 20 5-20H55a12 12 0 0 1-12-12v-73a12 12 0 0 1 12-12z" fill="#15362a"/>
+        <path d="M50 92h133a12 12 0 0 1 12 12v73a12 12 0 0 1-12 12h-54l-28 20 5-20H50a12 12 0 0 1-12-12v-73a12 12 0 0 1 12-12z" fill="#e8ae7c"/>
+        <text x="118" y="162" text-anchor="middle" fill="#23392d" font-family="Georgia,serif" font-style="italic" font-size="65">Hi!</text>
+      </g>
+      <path d="M419 67v24M407 79h24M53 222v22M42 233h22" stroke="#d5eacb" stroke-width="1.5" stroke-linecap="round"/>
+      <circle cx="430" cy="233" r="3" fill="#e8ae7c"/>
+    </svg>
+  </template>
+</body>
+</html>

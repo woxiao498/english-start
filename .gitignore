@@ -1,0 +1,24 @@
+# Local screenshot and inspection artifacts
+.dsh-vision-router/
+
+# Private learning backups and unpublished source material
+english-start-backup*.json
+/exam/
+/trial-record-*.md
+/retest-*.md
+/roleplay-prompt-en.md
+/vocab-pilot-prompts.md
+/build_retest_pack.py
+/personal-license-plan.md
+
+# Internal working documents — not part of the published site
+/course-coverage.md
+/exam-checklist.md
+/exam-roadmap.md
+/module-map.md
+/notice-evidence-audit.md
+/project-manager-handoff.md
+/project-manager-prompt.md
+/trial-guide.md
+/trial-preflight.md
+/tests/
