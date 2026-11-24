@@ -199,6 +199,8 @@ html:has(.masthead.is-learning) { scroll-padding-top: 68px; }
 .card .guided-note { margin: 12px 0 0; padding: 10px 12px; background: var(--gold-pale); color: var(--gold-text); border-radius: 8px; }
 .reading-passage h2 { margin: 0 0 10px; font-size: 19px; }
 .reading-passage .line-en { font-size: clamp(17px, 4vw, 20px); }
+.card .reading-demo .line-zh { margin: 3px 0 0; color: var(--muted); font-size: 14px; }
+.card .reading-demo .line-zh + .line-en { margin-top: 12px; }
 .reading-extra { margin-top: 12px; }
 .card .reading-extra .note { margin-bottom: 6px; }
 .reading-summary-sources { margin: 8px 0 0; padding-left: 22px; }

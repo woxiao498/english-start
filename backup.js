@@ -10,6 +10,8 @@ window.STUDY_BACKUP = (() => {
   const vocab = 'english-start:vocab:1';
   const papers = 'english-start:papers:1';
   const scores = 'english-start:2026-score:1';
+  // Recognize the old paper ID for backup only. No question data ships with this edition.
+  const archivedPaper = '2026';
   const groups = [course, legacy, review, vocab, papers, scores];
   const has = (object, key) => Object.hasOwn(object, key);
   const object = (value) => value !== null && typeof value === 'object' && !Array.isArray(value);
@@ -91,7 +93,7 @@ window.STUDY_BACKUP = (() => {
     const lessonIds = new Set(window.LESSONS.map((lesson) => lesson.id));
     const reviewIds = new Set(window.LEARNED_REVIEW.map((task) => task.reviewId));
     const words = new Map(window.VOCAB_WORDS.map((word) => [word.id, word.variants.length]));
-    const paperIds = new Set(['mixed', window.EXAM_B?.id, window.EXAM_2026?.id]);
+    const paperIds = new Set(['mixed', window.EXAM_B?.id, archivedPaper]);
     const idsIn = (value, known) => Object.keys(value ?? {}).every((key) => known.has(key));
     ensure(idsIn(records[course]?.lessons, lessonIds) && idsIn(records[vocab]?.introduced, lessonIds)
       && idsIn(records[review], reviewIds) && idsIn(records[papers], paperIds)
@@ -105,7 +107,9 @@ window.STUDY_BACKUP = (() => {
     checkCompatible(records);
     const snapshot = new Map();
     const changes = new Map();
-    const counts = { lessons: 0, reviews: 0, vocab: 0, vocabDates: 0, drafts: 0, paperHistory: 0, scores: 0 };
+    const counts = { lessons: 0, reviews: 0, vocab: 0, vocabDates: 0, drafts: 0, paperHistory: 0, scores: 0, archive: 0 };
+    const oldPaper = records[papers]?.[archivedPaper];
+    const includesArchive = Boolean(oldPaper?.draft || oldPaper?.last || oldPaper?.past?.length);
     function read(key) {
       const raw = storage.getItem(key);
       snapshot.set(key, raw);
@@ -149,17 +153,27 @@ window.STUDY_BACKUP = (() => {
       const value = { ...read(papers) };
       for (const [id, incoming] of Object.entries(records[papers])) {
         const local = { ...value[id] };
-        if (!local.draft && incoming.draft) { local.draft = incoming.draft; counts.drafts++; }
-        if (!local.last && !local.past?.length && (incoming.last || incoming.past?.length)) {
+        const archived = id === archivedPaper;
+        const addDraft = !local.draft && Boolean(incoming.draft);
+        const addHistory = !local.last && !local.past?.length && Boolean(incoming.last || incoming.past?.length);
+        if (!addDraft && !addHistory) continue;
+        if (addDraft) local.draft = incoming.draft;
+        if (addHistory) {
           if (incoming.last) local.last = incoming.last;
           if (incoming.past?.length) local.past = incoming.past;
-          counts.paperHistory++;
         }
-        value[id] = local;
+        if (archived) {
+          counts.archive = 1;
+          value[id] = has(value, id) ? local : incoming;
+        } else {
+          counts.drafts += Number(addDraft);
+          counts.paperHistory += Number(addHistory);
+          value[id] = local;
+        }
       }
-      if (counts.drafts || counts.paperHistory) put(papers, value);
+      if (counts.drafts || counts.paperHistory || counts.archive) put(papers, value);
     }
-    return { snapshot, changes, counts };
+    return { snapshot, changes, counts, includesArchive };
   }
 
   function restore(storage, plan) {

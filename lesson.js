@@ -629,7 +629,7 @@ window.LESSONS = Object.freeze([{
   example: 'I like the book club. We meet on Fridays. I like it because I can read with my friends.',
   chinese: '喜欢读书社；星期五见面；喜欢的原因是能和朋友一起读书。',
   terms: [['第一句', '交代活动'], ['第二句', '给参加的细节'], ['第三句', '给具体理由']],
-  rule: '把题目的要点和正文一项项对起来。少了理由就补理由，别再补一句喜欢。原卷约 40 词是篇幅要求，不能替代内容检查。',
+  rule: '把题目的要点和正文一项项对起来。少了理由就补理由，别再补一句喜欢。题目如果要求约 40 词，篇幅要看，给出的要点也要逐项核对。',
   guided: '题目要写活动、参加方式和原因。草稿只写了「喜欢读书社，星期五见面」。', guidedLanguage: 'zh-CN',
   walkthrough: '前两项已经有了，缺的是第三项：为什么喜欢。',
   guidedAnswers: [['补为什么喜欢'], ['再加一句「我真的很喜欢」', '重复喜欢并没有回答为什么。']],
@@ -1574,6 +1574,52 @@ window.CONTEXT_WORDS = Object.freeze([
     takeaway: 'turn left：向左转。',
   },
 ]);
+
+// 第七课后的选做导学。与短阅读和整卷共用的材料分开，答卷题号不变。
+window.READING_START = Object.freeze({
+  example: {
+    title: 'Meeting Notice', question: 'When does the meeting start?',
+    lines: [
+      ['Doors open at 1:40 p.m.', '下午 1:40 开门。'],
+      ['The meeting starts at 2 p.m.', '下午 2 点开始。'],
+      ['Bring a notebook.', '自己带一本笔记本。'],
+      ['The school will lend you a pen.', '学校会借给你一支笔。'],
+    ],
+    evidence: 1,
+    steps: [
+      '先看题：When（什么时候）问时间，start（开始）说明问的是会议开始，不是几点能进门。',
+      '再找动作：题里的 start 和原文的 starts 都是「开始」。沿着这行读下去，答案是下午 2 点，不是开门的 1:40。',
+      '换成问物品也一样：问自己带什么，找 Bring 开头的句子；问学校借给你什么，找 lend you。两句话里的东西不能换。',
+    ],
+  },
+  tasks: [
+    {
+      title: '跟着找：活动几点开始？', prompt: 'When does the meeting start?（会议什么时候开始？）',
+      passage: { title: 'Reading Group', lines: ['Meet in the school library.', 'Doors open at 10:10 a.m.', 'The meeting starts at 10:30 a.m.'] },
+      glossary: [['Reading Group', '读书小组']],
+      guide: '题目问 start（开始）。两行都有时刻，先找到写 starts 的那行，再核对 a.m. 是哪个时段。',
+      options: [
+        { id: 'open', label: '上午 10:10', hint: '10:10 那行写的是 Doors open（开门）。用题目里的 start 去找另一行。' },
+        { id: 'pm', label: '晚上 10:30', hint: '你找对了时刻。再核对它后面的 a.m.，不是 p.m.。' },
+        { id: 'start', label: '上午 10:30' },
+      ],
+      answer: 'start', evidence: 2, success: '这行写的是 starts at 10:30 a.m.，所以是上午 10:30 开始。',
+      takeaway: '题目问开始，就看写 starts 的那行，不选开门的时间。',
+    },
+    {
+      title: '换张通知，自己找一句', prompt: '哪一句告诉你，学校会借给你什么？', englishOptions: true,
+      passage: { title: 'Drawing Group', lines: ['The school will lend you a ruler.', 'Meet in the school library.', 'Bring a pencil to school.'] },
+      glossary: [['Drawing Group', '绘画小组'], ['pencil', '铅笔'], ['ruler', '尺子']],
+      options: [
+        { id: 'bring', label: 'Bring a pencil to school.', hint: '这句说要自己带铅笔到学校。现在问的是学校借给你什么，不是看哪句提到了 school。' },
+        { id: 'lend', label: 'The school will lend you a ruler.' },
+        { id: 'place', label: 'Meet in the school library.', hint: '这句交代集合地点。再找哪句说学校会借给你一样东西。' },
+      ],
+      answer: 'lend', evidence: 0, success: '学校会借给你一把尺子。尺子跟在 lend you 后面，铅笔才是自己带的。',
+      takeaway: 'lend you 是「借给你」；ruler 在这个动作后面。',
+    },
+  ],
+});
 
 // 原创短告示，用于练证据定位，不是 2026 原卷材料。
 window.READING_INTRO = Object.freeze({

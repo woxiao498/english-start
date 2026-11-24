@@ -78,7 +78,6 @@ window.PAPER_MODE = (() => {
     try { Object.assign(entries, JSON.parse(localStorage.getItem(key)) || {}); } catch { /* Optional storage. */ }
     const a = buildMixed([window.READING_INTRO, window.READING_STORY, window.READING_GUIDE]);
     const forms = [a, window.EXAM_B].filter(Boolean);
-    const papers = [...forms, window.EXAM_2026].filter(Boolean);
     const formLabel = (paper) => paper === a ? 'A 卷' : 'B 卷';
     const paperTitle = (paper) => paper === a ? `${a.title} · A 卷` : paper.title;
     let selected = null;
@@ -132,21 +131,13 @@ window.PAPER_MODE = (() => {
       const next = nextForm();
       const anySubmitted = forms.some((paper) => attempts(get(paper)).length);
       mixed.append(el('h2', '原创综合练习卷'), el('p', `${questions(a).length} 题 · 卷面 ${maxPoints(a)} 分 · 不计时`, 'note'),
-        el('p', 'A、B 两套题型和分值相同，题目不同。先做没做过的一套，两套都做过后轮换。做了一半会回到原卷。', 'note'));
+        el('p', '本版只提供原创 A、B 卷。两套题型和分值相同，题目不同；A 卷含站内练习。先做没做过的一套，没交卷就续做同一套。', 'note'));
       mixed.append(button(get(next).draft ? `继续答卷（${formLabel(next)}）` : anySubmitted ? `换一套题（${formLabel(next)}）` : '开始答卷（A 卷）', 'btn primary', () => start(next)));
       for (const paper of forms) {
         const count = attempts(get(paper)).length;
         if (count) mixed.append(button(`查看 ${formLabel(paper)}成绩`, 'btn', () => openResults(paper)));
       }
       card.append(mixed);
-      if (!window.EXAM_2026) return;
-      const paper = window.EXAM_2026;
-      const record = get(paper);
-      const row = el('section', null, 'paper-panel');
-      row.append(el('h2', paper.title), el('p', `${questions(paper).length} 题 · 卷面 ${maxPoints(paper)} 分 · 不计时`, 'note'), el('p', paper.note));
-      row.append(button(record.draft ? '继续答卷' : record.last ? '重做原卷（题目不变）' : '开始答卷', 'btn primary', () => start(paper)));
-      if (attempts(record).length) row.append(button('查看本卷成绩', 'btn', () => openResults(paper)));
-      card.append(row);
     }
     function answered(question, draft) { return Boolean(text(draft.answers?.[question.id]).trim()); }
     const questionLabel = (question, draft) => `${question.id} ${answered(question, draft) ? '已答' : '未答'}`;
@@ -379,12 +370,16 @@ window.PAPER_MODE = (() => {
       resetView() { view = 'list'; },
       show() { ({ list, work, confirm, result })[view](); },
       showResults(parent) {
-        const reports = papers.filter((paper) => attempts(get(paper)).length);
-        if (!reports.length) parent.append(el('p', '还没有整卷成绩。去「试卷」做完一份并交卷，这里就会显示。', 'note'));
+        const reports = forms.filter((paper) => attempts(get(paper)).length);
+        if (!reports.length) parent.append(el('p', '还没有原创整卷成绩。去「试卷」做完一份并交卷，这里就会显示。', 'note'));
         for (const paper of reports) {
           const history = attempts(get(paper));
           parent.append(el('p', `${paper.title}：${totalLabel(summarize(paper, history[0]))}`),
             button(`查看${paper.title}的记录（${history.length} 次）`, 'btn', () => openResults(paper)));
+        }
+        const archived = entries['2026'];
+        if (archived && (archived.draft || attempts(archived).length)) {
+          parent.append(el('p', '本机保留了旧版 2026 年答卷。可随备份导出，本版不能续答或重新评分。', 'note'));
         }
       },
     };

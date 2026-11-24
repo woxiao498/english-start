@@ -9,6 +9,8 @@
       subtitle: '记住这次用到的线索。下次碰到空格，先看看前后两句在说什么。', repeat: '再练一次补全对话', finish: '看练习小结' },
     context: { tasks: window.CONTEXT_WORDS, title: '备考入门 · 句中词义', label: '句中词义', done: '三句话都看懂了',
       subtitle: '同一个词，放进不同句子里可能换意思。先找句子里的线索。', repeat: '再练一次句中词义', finish: '看词义小结' },
+    readingStart: { tasks: window.READING_START.tasks, title: '短阅读导学', label: '短阅读导学',
+      done: '你找到了能证明答案的句子', subtitle: '先看题目问什么，再用原文里的动作核对。不要只认一个数字或物品名。' },
     reading: { tasks: window.READING_INTRO.tasks, passage: window.READING_INTRO,
       title: '备考入门 · 短阅读', label: '短阅读', done: '三道题都找到了原文依据',
       subtitle: '先看题在问什么，再回原文找一句能证明答案的话。', repeat: '再练一次短阅读', finish: '看阅读小结' },
@@ -47,7 +49,7 @@
   const legacyKey = 'english-start:first-hello:1';
   const reviewKey = 'english-start:learned-review:1';
   const examScoreKey = 'english-start:2026-score:1';
-  // 分值取自用户提供的 2026 原卷，不按课程数折算。
+  // 题型用于推荐课程；旧满分只用于显示以前手填的成绩。
   const examSections = [
     ['dialogue', '补全对话', 10, ['request-reply', 'conversation-purpose', 'service-borrow', 'service-directions', 'service-booking']],
     ['words', '词汇', 20, ['context-actions', 'phrases-in-context', 'vocab-borrow-lend', 'vocab-return-keep', 'vocab-library-reading']],
@@ -582,7 +584,7 @@
     const completed = (id) => Boolean(course.lessons[id]?.complete);
     const learned = lessons.filter((item) => completed(item.id)).length;
     const started = lessons.filter((item) => course.lessons[item.id] && !completed(item.id)).length;
-    heading('课程和试卷分开看', '学习进度', '你可以看学到哪儿、下一步学什么，以及不同题型在 2026 原卷里占多少分。');
+    heading('课程和试卷分开看', '学习进度', '你可以看学到哪儿、原创练习卷的成绩，或按题型找课。');
     card.setAttribute('aria-label', '学习进度');
     studyNav();
     const overview = el('section', null, 'course-list');
@@ -597,9 +599,8 @@
     if (window.STUDY_BACKUP) overview.append(button('备份与恢复', 'btn', () => { directory = 'backup'; render(true); }));
     card.append(overview);
 
-    const weights = el('section', null, 'course-list');
-    weights.append(el('h2', '这些课对应试卷哪些分？'), el('p', '下面是 2026 原卷各部分满分，不是你能拿到的分。完成对应课程只是学过相关方法，不能保证拿下整部分。', 'gate-note'),
-      el('p', '全卷 150 分：点选 105 分，书写 45 分。阅读理解和短文选句合计 45 分。', 'note'));
+    const topics = el('section', null, 'course-list');
+    topics.append(el('h2', '按题型找课'), el('p', '如果某一类题容易卡住，可以先回去学对应的方法。完成课程不等于已经拿到卷面分。', 'note'));
     const results = el('section', null, 'course-list');
     results.append(el('h2', '整卷成绩'));
     paperMode.showResults(results);
@@ -614,14 +615,14 @@
       results.append(archive);
     }
     card.append(results);
-    for (const [, title, max, ids] of examSections) {
+    for (const [, title, , ids] of examSections) {
       const row = el('section', null, 'exam-score-row');
-      row.append(el('h3', `${title} · 原卷 ${max} 分`), el('p', `对应正课：已完成 ${ids.filter(completed).length} / ${ids.length} 节`, 'note'));
+      row.append(el('h3', title), el('p', `对应正课：已完成 ${ids.filter(completed).length} / ${ids.length} 节`, 'note'));
       const pending = lessons.find((item) => ids.includes(item.id) && !completed(item.id));
       if (pending) row.append(button(`补课：${pending.title}`, 'btn', () => openLesson(pending)));
-      weights.append(row);
+      topics.append(row);
     }
-    card.append(weights);
+    card.append(topics);
   }
 
   function showStudyBackup() {
@@ -683,12 +684,17 @@
         const records = backup.decoded(await file.text());
         if (current !== selection || !panel.isConnected) return;
         plan = backup.preview(window.localStorage, records, (old) => normalize(old, lessons[0], true));
+        const count = plan.counts;
+        const archiveNote = !plan.includesArchive ? '' : count.archive
+          ? '另补入旧版 2026 年答卷的缺项，可再导出；本版不能续答或评分。'
+          : '本机已有的旧版 2026 年答卷不会被覆盖；本版不能续答或评分。';
         if (!plan.changes.size) {
+          details.textContent = archiveNote;
           tell(note, '没有可补入的记录。本机已有的条目不会被覆盖。', 'hint');
           return;
         }
-        const count = plan.counts;
-        details.textContent = `可补入：课程 ${count.lessons} 项、综合复习 ${count.reviews} 项、词汇 ${count.vocab} 项及复习起点 ${count.vocabDates} 项、试卷草稿 ${count.drafts} 份、整卷历史 ${count.paperHistory} 套、旧手填记录 ${count.scores} 项。`;
+        const currentRecords = `可补入：课程 ${count.lessons} 项、综合复习 ${count.reviews} 项、词汇 ${count.vocab} 项及复习起点 ${count.vocabDates} 项、原创卷草稿 ${count.drafts} 份、原创卷历史 ${count.paperHistory} 套、旧手填记录 ${count.scores} 项。`;
+        details.textContent = archiveNote ? `${currentRecords} ${archiveNote}` : currentRecords;
         tell(note, '预览完成，尚未写入。确认后会刷新，单项练习的临时草稿不会保留。', 'hint');
         apply.disabled = false;
       } catch (error) {
@@ -819,8 +825,9 @@
     const readingTitle = el('h3', practiceSets.reading.title);
     readingTitle.id = 'reading-title';
     reading.setAttribute('aria-labelledby', readingTitle.id);
-    reading.append(readingTitle, el('p', '一篇原创校园通知，三道选择题。答完会标出原文依据。', 'note'),
-      button(practiceLabel('reading'), 'btn', () => openPractice('reading')));
+    reading.append(readingTitle, el('p', '第一次读短文，可以先看导学：示范一次，带做一题，再自己找一句。也可以直接练。', 'note'),
+      actionRow(button(practiceLabel('readingStart'), 'btn', () => openPractice('readingStart')),
+        button(practiceLabel('reading'), 'btn', () => openPractice('reading'))));
     for (const [mode, description] of [
       ['readingStory', '校园故事：把开头和结尾连起来，练主旨和人物推断。'],
       ['readingGuide', '午餐指南：从写法判断出处，用上下文猜词。'],
@@ -1440,10 +1447,59 @@
     card.append(form);
   }
 
+  function showReadingStart(set, draft) {
+    const example = window.READING_START.example;
+    const task = set.tasks[draft.index];
+    if (!task) {
+      heading(set.title, set.done, set.subtitle);
+      const recap = el('ul', null, 'review-summary');
+      for (const item of set.tasks) {
+        const row = el('li');
+        row.append(english(el('strong', item.passage.lines[item.evidence])), el('span', item.takeaway));
+        recap.append(row);
+      }
+      card.append(recap);
+      actions(button(practiceLabel('reading'), 'btn primary', () => openPractice('reading')),
+        button('回课程首页', 'btn', backToCourse));
+      return;
+    }
+    if (!draft.readingExampleSeen) {
+      heading(set.title, '先看一题是怎么读的', '不用先翻译完一整篇。先弄清问题，再去通知里找能证明答案的那句。');
+      card.append(english(el('p', example.question, 'guided-note')));
+      const passage = el('section', null, 'speech bridge-dialogue reading-passage reading-demo');
+      passage.append(english(el('h2', example.title)));
+      for (const [index, [line, translation]] of example.lines.entries()) {
+        const evidence = index === example.evidence;
+        if (evidence) passage.append(el('p', '回答这道题的句子：', 'reading-evidence-label'));
+        passage.append(english(el('p', line, evidence ? 'line-en reading-evidence' : 'line-en')),
+          el('p', translation, 'line-zh'));
+      }
+      card.append(passage);
+      const steps = el('ol', null, 'teaching-steps');
+      for (const step of example.steps) steps.append(el('li', step));
+      card.append(steps);
+      actions(button('跟着找一次', 'btn primary', () => {
+        draft.readingExampleSeen = true;
+        render(true);
+      }), button(practiceLabel('reading'), 'btn', () => openPractice('reading')));
+      return;
+    }
+    const guided = draft.index === 0;
+    showChoice(task, {
+      id: 'reading-start', nextLabel: guided ? '下一步：换张通知自己找' : '看导学小结',
+      backLabel: guided ? '回看示范' : undefined,
+      passed: () => draft.answered,
+      pass: () => { draft.answered = true; },
+      advance: () => { draft.index++; draft.answered = false; render(true); },
+      back: () => { draft.readingExampleSeen = false; render(true); },
+    });
+  }
+
   function showPractice(mode) {
     const set = practiceSets[mode];
     const draft = practiceDrafts[mode];
     if (mode === 'email') return showEmail(set.tasks[0], draft);
+    if (mode === 'readingStart') return showReadingStart(set, draft);
     const tasks = practiceTasks(mode);
     const task = tasks[draft.index];
     if (!task) {
@@ -1522,6 +1578,8 @@
       soundButton('再听示范', result.audio || lesson.example.english), audioFeedback());
     card.append(practice);
     const replay = button('再练一次', 'btn', () => openLesson(lesson, true));
+    if (lesson.id === 'notice-whole') actions(button(practiceLabel('readingStart'), 'btn', () => openPractice('readingStart')),
+      el('p', '选做：看一道阅读题怎么回通知里找依据。', 'note'));
     if (lesson.id === 'embedded-question') actions(button('去看选做书写练习', 'btn', () => {
       lesson = null;
       state = null;
@@ -1588,7 +1646,8 @@
       const { index } = practiceDrafts[practiceMode];
       const total = practiceTasks(practiceMode).length;
       progress.hidden = index >= total;
-      progress.textContent = progress.hidden ? '' : `${set.label} · 第 ${index + 1} 题，共 ${total} 题`;
+      progress.textContent = progress.hidden ? '' : practiceMode === 'readingStart' && !practiceDrafts.readingStart.readingExampleSeen
+        ? `${set.label} · 先看示范` : `${set.label} · 第 ${index + 1} 题，共 ${total} 题`;
       card.setAttribute('aria-label', set.title);
       showPractice(practiceMode);
     } else if (directory) {
