@@ -61,10 +61,7 @@
     ['email', '应用写作', 10, ['email-plan', 'email-use-details', 'email-specific-reason', 'email-revise']],
   ];
   const screens = ['example', 'build', 'transfer', 'done'];
-  const synth = window.speechSynthesis;
-  let request = 0;
-  let pendingAudio = 0;
-  let currentSpeech = null;
+  let activeAudio = null;
   let lesson = null;
   let state = null;
   const practiceDrafts = {};
@@ -371,57 +368,87 @@
   }
 
   function stopAudio() {
-    request += 1;
-    window.clearTimeout(pendingAudio);
-    if (synth && currentSpeech) synth.cancel();
-    currentSpeech = null;
+    const previous = activeAudio;
+    activeAudio = null;
+    if (!previous) return;
+    window.clearTimeout(previous.timer);
+    try { previous.cancel?.(); } catch { /* Audio must not block navigation. */ }
   }
 
   function speak(text, status) {
     stopAudio();
     const note = status || card.querySelector('#audio-feedback');
     card.querySelectorAll('[data-audio]').forEach((item) => tell(item, '', null));
-    const id = request;
-    const unavailable = '暂时播不了声音。可以先看文字继续练。';
-    if (!synth || typeof window.SpeechSynthesisUtterance !== 'function') {
-      tell(note, unavailable, 'hint');
-      return;
-    }
-    try {
-      const phrase = new window.SpeechSynthesisUtterance(text);
-      const voices = synth.getVoices();
-      const isEnglish = (voice) => /^en(?:-|_|$)/i.test(voice.lang);
-      phrase.voice = voices.find((voice) => voice.localService && /^en[-_]us$/i.test(voice.lang)) ||
-        voices.find((voice) => voice.localService && isEnglish(voice)) ||
-        voices.find((voice) => /^en[-_]us$/i.test(voice.lang)) || voices.find(isEnglish) || null;
-      phrase.lang = phrase.voice?.lang || 'en-US';
-      phrase.rate = 0.84;
-      phrase.onstart = () => {
-        if (request !== id) return;
-        window.clearTimeout(pendingAudio);
-      };
-      phrase.onend = () => {
-        if (request !== id) return;
-        window.clearTimeout(pendingAudio);
-        currentSpeech = null;
-      };
-      phrase.onerror = () => {
-        if (request !== id) return;
-        window.clearTimeout(pendingAudio);
-        currentSpeech = null;
-        tell(note, unavailable, 'hint');
-      };
-      currentSpeech = phrase;
-      pendingAudio = window.setTimeout(() => {
-        if (request !== id) return;
+    const report = (message, tone) => { if (note) tell(note, message, tone); };
+    const unavailable = location.protocol === 'file:'
+      ? '没能播放这段语音。请完整解压课程包，用浏览器打开首页。也可以看文字继续。'
+      : '没能播放这段语音。请刷新再试；若从聊天里打开，可换系统浏览器。也可以看文字继续。';
+    const started = (playback, message) => {
+      if (activeAudio !== playback) return;
+      window.clearTimeout(playback.timer);
+      report(message, 'ok');
+    };
+    const ended = (playback) => {
+      if (activeAudio !== playback) return;
+      window.clearTimeout(playback.timer);
+      activeAudio = null;
+      report('播放结束。想再听就点一次。', 'ok');
+    };
+
+    function speakLocally() {
+      const synth = window.speechSynthesis;
+      const playback = { timer: 0 };
+      const failed = () => {
+        if (activeAudio !== playback) return;
         stopAudio();
-        tell(note, unavailable, 'hint');
-      }, 5000);
-      synth.speak(phrase);
-    } catch {
-      stopAudio();
-      tell(note, unavailable, 'hint');
+        report(unavailable, 'hint');
+      };
+      activeAudio = playback;
+      try {
+        const voices = (synth?.getVoices() || []).filter((voice) => voice.localService && /^en(?:[-_]|$)/i.test(voice.lang));
+        const voice = voices.find((item) => /^en[-_]us$/i.test(item.lang)) || voices[0];
+        if (!voice || typeof window.SpeechSynthesisUtterance !== 'function') return failed();
+        const phrase = new window.SpeechSynthesisUtterance(text);
+        phrase.voice = voice;
+        phrase.lang = voice.lang;
+        phrase.rate = 0.84;
+        phrase.onstart = () => started(playback, '正在用设备的英语音色朗读。');
+        phrase.onend = () => ended(playback);
+        phrase.onerror = failed;
+        playback.cancel = () => synth.cancel();
+        playback.timer = window.setTimeout(failed, 5000);
+        synth.speak(phrase);
+      } catch { failed(); }
     }
+
+    const src = window.LESSON_AUDIO?.urlFor(text);
+    if (!src || typeof window.Audio !== 'function') return speakLocally();
+    const playback = { timer: 0 };
+    const fallback = (error) => {
+      if (activeAudio !== playback) return;
+      stopAudio();
+      if (error?.name === 'NotAllowedError') {
+        report('浏览器拦住了播放。请再点一次；仍没声音，可以用系统浏览器打开。', 'hint');
+      } else speakLocally();
+    };
+    activeAudio = playback;
+    report('正在载入语音…', null);
+    try {
+      const media = new window.Audio();
+      playback.cancel = () => {
+        media.pause();
+        media.removeAttribute('src');
+        media.load();
+      };
+      media.addEventListener('playing', () => started(playback, '正在播放。'));
+      media.addEventListener('ended', () => ended(playback), { once: true });
+      media.addEventListener('error', fallback, { once: true });
+      media.preload = 'none';
+      media.src = src;
+      playback.timer = window.setTimeout(fallback, 8000);
+      // Call play during the tap; deferring it can lose the browser's user gesture.
+      media.play()?.catch(fallback);
+    } catch (error) { fallback(error); }
   }
 
   function recommendedLesson() {
@@ -883,6 +910,19 @@
     card.append(writing);
   }
 
+  function exampleDetails(title, lines, className, note) {
+    const details = el('details', null, className);
+    const list = el('ul');
+    for (const [phrase, translation] of lines) {
+      const row = el('li');
+      row.append(english(el('strong', phrase)), el('span', translation));
+      list.append(row);
+    }
+    details.append(el('summary', title), list);
+    if (note) details.append(el('p', note, 'note'));
+    return details;
+  }
+
   function showExample() {
     const example = lesson.example;
     heading(null, example.title || '先看一句', `${lesson.scene} ${lesson.goal}`);
@@ -937,6 +977,10 @@
       for (const step of example.teaching) steps.append(el('li', step));
       explanation.append(el('h2', '怎么读这句话', 'study-label'), steps);
       card.append(explanation);
+    }
+    if (example.extraExample) {
+      const { title, lines } = example.extraExample;
+      card.append(exampleDetails(title, lines, 'lesson-extra'));
     }
     card.append(audioFeedback());
     actions(button(example.next || '试着拼一句', 'btn primary', () => go('build')));
@@ -1121,6 +1165,10 @@
       const guide = el('section', null, 'guided-panel');
       guide.append(el('h2', '带着你找线索', 'study-label'), el('p', task.guide, 'guided-note'));
       card.append(guide);
+    }
+    if (task.conditionHelp) {
+      const { title, examples, method } = task.conditionHelp;
+      card.append(exampleDetails(title, examples, 'reading-help', method));
     }
     const options = el('div', null, 'options');
     options.setAttribute('role', 'group');
@@ -1533,6 +1581,10 @@
       card.append(list);
       actions(button('回课程首页', 'btn primary', backToCourse),
         button(set.repeat, 'btn', () => openPractice(mode, true, draft.focus, draft.repeatSeen)));
+      if (mode === 'reading') {
+        const conditions = lessons.find((item) => item.id === 'reading-exceptions');
+        if (conditions) actions(button('去第 36 课练「不必」和「不要」', 'btn', () => openLesson(conditions)));
+      }
       if (mode === 'learnedReview' && draft.repeatSeen) actions(button('只看没见过的新题', 'btn', () => openPractice(mode, true, draft.focus)));
       const nextMode = { grammar: 'sentence', sentence: 'email' }[mode];
       if (nextMode) {
@@ -1548,8 +1600,9 @@
     if (set.written) return showGrammar(set, task, draft);
     const final = draft.index === tasks.length - 1;
     const used = set.sharedOptions ? new Set(set.tasks.slice(0, draft.index).map((item) => item.answer)) : null;
+    const conditionHelp = mode === 'reading' && final ? window.READING_CONDITION_HELP : undefined;
     showChoice({ ...task, options: used ? task.options.filter((option) => !used.has(option.id)) : task.options,
-      passage: set.passage, sentenceOptions: set.sharedOptions, englishOptions: mode === 'learnedReview' ? Boolean(task.englishOptions) : mode !== 'noticeReview' && !task.wordLine }, {
+      passage: set.passage, conditionHelp, sentenceOptions: set.sharedOptions, englishOptions: mode === 'learnedReview' ? Boolean(task.englishOptions) : mode !== 'noticeReview' && !task.wordLine }, {
       id: mode, nextLabel: final ? set.finish : '下一题',
       passed: () => draft.answered,
       onHint: mode === 'learnedReview' ? () => { draft.hinted = true; } : undefined,
@@ -1675,6 +1728,7 @@
   }
 
   returnHome.addEventListener('click', backToCourse);
+  window.addEventListener('pagehide', stopAudio);
   save();
   render(false);
 })();

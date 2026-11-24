@@ -1,5 +1,5 @@
 // 课程内容与页面逻辑分开：以后加课，先从这里改。
-function teachingLesson({ id, number, title, goal, example, chinese, terms, rule, guided, walkthrough, guidedAnswers, independent, answers, recap, checkPrompt = goal, guidedLanguage = 'en', independentLanguage = 'en', transferGlossary }) {
+function teachingLesson({ id, number, title, goal, example, chinese, terms, rule, extraExample, guided, walkthrough, guidedAnswers, independent, answers, recap, checkPrompt = goal, guidedLanguage = 'en', independentLanguage = 'en', transferGlossary }) {
   const task = (lines, choices) => ({
     dialogueLines: Array.isArray(lines) ? lines : [lines],
     options: choices.map(([label, hint], index) => ({ id: String(index), label, hint })),
@@ -11,7 +11,8 @@ function teachingLesson({ id, number, title, goal, example, chinese, terms, rule
     id, number, title, scene: '先看一个短例子。', goal,
     stepLabels: ['先看讲解', '跟着做', '自己试一次'],
     example: { english: example, chinese, teaching: [rule], next: '跟着做一次',
-      meanings: terms.map(([english, chinese]) => ({ english, chinese })) },
+      meanings: terms.map(([english, chinese]) => ({ english, chinese })),
+      ...(extraExample ? { extraExample } : {}) },
     build: { ...guidedTask, linesLanguage: guidedLanguage, title: '跟着看线索', prompt: '先看下面的拆解，再选一项。', guide: walkthrough,
       success: '对上了。', next: '下一步：自己试一次', backLabel: '回看讲解' },
     transfer: { ...independentTask, linesLanguage: independentLanguage, glossary: transferGlossary, title: '自己试一次', prompt: checkPrompt, success: recap },
@@ -33,6 +34,11 @@ window.LESSONS = Object.freeze([{
       { english: 'I’m Lin', chinese: '我是 Lin' },
     ],
     chinese: '你好，我是 Lin。',
+    teaching: ['Hi 先打招呼；I’m 后面接说话人自己的名字，不是对方的名字。换了人，前面不动，只换最后的名字。'],
+    extraExample: {
+      title: '换个人说，看看哪儿变了',
+      lines: [['Hi, I’m Lin.', 'Lin 在自我介绍。'], ['Hi, I’m Jia.', '换成 Jia 在说，名字才跟着换。']],
+    },
   },
   build: {
     prompt: '现在轮到你。假设你叫 Lin，点卡片拼出「你好，我是 Lin」。',
@@ -81,6 +87,11 @@ window.LESSONS = Object.freeze([{
       { english: 'your name', chinese: '你的名字' },
       { english: 'What’s', chinese: '这里用来问「是什么」' },
     ],
+    teaching: ['先用 What’s 开口问，再接 your name（你的名字）。your 说的是对方的，不是自己的。自己回答时，用 I’m 加自己的名字。'],
+    extraExample: {
+      title: '哪句是问，哪句是答？',
+      lines: [['What’s your name?', '说话的人在问对方叫什么。'], ['I’m Tao.', 'Tao 在回答，用的是自己的名字。']],
+    },
   },
   build: {
     prompt: '点卡片拼出「你叫什么名字？」。',
@@ -125,6 +136,10 @@ window.LESSONS = Object.freeze([{
       { speaker: '你 · Lin', english: 'Hi, I’m Lin.', chinese: '你好，我是 Lin。', yours: true },
       { speaker: '搭档 · Chen', english: 'Nice to meet you.', chinese: '很高兴认识你。' },
       { speaker: '你 · Lin', english: 'Nice to meet you, too.', chinese: '我也很高兴认识你。', yours: true },
+    ],
+    teaching: [
+      '先看对方在说什么：问名字，就说自己的名字，不用把问题原样问回去。',
+      '刚交换过名字，对方说「很高兴认识你」，就不用再报名字。用同一句回应，句尾加 too（也）。',
     ],
     next: '试着接一句',
   },
@@ -182,7 +197,13 @@ window.LESSONS = Object.freeze([{
     teaching: [
       '先找 starts at，后面的数字告诉你几点。别漏看 a.m.（上午）和 p.m.（下午／晚上）。',
       '再找 on 后面的星期。这里只用到 Friday（星期五）和 Monday（星期一），不用先背整张星期表。',
+      '有时通知给两个时间。问活动开始，就先认 starts，再读它后面的时间；Doors open 说的是开门。',
     ],
+    extraExample: {
+      title: '同一张通知，开门和开始不是一回事',
+      lines: [['Doors open at 8:20 a.m. on Friday.', '星期五上午 8:20 开门。'],
+        ['The meeting starts at 8:40 a.m. on Friday.', '星期五上午 8:40 才开始。问开始，就看有 starts 的那行，不看哪个时间排在前面。']],
+    },
     next: '跟着找一次',
   },
   build: {
@@ -334,7 +355,12 @@ window.LESSONS = Object.freeze([{
 }), teachingLesson({
   id: 'reference-basics', number: '第十二课', title: '读懂 it 指的是什么', goal: '遇到 it，回前一句找它指的东西。',
   example: 'I have a notebook. It is red.', chinese: '我有一本笔记本。它是红色的。', terms: [['it', '它，这里代替前面一个东西'], ['red', '红色的'], ['blue', '蓝色的'], ['bag', '包'], ['page', '页'], ['school library', '学校图书馆']],
-  rule: '两句都在说同一个东西时，后一句可以用 it。前面有不止一个名词时，别只选离 it 最近的。把两个可能的词都换进去读：东西有颜色，书有页数，看看哪一个接得通。',
+  rule: '两句都在说同一个东西时，后一句可以用 it。前面有不止一个名词时，别只选离 it 最近的。先读 it 后面的描述，再把可能的东西换回去，看看哪一个接得通。',
+  extraExample: {
+    title: '前面有两个东西，把它们轮流换回去',
+    lines: [['I have a notebook and a pen.', '我有一本笔记本和一支笔。前一句里有两样东西。'],
+      ['It has 50 pages.', '它有 50 页。把「笔」换进去不通，换成「笔记本」就通了。虽然笔写在最后，It 指的还是笔记本。']],
+  },
   guided: ['I put my bag on a chair.', 'It is full of books.'], walkthrough: '第一句说我把包放在椅子上。第二句说 It is full of books（装满了书）。把包和椅子分别换进去：能装书的是包，不是椅子。', guidedAnswers: [['包'], ['椅子', '椅子用来放包，不是装书的东西。']],
   checkPrompt: '第二句的 It 指什么？', independent: ['I borrowed a book from the school library.', 'It has 20 pages.'], transferGlossary: [['borrowed', '借了']],
   answers: [['学校图书馆', '图书馆虽然离 It 更近，但有 20 页的是书。'], ['书'], ['我', 'I 是说话的人。has 20 pages 描述的是书。']],
@@ -1619,6 +1645,16 @@ window.READING_START = Object.freeze({
       takeaway: 'lend you 是「借给你」；ruler 在这个动作后面。',
     },
   ],
+});
+
+// 第三道短阅读题的选看示范；不引用题面，也不参与原创卷组卷。
+window.READING_CONDITION_HELP = Object.freeze({
+  title: '卡住了？先看两句别的通知',
+  examples: [
+    ['You do not need to bring a phone.', '不必带手机。没带手机也符合这条要求。'],
+    ['Do not bring a phone.', '不要带手机。这一句才说不能带。'],
+  ],
+  method: '把 do not need to 当成一块来看，意思是「不必……」。再读它后面的动作：如果我做不到这件事，这句话会把我排除吗？有别的要求，再分开核对。',
 });
 
 // 原创短告示，用于练证据定位，不是 2026 原卷材料。

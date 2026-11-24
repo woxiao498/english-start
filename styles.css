@@ -205,6 +205,12 @@ html:has(.masthead.is-learning) { scroll-padding-top: 68px; }
 .card .reading-extra .note { margin-bottom: 6px; }
 .reading-summary-sources { margin: 8px 0 0; padding-left: 22px; }
 .reading-summary-sources li { padding: 2px 0; overflow-wrap: anywhere; }
+:is(.reading-help, .lesson-extra) { margin-top: 12px; padding: 0 12px; border: 1px solid var(--line); border-radius: 10px; background: var(--green-light); overflow-wrap: anywhere; }
+:is(.reading-help, .lesson-extra) summary { min-height: 44px; padding: 10px 0; color: var(--green-deep); font-weight: 700; cursor: pointer; }
+:is(.reading-help, .lesson-extra) ul { margin: 0 0 8px; padding-left: 20px; }
+:is(.reading-help, .lesson-extra) li + li { margin-top: 6px; }
+:is(.reading-help, .lesson-extra) li span { display: block; color: var(--muted); }
+.card .reading-help .note { margin-bottom: 10px; }
 .cloze-blank[data-empty] { white-space: nowrap; }
 .cloze-blank[data-current] { padding-inline: 3px; background: var(--gold-pale); color: var(--gold-text); border-radius: 3px; }
 .reading-passage .reading-evidence-label { margin: 8px 0 2px; color: var(--green-deep); font-size: 13px; font-weight: 700; }
