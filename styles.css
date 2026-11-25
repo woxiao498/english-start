@@ -186,6 +186,10 @@ html:has(.masthead.is-learning) { scroll-padding-top: 68px; }
 }
 .btn.sound { display: inline-flex; align-items: center; gap: 7px; }
 .btn.sound svg { width: 18px; height: 18px; flex: none; }
+.word-sound { display: inline; padding: 0 1px; margin: 0; border: 0; border-bottom: 1px dotted rgba(34, 87, 65, .45); border-radius: 2px; background: none; color: inherit; font: inherit; line-height: inherit; letter-spacing: inherit; text-align: inherit; cursor: pointer; }
+.word-sound:hover { background: var(--green-light); }
+.word-sound[data-playing] { background: var(--gold-pale); border-bottom-color: var(--gold-text); }
+.card .word-hint { margin: 8px 0 0; }
 .speech, .builder { margin: 18px 0 0; padding: clamp(14px, 3.8vw, 24px); background: var(--green-light); border: 1px solid var(--line); border-radius: 14px; }
 .speech { border-left: 3px solid #7a9e86; }
 .card :is(.bridge-dialogue, .paper-text) .line-en { line-height: 1.5; }

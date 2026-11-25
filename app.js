@@ -302,6 +302,31 @@
     return element;
   }
 
+  function wordText(element, text, context = text, status) {
+    const tokens = window.WORD_TOKENS?.scan(text, context) || [];
+    const parts = [];
+    let end = 0;
+    for (const { word, start, key: wordKey } of tokens) {
+      const src = window.WORD_AUDIO?.urlFor(wordKey);
+      parts.push(text.slice(end, start));
+      if (!src) parts.push(word);
+      else {
+        const control = english(button(word, 'word-sound', () => {
+          speak(window.WORD_TOKENS.spoken(wordKey), status, { src, control, label: word });
+        }));
+        control.title = `听单词：${word}`;
+        parts.push(control);
+      }
+      end = start + word.length;
+    }
+    element.replaceChildren(...parts, text.slice(end));
+    return element;
+  }
+
+  function wordLine(tag, text, className, status) {
+    return wordText(english(el(tag, null, className)), text, text, status);
+  }
+
   function feedback(id) {
     const element = el('p', '', 'feedback');
     element.id = id;
@@ -372,13 +397,15 @@
     activeAudio = null;
     if (!previous) return;
     window.clearTimeout(previous.timer);
+    if (previous.control) delete previous.control.dataset.playing;
     try { previous.cancel?.(); } catch { /* Audio must not block navigation. */ }
   }
 
-  function speak(text, status) {
+  function speak(text, status, options = {}) {
     stopAudio();
-    const note = status || card.querySelector('#audio-feedback');
-    card.querySelectorAll('[data-audio]').forEach((item) => tell(item, '', null));
+    const word = Boolean(options.control);
+    const note = status || card.querySelector(word ? '#word-audio-feedback' : '#audio-feedback');
+    if (!word) card.querySelectorAll('[data-audio]').forEach((item) => tell(item, '', null));
     const report = (message, tone) => { if (note) tell(note, message, tone); };
     const unavailable = location.protocol === 'file:'
       ? '没能播放这段语音。请完整解压课程包，用浏览器打开首页。也可以看文字继续。'
@@ -388,16 +415,20 @@
       window.clearTimeout(playback.timer);
       report(message, 'ok');
     };
+    const release = (playback) => {
+      if (playback.control) delete playback.control.dataset.playing;
+    };
     const ended = (playback) => {
       if (activeAudio !== playback) return;
       window.clearTimeout(playback.timer);
       activeAudio = null;
-      report('播放结束。想再听就点一次。', 'ok');
+      release(playback);
+      report(word ? `「${options.label}」读完了。再点一次可以重听。` : '播放结束。想再听就点一次。', 'ok');
     };
 
     function speakLocally() {
       const synth = window.speechSynthesis;
-      const playback = { timer: 0 };
+      const playback = { timer: 0, control: options.control };
       const failed = () => {
         if (activeAudio !== playback) return;
         stopAudio();
@@ -412,7 +443,7 @@
         phrase.voice = voice;
         phrase.lang = voice.lang;
         phrase.rate = 0.84;
-        phrase.onstart = () => started(playback, '正在用设备的英语音色朗读。');
+        phrase.onstart = () => started(playback, word ? `正在用设备的音色读「${options.label}」。` : '正在用设备的英语音色朗读。');
         phrase.onend = () => ended(playback);
         phrase.onerror = failed;
         playback.cancel = () => synth.cancel();
@@ -421,9 +452,9 @@
       } catch { failed(); }
     }
 
-    const src = window.LESSON_AUDIO?.urlFor(text);
+    const src = options.src || window.LESSON_AUDIO?.urlFor(text);
     if (!src || typeof window.Audio !== 'function') return speakLocally();
-    const playback = { timer: 0 };
+    const playback = { timer: 0, control: options.control };
     const fallback = (error) => {
       if (activeAudio !== playback) return;
       stopAudio();
@@ -432,7 +463,8 @@
       } else speakLocally();
     };
     activeAudio = playback;
-    report('正在载入语音…', null);
+    if (options.control) options.control.dataset.playing = '';
+    report(word ? `正在读「${options.label}」…` : '正在载入语音…', null);
     try {
       const media = new window.Audio();
       playback.cancel = () => {
@@ -440,7 +472,7 @@
         media.removeAttribute('src');
         media.load();
       };
-      media.addEventListener('playing', () => started(playback, '正在播放。'));
+      media.addEventListener('playing', () => started(playback, word ? `正在读「${options.label}」。` : '正在播放。'));
       media.addEventListener('ended', () => ended(playback), { once: true });
       media.addEventListener('error', fallback, { once: true });
       media.preload = 'none';
@@ -781,7 +813,7 @@
       vocabRound.hinted = true;
       if (card.querySelector('.vocab-example')) return;
       const example = el('div', null, 'speech vocab-example');
-      example.append(english(el('p', word.example[0])), el('p', word.example[1]));
+      example.append(wordLine('p', word.example[0]), el('p', word.example[1]));
       card.querySelector('.options').before(example);
     };
     showChoice({ title: '在新句子里认词', prompt: variant.prompt, dialogueLines: variant.lines, glossary: variant.glossary,
@@ -915,7 +947,7 @@
     const list = el('ul');
     for (const [phrase, translation] of lines) {
       const row = el('li');
-      row.append(english(el('strong', phrase)), el('span', translation));
+      row.append(wordText(english(el('strong', null)), phrase), el('span', translation));
       list.append(row);
     }
     details.append(el('summary', title), list);
@@ -933,7 +965,7 @@
         row.dataset.dialogueLine = '';
         if (line.yours) row.dataset.yours = '';
         const status = audioFeedback(`line-audio-${dialogue.children.length + 1}`);
-        row.append(el('p', line.speaker, 'speaker'), english(el('p', line.english, 'line-en')),
+        row.append(el('p', line.speaker, 'speaker'), wordLine('p', line.english, 'line-en'),
           el('p', line.chinese, 'line-zh'), soundButton('听这句', line.english, status), status);
         row.querySelector('button').setAttribute('aria-label', `听这句：${line.speaker}，${line.english}`);
         dialogue.append(row);
@@ -942,10 +974,15 @@
     } else {
       const phrase = english(el('p', null, 'sentence'));
       if (example.parts) {
-        example.parts.forEach((part, index) => phrase.append(el('span', part, index === 2 ? 'name' : undefined)));
-      } else phrase.textContent = example.english;
+        example.parts.forEach((part, index) => {
+          const span = el('span', null, index === 2 ? 'name' : undefined);
+          wordText(span, part, example.english);
+          phrase.append(span);
+        });
+      } else wordText(phrase, example.english);
       const speech = el('section', null, 'speech lesson-example');
       speech.append(el('h2', '示范例句', 'study-label'), phrase, el('p', example.chinese, 'translation'), soundButton('听一遍', example.english));
+      if (phrase.querySelector('.word-sound')) speech.append(el('p', '点句子里的单词，可以单独听它。', 'note word-hint'));
       if (example.english.length > 64 || example.english.includes('\n')) phrase.classList.add('sentence-long');
       const meanings = el('ul', null, 'meanings');
       for (const part of example.meanings) {
@@ -1119,7 +1156,7 @@
             currentBlank = slot;
           }
           paragraph.replaceChildren(before, slot, after);
-        }
+        } else wordText(paragraph, line);
         passage.append(paragraph);
         if (evidenceIndexes.includes(index)) {
           const label = el('p', '原文依据：', 'reading-evidence-label');
@@ -1133,17 +1170,22 @@
     } else if (task.wordLine) {
       const lines = english(el('div', null, 'speech bridge-dialogue'));
       const sentence = el('p', null, 'line-en');
-      task.wordLine.forEach((part, index) => sentence.append(el('span', part, index === 1 ? 'target-word' : undefined)));
+      const context = task.wordLine.join('');
+      task.wordLine.forEach((part, index) => {
+        const span = el('span', null, index === 1 ? 'target-word' : undefined);
+        wordText(span, part, context);
+        sentence.append(span);
+      });
       lines.append(sentence);
       card.append(lines);
     } else if (task.dialogueLines) {
       const lines = el('div', null, 'speech bridge-dialogue');
       lines.lang = task.linesLanguage || 'en';
-      for (const line of task.dialogueLines) lines.append(el('p', line, 'line-en'));
+      for (const line of task.dialogueLines) lines.append(wordLine('p', line, 'line-en'));
       card.append(lines);
     } else if (task.english) {
       const prompt = el('div', null, 'speech');
-      prompt.append(english(el('p', task.english, 'sentence')));
+      prompt.append(wordLine('p', task.english, 'sentence'));
       if (task.englishOptions) {
         prompt.append(soundButton('听对方说', task.english), audioFeedback());
       }
@@ -1503,7 +1545,7 @@
       const recap = el('ul', null, 'review-summary');
       for (const item of set.tasks) {
         const row = el('li');
-        row.append(english(el('strong', item.passage.lines[item.evidence])), el('span', item.takeaway));
+        row.append(wordText(english(el('strong', null)), item.passage.lines[item.evidence]), el('span', item.takeaway));
         recap.append(row);
       }
       card.append(recap);
@@ -1519,7 +1561,7 @@
       for (const [index, [line, translation]] of example.lines.entries()) {
         const evidence = index === example.evidence;
         if (evidence) passage.append(el('p', '回答这道题的句子：', 'reading-evidence-label'));
-        passage.append(english(el('p', line, evidence ? 'line-en reading-evidence' : 'line-en')),
+        passage.append(wordLine('p', line, evidence ? 'line-en reading-evidence' : 'line-en'),
           el('p', translation, 'line-zh'));
       }
       card.append(passage);
@@ -1625,7 +1667,7 @@
     const next = lessons[lessons.indexOf(lesson) + 1];
     heading(`${lesson.number}完成`, result.title, result.subtitle);
     const practice = el('section', null, 'speech lesson-example');
-    const phrase = english(el('p', result.english, 'sentence'));
+    const phrase = wordLine('p', result.english, 'sentence');
     if (result.english.length > 64 || result.english.includes('\n')) phrase.classList.add('sentence-long');
     practice.append(el('h2', '这课记住一句', 'study-label'), phrase, el('p', result.practice, 'translation'),
       soundButton('再听示范', result.audio || lesson.example.english), audioFeedback());
@@ -1720,6 +1762,12 @@
       chapter.append(el('span', lesson.number, 'lesson-number'), el('p', lesson.title, 'lesson-context'));
       card.append(chapter, lessonTrack(index, names));
       ({ example: showExample, build, transfer: checkTransfer, done })[state.screen]();
+    }
+    if (card.querySelector('.word-sound') && !card.querySelector('#word-audio-feedback')) {
+      const note = audioFeedback('word-audio-feedback');
+      const row = card.querySelector('.actions');
+      if (row) row.before(note);
+      else card.append(note);
     }
     if (moveFocus) {
       card.querySelector('h1').focus({ preventScroll: true });

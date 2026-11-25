@@ -347,8 +347,11 @@ window.LESSONS = Object.freeze([{
 }), teachingLesson({
   id: 'noun-count', number: '第十一课', title: '从 one、two 看单复数', goal: '从数字和词尾分清一件东西、几件东西。',
   example: 'I have one pen and two notebooks.', chinese: '我有一支笔和两本笔记本。', terms: [['have', '有'], ['one / two / three', '一／二／三'], ['pen', '笔'], ['notebook', '笔记本'], ['pencil', '铅笔'], ['lend you', '借给你'], ['a pen', '一支笔']],
-  rule: '说一个时可以用 one pen 或 a pen；两个或更多常用复数，比如 two notebooks。第六课的 Bring a pencil 是带一支铅笔；Bring two pencils 就是带两支。每个数字只跟它后面的那样东西。',
-  guided: 'I have a notebook.', walkthrough: 'a notebook 是一本笔记本，a 后面接这里的单数 notebook。', guidedAnswers: [['一本笔记本'], ['两本笔记本', '两个要找 two；这里用的是 a。']],
+  rule: 'one pen 和 a pen 都是一支笔；two notebooks 是两本笔记本，notebooks 末尾多了 s。用 and（和）分开两样，分别读「几个＋什么」。问自己带什么，就看 Bring 那句；lend you 那句说的是学校借给你的。',
+  guided: ['The school will lend you two pencils.', 'Bring a pen and three notebooks.'],
+  walkthrough: '要自己带哪两样？第一句的 lend you 表示学校借你两支铅笔，不算自带。看第二句的 Bring，把 and 两边分开：a pen 是一支笔，three notebooks 是三本笔记本。',
+  guidedAnswers: [['一支笔和三本笔记本'], ['三支笔和一本笔记本', 'a 跟 pen，three 跟 notebooks。别把两个数量对调。'],
+    ['两支铅笔和三本笔记本', '铅笔在 lend you 那句，是学校借给你的。只数 Bring 那句的两样东西。']],
   checkPrompt: '要自己带几支铅笔、几本笔记本？', independent: ['Bring two pencils and one notebook.', 'The school will lend you three pens.'], transferGlossary: [['the school', '学校']],
   answers: [['两本笔记本和一支铅笔', 'two 跟 pencils，one 跟 notebook。'], ['两支铅笔和一本笔记本'], ['三支笔和一本笔记本', '三支笔是学校借给你的，不是要自带的。']],
   recap: '先用 Bring 找到要自带的东西，再从左到右把每个数字跟物品配起来。',
