@@ -18,7 +18,7 @@
 
 **点带虚线的英文词，可以单独听它。** 正在读的词会变成浅黄底。`I’m`、`a.m.`、`p.m.` 各读作一个整体。`2:30` 读作「two thirty」，`Room 203` 读作「Room two oh three」。选项和拼句卡片仍用来答题。点另一个词或点「听一遍」，会切换到新选的音频。
 
-第 56 课的 `Did you read yesterday?` 里，`Did` 已经表示过去，`read` 用原形，读 /riːd/，跟 `reed` 同音。第 57 课独立题的 `Later, he read a book at home.` 讲的是已经发生的事，这里的 `read` 读 /rɛd/，跟 `red` 同音。
+第 56 课的 `Did you read yesterday?` 里，`Did` 已经表示过去，`read` 用原形，读 /riːd/，跟 `reed` 同音。第 45 课复习的 `We read in the library ____ it was quiet.` 和第 57 课独立题的 `Later, he read a book at home.` 都在说已经发生的事，这里的 `read` 读 /rɛd/，跟 `red` 同音。
 
 如果点了没有声音，先看页面是否显示「正在读」或「正在播放」，再检查设备音量和浏览器标签页有没有静音。若显示不能播放，确认是完整解压、不是在压缩包预览里打开，且 `audio/`、`word-audio/` 两个目录和首页仍在一起；聊天里的预览建议改用系统浏览器。没声音也能照常上课。
 
