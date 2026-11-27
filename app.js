@@ -2,6 +2,8 @@
   'use strict';
 
   const lessons = window.LESSONS;
+  const mainLessons = lessons.filter((item) => !item.practiceUnit);
+  const unitPractice = lessons.filter((item) => item.practiceUnit);
   const practiceSets = {
     review: { tasks: window.REVIEW, title: '一分钟回练', label: '一分钟回练', done: '三句都接上了',
       subtitle: '今天先练到这里也行。明天回来，再试试不看示范能不能选对。', repeat: '再做一次回练', finish: '看回练小结' },
@@ -572,7 +574,7 @@
 
   function recommendedLesson() {
     return lessons.find((item) => item.id === course.active && !course.lessons[item.id]?.complete)
-      || lessons.find((item) => !course.lessons[item.id]?.complete);
+      || mainLessons.find((item) => !course.lessons[item.id]?.complete);
   }
 
   function home() {
@@ -581,7 +583,7 @@
     const hero = el('section', null, 'home-hero');
     const intro = el('div', null, 'home-intro');
     heading('广东中职 3＋证书 · 英语备考', '英语第一步',
-      nextLesson ? '先看讲解，跟着做，再自己试一次。' : '课程已学完，可以回练对话，或按题型继续练。', intro);
+      nextLesson ? '先看讲解，跟着做，再自己试一次。' : '正课已学完，可以去课程目录选做单元加练，或按题型继续练。', intro);
     const reassurance = el('p', null, 'reassurance');
     reassurance.id = 'home-reassurance';
     reassurance.append(el('strong', '不用开口、不用录音，读不准也没关系。'),
@@ -612,13 +614,14 @@
     card.append(hero);
     studyNav(true);
 
-    const learned = lessons.filter((item) => course.lessons[item.id]?.complete).length;
+    const learned = mainLessons.filter((item) => course.lessons[item.id]?.complete).length;
+    const practiced = unitPractice.filter((item) => course.lessons[item.id]?.complete).length;
     const strip = el('div', null, 'home-progress-strip');
     const meter = el('progress');
-    meter.max = lessons.length;
+    meter.max = mainLessons.length;
     meter.value = learned;
-    meter.setAttribute('aria-label', '课程完成进度');
-    strip.append(el('p', `已学完 ${learned} / ${lessons.length} 课`, 'home-progress'), meter);
+    meter.setAttribute('aria-label', '正课完成进度');
+    strip.append(el('p', `已学完 ${learned} / ${mainLessons.length} 课 · 单元加练 ${practiced} / ${unitPractice.length} 节`, 'home-progress'), meter);
     card.append(strip);
     const words = vocab?.status();
     if (words?.learned) {
@@ -688,18 +691,20 @@
       ['完成句子：看两边，只补缺的部分', 87, 90, '用时间、语序和固定搭配核对要补的半句；课末可以选做书写。'],
       ['看时间表：按同一行的字段找信息', 90, 93, '先按星期几和几点定到一行，再用通知排掉被改过的旧信息。'],
       ['看报名表和回执：按栏名填、按状态走', 93, 96, '先按栏名把信息填进对应的一栏，再按回执状态决定下一步，最后只改更正通知点名的一项。'],
-      ['看价签和优惠：单价、门槛和小票', 96, lessons.length, '先分清单价和成组价，再读清数量与对象门槛，最后拿两份材料核对小票上收费不符的那一项。'],
+      ['看价签和优惠：单价、门槛和小票', 96, mainLessons.length, '先分清单价和成组价，再读清数量与对象门槛，最后拿两份材料核对小票上收费不符的那一项。'],
     ];
     const catalog = el('div', null, 'lesson-directory');
-    const next = lessons.indexOf(recommendedLesson());
+    const next = recommendedLesson();
     for (const [index, [label, start, end, goal]] of units.entries()) {
-      const items = lessons.slice(start, end);
+      const items = mainLessons.slice(start, end);
+      const practice = unitPractice.find((item) => item.practiceUnit === index + 1);
       const complete = items.filter((item) => course.lessons[item.id]?.complete).length;
       const group = el('details', null, 'unit-group');
-      group.open = next >= start && next < end;
+      group.open = items.includes(next) || next === practice;
       const toggle = el('summary');
       toggle.append(el('strong', `单元 ${index + 1} · ${label}`), el('span', `${complete}/${items.length} 已完成`, 'lesson-status'));
       group.append(toggle, el('p', `第 ${start + 1}–${end} 课${goal ? ` · ${goal}` : ''}`, 'note'), lessonRows(items));
+      if (practice) group.append(el('p', '单元加练（选做）', 'note'), lessonRows([practice]));
       catalog.append(group);
     }
     card.append(catalog);
@@ -738,18 +743,20 @@
 
   function showLearningProgress() {
     const completed = (id) => Boolean(course.lessons[id]?.complete);
-    const learned = lessons.filter((item) => completed(item.id)).length;
-    const started = lessons.filter((item) => course.lessons[item.id] && !completed(item.id)).length;
+    const learned = mainLessons.filter((item) => completed(item.id)).length;
+    const practiced = unitPractice.filter((item) => completed(item.id)).length;
+    const started = mainLessons.filter((item) => course.lessons[item.id] && !completed(item.id)).length;
     heading('课程和试卷分开看', '学习进度', '你可以看学到哪儿、原创练习卷的成绩，或按题型找课。');
     card.setAttribute('aria-label', '学习进度');
     studyNav();
     const overview = el('section', null, 'course-list');
-    overview.append(el('h2', `已学完 ${learned} / ${lessons.length} 课`));
+    overview.append(el('h2', `已学完 ${learned} / ${mainLessons.length} 课`));
     const bar = el('progress');
-    bar.max = lessons.length;
+    bar.max = mainLessons.length;
     bar.value = learned;
     bar.setAttribute('aria-label', '已完成课程');
-    overview.append(bar, el('p', `进行中 ${started} 课 · 未开始 ${lessons.length - learned - started} 课`, 'note'));
+    overview.append(bar, el('p', `进行中 ${started} 课 · 未开始 ${mainLessons.length - learned - started} 课`, 'note'),
+      el('p', `单元加练已完成 ${practiced} / ${unitPractice.length} 节`, 'note'));
     const next = recommendedLesson();
     if (next) overview.append(button(`${course.lessons[next.id] ? '继续' : '下一课：'}${next.title}`, 'btn primary', () => openLesson(next)));
     if (window.STUDY_BACKUP) overview.append(button('备份与恢复', 'btn', () => { directory = 'backup'; render(true); }));
@@ -1818,7 +1825,7 @@
 
   function done() {
     const result = lesson.done;
-    const next = lessons[lessons.indexOf(lesson) + 1];
+    const next = lesson.practiceUnit ? null : mainLessons[mainLessons.indexOf(lesson) + 1];
     heading(`${lesson.number}完成`, result.title, result.subtitle);
     const practice = el('section', null, 'speech lesson-example');
     const phrase = wordLine('p', result.english, 'sentence');
@@ -1854,7 +1861,16 @@
       && eligibleReviewTasks('learnedReview').some((task) => task.requires.includes(lessonId))) {
       actions(button('练刚学的内容', 'btn', () => openPractice('learnedReview', true, lessonId)));
     }
-    if (next) actions(button(`下一课：${next.title}`, 'btn primary', () => openLesson(next)), replay,
+    if (lesson.practiceUnit) actions(button('回课程目录', 'btn primary', () => {
+      lesson = null;
+      state = null;
+      directory = 'lessons';
+      render(true);
+      const row = card.querySelector(`[data-lesson="${lessonId}"]`);
+      row.closest('details').open = true;
+      row.focus();
+    }), replay);
+    else if (next) actions(button(`下一课：${next.title}`, 'btn primary', () => openLesson(next)), replay,
       ...(lesson.id === 'first-conversation' && conversationDone() ? [button(practiceLabel('review'), 'btn', () => openPractice('review'))] : []),
       ...(lesson.id === 'notice-whole' && eligibleNoticeTasks().length ? [button(practiceLabel('noticeReview'), 'btn', () => openPractice('noticeReview'))] : []));
     else if (eligibleNoticeTasks().length) actions(button(practiceLabel('noticeReview'), 'btn primary', () => openPractice('noticeReview')),
@@ -1866,7 +1882,7 @@
 
   function lessonTrack(index, names) {
     const list = el('ol', null, 'lesson-track');
-    list.setAttribute('aria-label', '正课步骤（仅显示进度）');
+    list.setAttribute('aria-label', '本课步骤（仅显示进度）');
     names.forEach((name, step) => {
       const item = el('li');
       const marker = el('span', String(step + 1), 'step-marker');

@@ -1641,7 +1641,2101 @@ window.LESSONS = Object.freeze([{
     practice: '先看小票这一行的件数，再回价签和优惠找同一样东西的单价；只比数字，不自己算总价。',
     audio: 'Receipt: 2 notebooks, 6 yuan each. Offer: Two or more notebooks, 5 yuan each.',
   },
-}]);
+},
+// 每个单元的选做加练按课号追加。
+...[
+  {
+    "unit": 1,
+    "id": "unit-01-practice",
+    "number": "第一百课",
+    "title": "加练：打招呼、说名字、问名字、回一句",
+    "goal": "把打招呼、说名字、问名字、回应「很高兴认识你」连起来用。",
+    "example": "Hi, I’m Bo. Nice to meet you.",
+    "chinese": "你好，我是 Bo。很高兴认识你。",
+    "terms": [
+      [
+        "Hi",
+        "你好"
+      ],
+      [
+        "I’m Bo",
+        "我是 Bo"
+      ],
+      [
+        "Nice to meet you",
+        "很高兴认识你"
+      ],
+      [
+        "What’s your name?",
+        "你叫什么名字？"
+      ],
+      [
+        "too",
+        "也"
+      ]
+    ],
+    "rule": "见面先说 Hi，再说 I’m 加自己的名字；想知道对方叫什么，用 What’s your name?；对方说 Nice to meet you，就用同一句加 too 回过去。换人只换名字，其他部分不动。",
+    "guided": "Hi, I’m Jia. Nice to meet you.",
+    "walkthrough": "对方先说了自己的名字 Jia，再说很高兴认识你。这时不用再报名字，用同一句加 too 回过去。",
+    "guidedAnswers": [
+      [
+        "Hi, I’m Jia.",
+        "Jia 是对方的名字，这样答等于把对方的名字当成自己的。"
+      ],
+      [
+        "What’s your name?",
+        "对方已经报了名字，这句用不上了。"
+      ],
+      [
+        "Nice to meet you, too."
+      ]
+    ],
+    "independent": [
+      "Hi, I’m Tao. What’s your name?"
+    ],
+    "checkPrompt": "对方在问你的名字。你叫 Wen，该怎么答？",
+    "answers": [
+      [
+        "Nice to meet you, too.",
+        "对方在问你名字，还没说很高兴认识你。"
+      ],
+      [
+        "Hi, I’m Wen."
+      ],
+      [
+        "Hi, I’m Tao.",
+        "Tao 是对方的名字，不能当成自己的名字。"
+      ]
+    ],
+    "recap": "见到人先说 Hi 和自己的名字；对方问名字就报自己的名字，对方说很高兴认识你就加 too 回过去。"
+  },
+  {
+    "unit": 2,
+    "id": "unit-02-practice",
+    "number": "第一百零一课",
+    "title": "加练：一张新通知，时间地点要带的东西分开找",
+    "goal": "在一张没读过的通知里，分别找出开始时间、集合地点和自己要带的东西。",
+    "example": "The show starts at 7 p.m. on Friday. Meet in the school hall. Bring a chair.",
+    "chinese": "演出星期五晚上七点开始，在学校礼堂集合，自己带一把椅子。",
+    "terms": [
+      [
+        "the show",
+        "演出"
+      ],
+      [
+        "starts at",
+        "在几点开始"
+      ],
+      [
+        "school hall",
+        "学校礼堂"
+      ],
+      [
+        "Bring a chair",
+        "带一把椅子"
+      ],
+      [
+        "Doors open",
+        "开门"
+      ],
+      [
+        "computer lab",
+        "计算机教室；机房"
+      ],
+      [
+        "meeting",
+        "会议"
+      ]
+    ],
+    "rule": "一条通知常有三块信息：starts at 后面是开始的时间，on 后面是星期，Meet in 后面是集合地点，Bring 后面是自己要带的东西。看到 Doors open 要分清：那只是开门，不是开始。",
+    "guided": [
+      "Doors open at 8:30 a.m. on Saturday.",
+      "The show starts at 9 a.m. on Saturday."
+    ],
+    "walkthrough": "两行都有时间。要看演出开始，就找写着 starts 的那一行：9 a.m.。8:30 那行开头是 Doors open，说的只是开门。",
+    "guidedAnswers": [
+      [
+        "上午九点"
+      ],
+      [
+        "上午八点半",
+        "8:30 那行写的是 Doors open（开门），演出开始要看 starts at。"
+      ],
+      [
+        "晚上九点",
+        "9 a.m. 里的 a.m. 是上午，不是晚上。"
+      ]
+    ],
+    "independent": [
+      "Doors open at 1:30 p.m. on Monday.",
+      "The meeting starts at 2 p.m. on Monday.",
+      "Meet in the computer lab.",
+      "Bring a notebook. The school will lend you a pen."
+    ],
+    "checkPrompt": "这次会议几点开始、在哪儿开、要自己带什么？",
+    "answers": [
+      [
+        "下午两点开始，在机房，带笔记本"
+      ],
+      [
+        "下午一点半开始，在机房，带笔记本",
+        "1:30 那行写的是 Doors open（开门），开始要看 starts at。"
+      ],
+      [
+        "下午两点开始，在机房，带笔",
+        "笔前面是 lend you，是学校借给你的；Bring 后面才是自己带的。"
+      ]
+    ],
+    "recap": "先想自己要哪条信息，再找对应短语：starts at 找时间，Meet in 找地点，Bring 找自带的东西。",
+    "transferGlossary": [
+      [
+        "lend you",
+        "借给你"
+      ],
+      [
+        "computer lab",
+        "计算机教室；机房"
+      ]
+    ]
+  },
+  {
+    "unit": 3,
+    "id": "unit-03-practice",
+    "number": "第一百零二课",
+    "title": "加练：一句说事，一句说它是哪样",
+    "goal": "先从短句里找做事的人和做的事，再回前一句弄清 it 指哪一样东西。",
+    "example": "Mei buys a bag. It is small.",
+    "chinese": "Mei 买了一个包。它很小。",
+    "terms": [
+      [
+        "buys",
+        "买"
+      ],
+      [
+        "a bag",
+        "一个包"
+      ],
+      [
+        "small",
+        "小的"
+      ],
+      [
+        "it",
+        "它，指前面提到的那样东西"
+      ],
+      [
+        "notebook",
+        "笔记本"
+      ],
+      [
+        "clock",
+        "钟"
+      ],
+      [
+        "hall",
+        "礼堂"
+      ],
+      [
+        "photo",
+        "照片"
+      ],
+      [
+        "tell the time",
+        "显示时间（钟表）"
+      ],
+      [
+        "pages",
+        "页（page 的复数）"
+      ],
+      [
+        "ruler",
+        "尺子"
+      ]
+    ],
+    "rule": "第一句先找谁做了什么：Mei 是做事的人，buys 是动作，a bag 是买的东西。第二句用 it 代替前面那样东西。前面有两样东西时，把 it 后面的描述分别换回去试。",
+    "guided": [
+      "Bo borrows a notebook and a ruler.",
+      "It has ten pages."
+    ],
+    "walkthrough": "前一句里有笔记本和尺子。十页（ten pages）说的是笔记本。把 It 换成笔记本，再把后一句读一遍。",
+    "guidedAnswers": [
+      [
+        "尺子",
+        "尺子虽然离 It 更近，但有十页说的是笔记本。"
+      ],
+      [
+        "笔记本"
+      ],
+      [
+        "Bo",
+        "Bo 是人，第二句用的是 it，不指人。"
+      ]
+    ],
+    "independent": [
+      "The hall has a photo and a clock.",
+      "It tells the time."
+    ],
+    "checkPrompt": "第二句的 It 指哪一样？",
+    "answers": [
+      [
+        "照片",
+        "照片不会告诉人时间；tell the time 说的是钟。"
+      ],
+      [
+        "礼堂",
+        "It 指礼堂里的一样东西，不是礼堂本身。"
+      ],
+      [
+        "钟"
+      ]
+    ],
+    "recap": "先把「谁做什么」读出来，再把 it 后面的描述换回前面每一样东西，接得通的那个才是 it。",
+    "transferGlossary": [
+      [
+        "hall",
+        "礼堂"
+      ],
+      [
+        "tells the time",
+        "报出时间"
+      ]
+    ]
+  },
+  {
+    "unit": 4,
+    "id": "unit-04-practice",
+    "number": "第一百零三课",
+    "title": "加练：比两个时间，推一件事，别加原文没有的原因",
+    "goal": "把两条时间信息放在一起比，只推出原文撑得住的结论，不自己补原因。",
+    "example": "The bus left at 8:00 a.m. Mei got to the stop at 8:15 a.m.",
+    "chinese": "公交早上八点开走。Mei 八点十五到车站。",
+    "terms": [
+      [
+        "left at",
+        "在几点开走"
+      ],
+      [
+        "got to the stop",
+        "到车站"
+      ],
+      [
+        "stop",
+        "车站"
+      ],
+      [
+        "sits down",
+        "坐下"
+      ],
+      [
+        "film",
+        "电影"
+      ]
+    ],
+    "rule": "推断题只把原文两条信息连起来：8:15 晚于 8:00，车已经开走了。原文没有写她为什么晚到，就不要加「睡过头」这类原因。",
+    "guided": "The shop closes at 6:00 p.m. Bo arrives at 6:20 p.m.",
+    "walkthrough": "先找两个时间：关门 6:00 p.m.，到店 6:20 p.m.。6:20 晚于 6:00，所以 Bo 到的时候店已经关了。",
+    "guidedAnswers": [
+      [
+        "Bo 在店里买了东西",
+        "6:20 晚于关门的 6:00，店已经关了。"
+      ],
+      [
+        "Bo 因为下雨来晚了",
+        "原文只给了两个时间，没有提下雨，不能自己补原因。"
+      ],
+      [
+        "Bo 到的时候，店已经关门了"
+      ]
+    ],
+    "independent": "The film starts at 2:00 p.m. Lin sits down at 1:50 p.m.",
+    "checkPrompt": "只根据这两句，能推断出哪一项？",
+    "answers": [
+      [
+        "Lin 在电影开始前坐好了"
+      ],
+      [
+        "Lin 迟到了",
+        "1:50 比 2:00 早，是开始前，不是迟到。"
+      ],
+      [
+        "电影改到了一点五十",
+        "原文只给了开始时间和她坐下的时间，没有说改期。"
+      ]
+    ],
+    "recap": "推断只做一步：把两条信息比一比。原文没写的理由和改动，都不能自己补进去。",
+    "transferGlossary": [
+      [
+        "film",
+        "电影"
+      ],
+      [
+        "sits down",
+        "坐下"
+      ]
+    ]
+  },
+  {
+    "unit": 5,
+    "id": "unit-05-practice",
+    "number": "第一百零四课",
+    "title": "加练：现在正在做，还是那时正在做",
+    "goal": "认出 be + -ing 的两种时间：now 说现在正在做，过去某一刻用 was 或 were。",
+    "example": "Mei is cleaning the desk now. Yesterday at eight, she was cleaning the desk.",
+    "chinese": "Mei 现在正在擦桌子。昨天八点的时候，她正在擦桌子。",
+    "terms": [
+      [
+        "is cleaning",
+        "现在正在擦"
+      ],
+      [
+        "was cleaning",
+        "那时正在擦"
+      ],
+      [
+        "now",
+        "现在"
+      ],
+      [
+        "Yesterday at eight",
+        "昨天八点"
+      ]
+    ],
+    "rule": "现在正在做，用 am、is 或 are 加 -ing；说过去某一刻正在做，把 be 换成 was 或 were，后面的 -ing 不变。Mei 是一个人，现在用 is，过去用 was。",
+    "guided": "Bo is reading a map now. Yesterday at nine, he ____ a map.",
+    "walkthrough": "前一句有 now，是现在正在读：is reading。后一句用 Yesterday at nine 把时间放到过去那一刻，主语还是 he，所以 be 换成 was，-ing 不动。",
+    "guidedAnswers": [
+      [
+        "was reading"
+      ],
+      [
+        "is reading",
+        "Yesterday at nine 说的是过去那一刻，be 要换成 was。"
+      ],
+      [
+        "were reading",
+        "主语是 he，过去这里用 was，不用 were。"
+      ]
+    ],
+    "independent": "Lin is drawing a poster now. Yesterday at ten, she ____ a poster.",
+    "checkPrompt": "后一句说的是昨天十点那一刻，空格该填什么？",
+    "answers": [
+      [
+        "were drawing",
+        "主语是 she，过去这里用 was，不用 were。"
+      ],
+      [
+        "is drawing",
+        "Yesterday at ten 指过去那一刻，不用 is。"
+      ],
+      [
+        "was drawing"
+      ]
+    ],
+    "recap": "now 配 am、is 或 are 加 -ing；过去某一刻配 was 或 were 加 -ing，-ing 那部分不变。"
+  },
+  {
+    "unit": 6,
+    "id": "unit-06-practice",
+    "number": "第一百零五课",
+    "title": "加练：写邮件前，先找出收件人和要写的事",
+    "goal": "从题目里找出写给谁、必须交代哪几件事，不把没问的写进正文。",
+    "example": "Write to Ms. Chen. Tell her which club you want to join and why.",
+    "chinese": "写信给陈老师，告诉她你想加入哪个社团、为什么。",
+    "terms": [
+      [
+        "write to",
+        "写信给"
+      ],
+      [
+        "which club",
+        "哪个社团"
+      ],
+      [
+        "join",
+        "加入"
+      ],
+      [
+        "why",
+        "为什么"
+      ],
+      [
+        "favorite sport",
+        "最喜欢的运动"
+      ],
+      [
+        "how often",
+        "多久一次"
+      ]
+    ],
+    "rule": "先看 write to 后面是谁，那是收件人。再看 Tell her 或 Tell him 后面跟了哪几件事：which club 问社团，why 问原因。题目没问的，不用写进正文。",
+    "guided": "Write to Mr. Li. Tell him when you can come and what you can bring.",
+    "walkthrough": "收件人是 Mr. Li。这封邮件要交代两件事：when you can come（什么时候能来）和 what you can bring（能带什么）。题目里没有 why。",
+    "guidedAnswers": [
+      [
+        "只写为什么想参加",
+        "题目问的是 when 和 what，没有 why。"
+      ],
+      [
+        "什么时候能来、能带什么"
+      ],
+      [
+        "什么时候能来、在哪儿集合",
+        "when 对了；题目没有问地点，另一项要的是能带什么（what you can bring）。"
+      ]
+    ],
+    "independent": "Write to Anna. Tell her your favorite sport and how often you play it.",
+    "checkPrompt": "新题目要你写哪两件事？选把要点列全的那一项。",
+    "answers": [
+      [
+        "在哪儿玩、和谁一起玩",
+        "题目问的是 how often（多久一次），不是在哪儿或和谁。"
+      ],
+      [
+        "最喜欢的运动、多久玩一次"
+      ],
+      [
+        "为什么喜欢 Anna",
+        "Anna 是收件人，题目没让你写对她的看法。"
+      ]
+    ],
+    "recap": "先核对收件人，再逐项检查正文有没有回答题目的要求。",
+    "transferGlossary": [
+      [
+        "favorite sport",
+        "最喜欢的运动"
+      ],
+      [
+        "how often",
+        "多久一次"
+      ]
+    ]
+  },
+  {
+    "unit": 7,
+    "id": "unit-07-practice",
+    "number": "第一百零六课",
+    "title": "加练：换了说法，时间跟事实有没有变",
+    "goal": "对照时间和否定范围，判断改写后的句子跟原材料是不是同一个意思。",
+    "example": "The club meets on Thursday. New members do not need to bring a photo.",
+    "chinese": "社团星期四活动。新成员不必带照片。",
+    "terms": [
+      [
+        "meets on",
+        "在星期几活动"
+      ],
+      [
+        "new members",
+        "新成员"
+      ],
+      [
+        "do not need to bring",
+        "不必带"
+      ],
+      [
+        "photo",
+        "照片"
+      ],
+      [
+        "closes",
+        "关门"
+      ],
+      [
+        "return",
+        "归还"
+      ]
+    ],
+    "rule": "换说法要守住三样：谁、什么时候、否定到哪儿。do not need to 是「不必」，不是「不准」；meets on Thursday 说活动在星期四，不能改成别的日子。",
+    "guided": "The meeting starts at 3 p.m. You do not need to bring a pen.",
+    "walkthrough": "do not need to bring a pen 说的是带笔不是必须的，带不带都行。它不是禁止带笔；三点那句只给开始时间，也没说三点前必须到。",
+    "guidedAnswers": [
+      [
+        "不准带笔",
+        "do not need to 是「不必」，不是禁止。"
+      ],
+      [
+        "必须三点前到",
+        "starts at 3 p.m. 是三点开始，不是三点前必须到。"
+      ],
+      [
+        "不必带笔"
+      ]
+    ],
+    "independent": "The library closes at 5 p.m. You do not need to return the book today.",
+    "checkPrompt": "哪一项跟材料说的一致？",
+    "answers": [
+      [
+        "今天不必还书"
+      ],
+      [
+        "今天不准还书",
+        "do not need to 是「不必」，不是禁止还书。"
+      ],
+      [
+        "图书馆五点开门",
+        "closes at 5 p.m. 是五点关门，不是开门。"
+      ]
+    ],
+    "recap": "改写先比三样：人有没有换、时间有没有换、not 管到哪儿。",
+    "transferGlossary": [
+      [
+        "closes",
+        "关门"
+      ],
+      [
+        "return",
+        "归还"
+      ]
+    ]
+  },
+  {
+    "unit": 8,
+    "id": "unit-08-practice",
+    "number": "第一百零七课",
+    "title": "加练：一条通知里的最迟时间、条件和改过的安排",
+    "goal": "在一张办事通知里分清最迟时间、只对谁生效的条件，以及已经改掉和还在用的安排。",
+    "example": "Send your name by 4 p.m. on Wednesday. If you are new, write NEW after your name. We now meet in Room 102, not Room 201.",
+    "chinese": "最迟星期三下午四点把名字发来。如果你是新成员，在名字后面写 NEW。现在改到 102 室，不是 201 室。",
+    "terms": [
+      [
+        "by 4 p.m.",
+        "最迟下午四点"
+      ],
+      [
+        "If you are new",
+        "如果你是新成员"
+      ],
+      [
+        "now",
+        "现在，提示改动"
+      ],
+      [
+        "not Room 201",
+        "不是 201 室"
+      ],
+      [
+        "hand in",
+        "上交"
+      ],
+      [
+        "lost",
+        "丢了"
+      ],
+      [
+        "front desk",
+        "前台"
+      ],
+      [
+        "office window",
+        "办公室窗口"
+      ]
+    ],
+    "rule": "by 给最迟时间，早一点也可以；if 限定这条只对谁生效；now 引出新安排，not 后面是被换掉的旧安排。三样各查一遍，再合起来。",
+    "guided": "Send your form by 5 p.m. on Friday. If you are in Class 2, use the blue form.",
+    "walkthrough": "by 5 p.m. on Friday 是最迟时间，星期五下午五点或之前交都可以。if 后面只说 Class 2，说明这条只管 2 班：2 班用蓝表，别的班不算。",
+    "guidedAnswers": [
+      [
+        "最迟星期五下午五点；2 班用蓝表"
+      ],
+      [
+        "最迟星期五下午五点；所有人都用蓝表",
+        "If you are in Class 2 只限定 2 班。"
+      ],
+      [
+        "必须正好五点交；2 班用蓝表",
+        "by 5 p.m. 是最迟时间，早交也可以。"
+      ]
+    ],
+    "independent": [
+      "Hand in your form by 9 a.m. on Monday.",
+      "If you lost your old card, write LOST on the form.",
+      "We now use the office window, not the front desk."
+    ],
+    "checkPrompt": "如果你丢了旧卡，按这条通知：什么时候交、要在表上写什么、去哪儿交？",
+    "answers": [
+      [
+        "最迟星期一上午九点；不用写；去办公室窗口",
+        "丢了旧卡的人要在表上写 LOST，这条不能省。"
+      ],
+      [
+        "必须正好星期一上午九点；写 LOST；去办公室窗口",
+        "by 9 a.m. 是最迟时间，早一点交也可以，不必正好九点。"
+      ],
+      [
+        "最迟星期一上午九点；写 LOST；去办公室窗口"
+      ]
+    ],
+    "recap": "截止看 by，条件看 if，改动看 now 和 not。三样都查到，才算把通知读完。",
+    "transferGlossary": [
+      [
+        "hand in",
+        "上交"
+      ],
+      [
+        "front desk",
+        "前台"
+      ],
+      [
+        "office window",
+        "办公室窗口"
+      ]
+    ]
+  },
+  {
+    "unit": 9,
+    "id": "unit-09-practice",
+    "number": "第一百零八课",
+    "title": "加练：草稿缺哪一块，就补哪一句",
+    "goal": "根据题目要的要点，判断草稿还缺哪一块，再补上带细节或带理由的那一句。",
+    "example": "I like the cooking club because we cook together on Fridays.",
+    "chinese": "我喜欢烹饪社，因为我们星期五一起做饭。",
+    "terms": [
+      [
+        "cooking club",
+        "烹饪社"
+      ],
+      [
+        "because",
+        "因为"
+      ],
+      [
+        "cook together",
+        "一起做饭"
+      ],
+      [
+        "on Fridays",
+        "每逢星期五"
+      ],
+      [
+        "reading club",
+        "读书社"
+      ],
+      [
+        "very much",
+        "很，非常"
+      ]
+    ],
+    "rule": "题目要细节，就补时间、地点或一起做事的人；题目要理由，就用 because 接一件具体的事。只重复「我很喜欢」不算补内容。",
+    "guided": "I like the art club.",
+    "walkthrough": "这一步的题目要写「喜欢什么活动、什么时候参加」。草稿只说了喜欢哪个社团，还缺什么时候参加这一块，所以补的句子要带时间。",
+    "guidedAnswers": [
+      [
+        "I really like the art club.",
+        "这句还是只说喜欢，没有补时间。"
+      ],
+      [
+        "We meet in the art room on Tuesdays."
+      ],
+      [
+        "The art club is very good.",
+        "good 没有说明什么时候参加。"
+      ]
+    ],
+    "independent": "I like the reading club.",
+    "checkPrompt": "题目要的是「喜欢什么活动、为什么喜欢」。草稿缺的是哪一块，该补哪一句？",
+    "answers": [
+      [
+        "I like it because I can read with my friends."
+      ],
+      [
+        "I like the reading club very much.",
+        "这句只是把喜欢又说了一遍，没有给理由。"
+      ],
+      [
+        "The reading club is in the library.",
+        "地点回答不了为什么喜欢，题目要的是原因。"
+      ]
+    ],
+    "recap": "先看题目列了几项，再看草稿写了哪几项，缺的那项才去补。补的句子要带新信息。",
+    "transferGlossary": [
+      [
+        "reading club",
+        "读书社"
+      ]
+    ]
+  },
+  {
+    "unit": 10,
+    "id": "unit-10-practice",
+    "number": "第一百零九课",
+    "title": "加练：空里的词，靠搭配和前后句来定",
+    "goal": "先用熟悉的搭配缩小范围，再看前后两句写了什么，最后把词放回去读一遍。",
+    "example": "It was hot, so we took a short break under the tree.",
+    "chinese": "天气很热，所以我们在树下休息了一小会儿。",
+    "terms": [
+      [
+        "hot",
+        "热的"
+      ],
+      [
+        "take a break",
+        "休息一下"
+      ],
+      [
+        "under the tree",
+        "在树下"
+      ],
+      [
+        "so",
+        "所以"
+      ],
+      [
+        "turn on",
+        "打开（灯）"
+      ],
+      [
+        "light",
+        "灯"
+      ],
+      [
+        "photo",
+        "照片"
+      ],
+      [
+        "take a photo of",
+        "给……拍照"
+      ],
+      [
+        "bus",
+        "公交车"
+      ]
+    ],
+    "rule": "先把空格和旁边的词连起来读：take a photo of 是给某处拍照，take a bus 是坐车，take a break 是休息；turn on 后面常接 light、TV 这类东西。搭配通顺以后，再看前后句说的是什么情况。",
+    "guided": "Mei took a ____ of the new hall.",
+    "walkthrough": "空格前是 took a，后面是 of the new hall。take a photo of 是「给……拍照」，of 后面正是拍的对象。",
+    "guidedAnswers": [
+      [
+        "bus",
+        "take a bus 是坐车，后面不接 of the new hall。"
+      ],
+      [
+        "break",
+        "take a break 是休息，后面也不接 of the new hall。"
+      ],
+      [
+        "photo"
+      ]
+    ],
+    "independent": "The room was dark. Mei turned on the ____.",
+    "checkPrompt": "空格该填哪个词？先看 dark 说明了什么。",
+    "answers": [
+      [
+        "door",
+        "turn on 可以说打开灯或电器。开门用 open the door。"
+      ],
+      [
+        "light"
+      ],
+      [
+        "desk",
+        "桌子跟房间亮不亮没有关系。"
+      ]
+    ],
+    "recap": "先靠搭配缩小范围，再回前后句看意思，最后把词放回去整句读一遍。",
+    "transferGlossary": [
+      [
+        "dark",
+        "暗的"
+      ],
+      [
+        "turned on",
+        "打开（设备）"
+      ]
+    ]
+  },
+  {
+    "unit": 11,
+    "id": "unit-11-practice",
+    "number": "第一百一十课",
+    "title": "加练：这次借不到，下一回要约到哪一刻",
+    "goal": "在校园服务对话里分清今天借不借，再一路读到最后被接受的那个时间。",
+    "example": "Can I borrow your ruler? — Sorry, I need it now. How about after lunch? — After lunch is fine.",
+    "chinese": "能借我一把尺子吗？——抱歉，我现在要用。午饭后怎么样？——午饭后可以。",
+    "terms": [
+      [
+        "borrow",
+        "借来用"
+      ],
+      [
+        "Sorry, I need it",
+        "抱歉，我要用"
+      ],
+      [
+        "How about…?",
+        "……怎么样？"
+      ],
+      [
+        "… is fine",
+        "……可以"
+      ],
+      [
+        "bike",
+        "自行车"
+      ]
+    ],
+    "rule": "Can I borrow…? 是借东西。Sorry 后说自己还要用，就是现在不借；但对话没停在拒绝上，How about…? 又提了一个时间，要等到有人回答 … is fine，那个时间才算约成。中途被回掉的提议不能算，日子和钟点也要一个个对。",
+    "guided": "Can I borrow your dictionary? — Sorry, I need it this morning. How about this afternoon? — This afternoon is fine.",
+    "walkthrough": "先看 Sorry, I need it this morning：现在不借。后面又提了一个时间，最后有人用 is fine 接了，那个时间才算约成。",
+    "guidedAnswers": [
+      [
+        "现在不借，今天下午可以"
+      ],
+      [
+        "现在就借给我",
+        "Sorry, I need it this morning 是拒绝，现在不借。"
+      ],
+      [
+        "一直都不借",
+        "后面 This afternoon is fine 已经接受了今天下午。"
+      ]
+    ],
+    "independent": "Can I borrow your bike? — Sorry, I need it today. How about Friday at 4 p.m.? — Friday at 4 is fine.",
+    "checkPrompt": "假设今天是星期三。今天能借到自行车吗？最后约在哪天、几点？",
+    "answers": [
+      [
+        "现在就借到，约在星期五下午四点",
+        "Sorry, I need it today 是拒绝，今天借不到。"
+      ],
+      [
+        "今天借不到，约在星期五上午四点",
+        "日子和钟点都靠上了，但 4 p.m. 是下午四点，不是上午。"
+      ],
+      [
+        "今天借不到，约在星期五下午四点"
+      ],
+      [
+        "今天借不到，约在明天下午四点",
+        "明天这个时间对方没提过，最后答应的是 Friday。"
+      ]
+    ],
+    "recap": "先听今天借不借，再一路读到有人接受的那个时间；被回掉的提议、串了的钟点和没提过的日子都不能算。"
+  },
+  {
+    "unit": 12,
+    "id": "unit-12-practice",
+    "number": "第一百一十一课",
+    "title": "加练：三步的做法，问哪一步就找哪一步",
+    "goal": "用 first、then、finally 把步骤排好，按问题找对那一步，不把顺序弄反。",
+    "example": "First, fill in the form. Then give it to the teacher. Finally, wait for your card.",
+    "chinese": "先填表，再把表交给老师，最后等你的卡。",
+    "terms": [
+      [
+        "first",
+        "首先"
+      ],
+      [
+        "then",
+        "接着"
+      ],
+      [
+        "finally",
+        "最后"
+      ],
+      [
+        "fill in the form",
+        "填表"
+      ],
+      [
+        "wait for",
+        "等"
+      ],
+      [
+        "check",
+        "查看"
+      ],
+      [
+        "knock",
+        "敲门"
+      ],
+      [
+        "answer",
+        "回答"
+      ]
+    ],
+    "rule": "first 后面是第一步，then 后面是接着做的一步，finally 后面是最后一步。问哪一步，就到那个词后面找，别按句子长短猜。",
+    "guided": "First, wash your hands. Then cut the paper. Finally, glue it on the card.",
+    "walkthrough": "拆解要看的是剪之前那一步：cut 在 then 后面，它前面是 first 后面的 wash your hands（洗手）。",
+    "guidedAnswers": [
+      [
+        "先把纸粘在卡片上",
+        "glue it on the card 在 finally 后面，是最后一步。"
+      ],
+      [
+        "先洗手"
+      ],
+      [
+        "先剪纸",
+        "cut 就是剪；题目问的是剪之前那一步。"
+      ]
+    ],
+    "independent": "First, check the number on the door. Then knock. Finally, wait for an answer.",
+    "checkPrompt": "敲门之后，下一步做什么？",
+    "answers": [
+      [
+        "看清门上的号码",
+        "check 在 first 后面，是敲门之前的那一步。"
+      ],
+      [
+        "推门进去",
+        "材料里没有推门进去这一步。"
+      ],
+      [
+        "等里面的人回答"
+      ]
+    ],
+    "recap": "先圈 first、then、finally，再按问题找对应那一步；问「之前」就往前挪一步，问「之后」就往后挪一步。",
+    "transferGlossary": [
+      [
+        "knock",
+        "敲门"
+      ],
+      [
+        "wait for an answer",
+        "等回答"
+      ]
+    ]
+  },
+  {
+    "unit": 13,
+    "id": "unit-13-practice",
+    "number": "第一百一十二课",
+    "title": "加练：说习惯，主语一换动词跟着换",
+    "goal": "在一般现在时里按主语选动词形式，否定句用 don’t 或 doesn’t，后面动词回到原形。",
+    "example": "I walk to school every day. Mei walks to school every day.",
+    "chinese": "我每天走路上学。Mei 每天走路上学。",
+    "terms": [
+      [
+        "walk to school",
+        "走路上学"
+      ],
+      [
+        "every day",
+        "每天"
+      ],
+      [
+        "walks",
+        "走（这里的主语是 Mei，相当于 she）"
+      ],
+      [
+        "don’t / doesn’t",
+        "不"
+      ],
+      [
+        "watch TV",
+        "看电视"
+      ],
+      [
+        "after school",
+        "放学后"
+      ]
+    ],
+    "rule": "I、you、we、they 后面用 walk；he、she 或一个人的名字后面用 walks。否定句里，I 用 don’t，Mei 用 doesn’t，后面的动词都回到原形。",
+    "guided": "Bo ____ his bike to school every day. (ride)",
+    "walkthrough": "主语是 Bo，相当于 he；every day 说习惯。肯定句里动词要加 s：rides。",
+    "guidedAnswers": [
+      [
+        "ride",
+        "主语是 Bo，相当于 he，这里用 rides。"
+      ],
+      [
+        "riding",
+        "every day 说平时习惯，不用 -ing。"
+      ],
+      [
+        "rides"
+      ]
+    ],
+    "independent": "Mei ____ watch TV after school.",
+    "checkPrompt": "这句要说 Mei 放学后不看电视。哪一项能补进空格？",
+    "answers": [
+      [
+        "don’t",
+        "don’t 跟 I、you、we、they；这里的主语是 Mei。"
+      ],
+      [
+        "doesn’t"
+      ],
+      [
+        "doesn’t watches",
+        "doesn’t 后面要用原形 watch，不再加 es。"
+      ]
+    ],
+    "recap": "先圈主语，再看是肯定还是否定。一般现在时肯定句中，he、she 或 Bo 这类主语在这里用 rides、walks。doesn’t 后接动词原形。"
+  },
+  {
+    "unit": 14,
+    "id": "unit-14-practice",
+    "number": "第一百一十三课",
+    "title": "加练：过去的事，问句和否定都用原形",
+    "goal": "在一般过去时里分清 Did 问句和 didn’t 否定句，知道助动词后面动词要回到原形。",
+    "example": "Did Mei clean the room yesterday? — Yes, she did.",
+    "chinese": "Mei 昨天打扫房间了吗？——打扫了。",
+    "terms": [
+      [
+        "Did",
+        "过去问句的开头"
+      ],
+      [
+        "clean",
+        "打扫（原形）"
+      ],
+      [
+        "yesterday",
+        "昨天"
+      ],
+      [
+        "Yes, she did",
+        "是的，她做了"
+      ],
+      [
+        "homework",
+        "作业"
+      ],
+      [
+        "tired",
+        "累的"
+      ]
+    ],
+    "rule": "问过去做没做，把 Did 放句首，后面用原形 clean。否定句用 didn’t，后面也用原形。过去的意思已经由 Did 或 didn’t 带出来了，动词不再变。",
+    "guided": "Did Bo ____ to the library yesterday? (go)",
+    "walkthrough": "句首是 Did，已经说明问的是过去。空格里的动词用原形 go，不用 went。",
+    "guidedAnswers": [
+      [
+        "go"
+      ],
+      [
+        "went",
+        "句首有 Did，动词要回到原形。"
+      ],
+      [
+        "goes",
+        "Did 问的是过去，不用第三人称单数的形式。"
+      ]
+    ],
+    "independent": "Mei didn’t ____ her homework yesterday. She was tired.",
+    "checkPrompt": "哪一项能补进空格？",
+    "answers": [
+      [
+        "did",
+        "didn’t 后面要用原形 do，不能再用 did。"
+      ],
+      [
+        "does",
+        "过去否定句不用 does。"
+      ],
+      [
+        "do"
+      ]
+    ],
+    "recap": "Did 和 didn’t 已经把过去说清楚了，后面的动词一律用原形。",
+    "transferGlossary": [
+      [
+        "homework",
+        "作业"
+      ]
+    ]
+  },
+  {
+    "unit": 15,
+    "id": "unit-15-practice",
+    "number": "第一百一十四课",
+    "title": "加练：改期改地点，哪条还作数",
+    "goal": "读懂一条改动通知，先用 won’t 划掉取消的安排，再把仍然有效的日期、时间和地点拼起来。",
+    "example": "The book sale will start at 2 p.m. on Monday. We won’t use the front hall. We will use the reading room.",
+    "chinese": "图书义卖星期一下午两点开始。前厅不用了，改在阅览室。",
+    "terms": [
+      [
+        "book sale",
+        "图书义卖"
+      ],
+      [
+        "front hall",
+        "前厅"
+      ],
+      [
+        "reading room",
+        "阅览室"
+      ],
+      [
+        "will start",
+        "将开始"
+      ],
+      [
+        "won’t use",
+        "不用"
+      ]
+    ],
+    "rule": "先用 won’t 找出被取消的那一项：这里取消的是地点 front hall。时间那句没有 won’t，星期一下午两点仍然有效。最后一句 will use 给出新地点 reading room。三句合起来，才是现在的安排。",
+    "guided": "The art show will start at 3 p.m. on Friday. We won’t use the small hall. We will use the art room.",
+    "walkthrough": "第一句给时间：星期五下午三点，没有否定。中间那句 won’t use 只划掉小厅。最后一句 will use the art room 补上新地点。所以按星期五下午三点去美术教室。",
+    "guidedAnswers": [
+      [
+        "星期五下午三点，去美术教室"
+      ],
+      [
+        "星期五下午三点，去小厅",
+        "won’t use the small hall 已经把这一项划掉了；现在用的是 art room。"
+      ],
+      [
+        "星期五下午两点，去美术教室",
+        "第一句写的是 3 p.m.，三点；两点没有依据。"
+      ]
+    ],
+    "independent": "We won’t meet on Wednesday. We will meet on Thursday. Meet in the music room at 2 p.m.",
+    "checkPrompt": "按最新安排，这次集合在哪一天、几点、去哪里？",
+    "answers": [
+      [
+        "星期三下午两点，去音乐教室",
+        "这次取消的是星期三；第二句 will meet 说的是星期四。"
+      ],
+      [
+        "星期四下午两点，去音乐教室"
+      ],
+      [
+        "星期四下午三点，去音乐教室",
+        "日期和地点对上了；2 p.m. 是两点，不是三点。"
+      ]
+    ],
+    "recap": "日期、时间、地点常常分在三句里。先用 won’t 划掉取消的那一项，再把剩下的信息拼起来。",
+    "transferGlossary": [
+      [
+        "music room",
+        "音乐教室"
+      ],
+      [
+        "won’t meet",
+        "不见面"
+      ]
+    ]
+  },
+  {
+    "unit": 16,
+    "id": "unit-16-practice",
+    "number": "第一百一十五课",
+    "title": "加练：谁更快，界线算不算进去",
+    "goal": "看清 than 两边谁更快、哪条更短，再判断 less than 和 more than 后面的数字包不包括它本身。",
+    "example": "The new dining hall is bigger than the old one. It has more than 60 seats.",
+    "chinese": "新食堂比旧的大，里面的座位超过 60 个。",
+    "terms": [
+      [
+        "dining hall",
+        "食堂"
+      ],
+      [
+        "bigger than",
+        "比……大"
+      ],
+      [
+        "more than",
+        "超过"
+      ],
+      [
+        "seat",
+        "座位"
+      ]
+    ],
+    "rule": "先看 bigger than 两边：句首的 new dining hall 更大，than 后的 old one 是拿来比的。more than 60 是「超过 60」，比 60 多都可以，正好 60 不行。",
+    "guided": "Room 305 is bigger than Room 302. Room 305 has more than 40 seats.",
+    "walkthrough": "问哪个房间更大，就看谁 is bigger：Room 305。than 后的 Room 302 是比较对象。more than 40 不含 40，所以座位数要大于 40。",
+    "guidedAnswers": [
+      [
+        "305 室更大，座位超过 40 个"
+      ],
+      [
+        "305 室更大，正好 40 个座位",
+        "more than 40 是超过 40，不包含 40。"
+      ],
+      [
+        "302 室更大",
+        "302 室在 than 后面，是比较对象；句子说更大的是 305 室。"
+      ]
+    ],
+    "independent": "The city bus is faster than the school bus. The city bus takes less than 25 minutes.",
+    "checkPrompt": "哪个说法把比较的两边和数字范围都读对了？",
+    "answers": [
+      [
+        "市公交更快，路上正好花 25 分钟",
+        "less than 25 是不到 25 分钟，不包含 25。"
+      ],
+      [
+        "市公交更快，路上不到 25 分钟"
+      ],
+      [
+        "校车更快，路上不到 25 分钟",
+        "校车在 than 后面；句子说更快的是市公交。"
+      ]
+    ],
+    "recap": "比较级先看谁在 is 前面，than 后只是对照；数字前的 less 和 more 都不包含那个数字。",
+    "transferGlossary": [
+      [
+        "faster than",
+        "比……快"
+      ],
+      [
+        "school bus",
+        "校车"
+      ]
+    ]
+  },
+  {
+    "unit": 17,
+    "id": "unit-17-practice",
+    "number": "第一百一十六课",
+    "title": "加练：为什么去、想做什么、最后怎样",
+    "goal": "分清 because 给的原因、to 给的目的，以及 but 和 so 后面实际发生的结果。",
+    "example": "Lin left early because the bus was slow. She went to the shop to buy a card. But the shop was closed, so she came back.",
+    "chinese": "Lin 早走是因为公交慢。她去商店是为了买一张卡片。但商店关门了，她只好回来。",
+    "terms": [
+      [
+        "left early",
+        "早走了"
+      ],
+      [
+        "slow",
+        "慢的"
+      ],
+      [
+        "buy a card",
+        "买一张卡片"
+      ],
+      [
+        "closed",
+        "关门的"
+      ],
+      [
+        "came back",
+        "回来了"
+      ]
+    ],
+    "rule": "because 后面是原因：公交慢。to buy a card 是去商店的目的，不等于买到了。But 一转，so 给出结果：商店关门，她回来了。问原因找 because，问目的找 to，问结果读到句末。",
+    "guided": "Kai got up early because he wanted a seat near the front. He went to the hall to save a seat for Mei. But the hall was full, so he stood at the back.",
+    "walkthrough": "题目问去礼堂想做什么。to save a seat for Mei 就是目的：给 Mei 占座。站在后面是后来的结果，不是他去的理由。",
+    "guidedAnswers": [
+      [
+        "给 Mei 占座"
+      ],
+      [
+        "站在礼堂后面",
+        "站在后面是礼堂满了以后的结果，不是他去的目的。"
+      ],
+      [
+        "因为他想靠前坐",
+        "靠前坐是他早起的理由；问的是去礼堂想做什么。"
+      ]
+    ],
+    "independent": "Mei took the early bus because the later bus was full. She wanted to reach the shop before nine. She got there at 8:50. The shop was still closed, so she waited outside. It opened at nine.",
+    "checkPrompt": "哪一项是 Mei 坐早班车的原因？",
+    "answers": [
+      [
+        "为了九点前赶到商店",
+        "九点前到店是她的目的，最早那句的 because 后面才给出选早班车的原因。"
+      ],
+      [
+        "商店九点才开门",
+        "九点开门解释了她为什么在门外等。选早班车的原因在第一句。"
+      ],
+      [
+        "晚一班车满了"
+      ]
+    ],
+    "recap": "问原因找 because，问目的找 to，问结果读到 but 和 so 后面。三样各放一格，别互相顶替。",
+    "transferGlossary": [
+      [
+        "the later bus",
+        "较晚的一班车"
+      ],
+      [
+        "full",
+        "满的"
+      ],
+      [
+        "outside",
+        "外面"
+      ]
+    ]
+  },
+  {
+    "unit": 18,
+    "id": "unit-18-practice",
+    "number": "第一百一十七课",
+    "title": "加练：先看自己属于哪一条，再读 must",
+    "goal": "遇到分条件的规则，先挑跟自己相符的 if，再分清 must、don’t have to 和 mustn’t。",
+    "example": "If you are in Group A, you must bring a map. If you are in Group B, you don’t have to bring a map. For everyone: You mustn’t take photos in the hall.",
+    "chinese": "A 组必须带地图。B 组不必带地图。所有人都不准在礼堂拍照。",
+    "terms": [
+      [
+        "Group A",
+        "A 组"
+      ],
+      [
+        "bring a map",
+        "带地图"
+      ],
+      [
+        "don’t have to",
+        "不必"
+      ],
+      [
+        "take photos",
+        "拍照"
+      ],
+      [
+        "hall",
+        "礼堂"
+      ]
+    ],
+    "rule": "先找跟自己情况相符的 if：B 组的人看第二条。must bring 是必须带；don’t have to bring 是不必带，不带也行；mustn’t take photos 是不准拍照。For everyone 那条对谁都算。",
+    "guided": "If you are in Class 2, you must bring a cup. If you are in Class 3, you don’t have to bring a cup. For everyone: You mustn’t use the sink in the corner.",
+    "walkthrough": "假设你在 3 班。第一条 must 说的是 2 班，不适用。第二条 don’t have to 说你不用非带杯子不可。最后一条 mustn’t 对所有人有效：角落的水槽不能用。",
+    "guidedAnswers": [
+      [
+        "不必带杯子，也不能用角落的水槽"
+      ],
+      [
+        "必须带杯子，也不能用角落的水槽",
+        "必须带杯子的是 2 班；你在 3 班，适用第二条。"
+      ],
+      [
+        "不必带杯子，可以用角落的水槽",
+        "mustn’t use 是禁止使用，对所有人有效。"
+      ]
+    ],
+    "independent": "If you have a bike card, you must park in Area A. If you don’t have a bike card, you must park in Area B. For everyone: You mustn’t park near the gate.",
+    "checkPrompt": "你没有自行车卡。这份停车通知要求你怎么做？",
+    "answers": [
+      [
+        "停在 A 区，不能停在大门附近",
+        "有自行车卡才停 A 区；你没有卡，适用 don’t have a bike card 那条。"
+      ],
+      [
+        "停在 B 区，不能停在大门附近"
+      ],
+      [
+        "停在 B 区，也可以停在大门附近",
+        "mustn’t park near the gate 是对所有人的禁止，停在 B 区也不能停到大门附近。"
+      ]
+    ],
+    "recap": "条件决定哪条规矩跟你有关；must 是必须，don’t have to 是不必，mustn’t 是禁止。",
+    "transferGlossary": [
+      [
+        "bike card",
+        "自行车卡"
+      ],
+      [
+        "near the gate",
+        "在大门附近"
+      ]
+    ]
+  },
+  {
+    "unit": 19,
+    "id": "unit-19-practice",
+    "number": "第一百一十八课",
+    "title": "加练：东西被搬走了，没写谁做的也能读",
+    "goal": "从被动句里读出被处理的东西、动作和时间地点，不自己补一个做事的人。",
+    "example": "The old desks were moved out of Room 202 on Monday. New desks were put in on Tuesday.",
+    "chinese": "旧课桌星期一从 202 室搬走了，星期二搬进了新课桌。",
+    "terms": [
+      [
+        "old desks",
+        "旧课桌"
+      ],
+      [
+        "were moved out",
+        "被搬走"
+      ],
+      [
+        "were put in",
+        "被搬进"
+      ],
+      [
+        "Room 202",
+        "202 室"
+      ]
+    ],
+    "rule": "句首是被处理的东西，were 加过去分词表示「被……」。这里没说谁搬的，就不要自己加「老师」或「同学」。moved out 是搬出去，put in 是搬进来，两个方向别弄反。",
+    "guided": "The broken chairs were taken away this morning. New chairs will be put in tomorrow.",
+    "walkthrough": "今天早上被搬走的是 broken chairs，句子没交代谁搬。明天 will be put in 的是 new chairs。只说材料写的事，不补人。",
+    "guidedAnswers": [
+      [
+        "今天早上破椅子被搬走，明天会有新椅子搬进来"
+      ],
+      [
+        "今天早上有人搬来了新椅子",
+        "taken away 是搬走，搬来的是明天 will be put in 的新椅子。"
+      ],
+      [
+        "今天早上老师把破椅子搬走了",
+        "原文没有写是谁搬的，不能自己补一个老师。"
+      ]
+    ],
+    "independent": "The notice board was moved from the gate to the library last week. New notices were put on it yesterday.",
+    "checkPrompt": "只根据这两句话，能确定哪一项？",
+    "answers": [
+      [
+        "上周有人把公告板从图书馆搬到了大门",
+        "from the gate 是原来的位置，to the library 才是新位置，方向反了。"
+      ],
+      [
+        "公告板上周从大门挪到了图书馆，昨天上面贴了新通知"
+      ],
+      [
+        "昨天有人把公告板搬进了图书馆",
+        "搬公告板是上周的事，昨天做的是往上面贴新通知；原文也没写是谁搬的。"
+      ]
+    ],
+    "recap": "被动句先找「什么被怎样」，再看时间和地点。没写做事的人，就不要替他补名字。",
+    "transferGlossary": [
+      [
+        "notice board",
+        "公告板"
+      ],
+      [
+        "were put on it",
+        "被贴在上面"
+      ]
+    ]
+  },
+  {
+    "unit": 20,
+    "id": "unit-20-practice",
+    "number": "第一百一十九课",
+    "title": "加练：先认是哪一批，再看去哪儿",
+    "goal": "用 who 或 that 后面的描述找准人或物，再从同一句读动作和地点。",
+    "example": "The books that have a green mark will go to Class 1. The books that have a red mark will go to Class 2.",
+    "chinese": "贴绿标记的书送到 1 班，贴红标记的书送到 2 班。",
+    "terms": [
+      [
+        "green mark",
+        "绿色标记"
+      ],
+      [
+        "red mark",
+        "红色标记"
+      ],
+      [
+        "go to Class 1",
+        "送到 1 班"
+      ],
+      [
+        "book",
+        "书"
+      ]
+    ],
+    "rule": "that 后面是限定：哪一批书。先认对是哪一批，再看同一句后半段送去哪里。绿标记去 1 班，红标记去 2 班，不能把两半句拼在一起。",
+    "guided": "The pictures that won the prize will be shown in the hall. The pictures that did not win will be kept in the art room.",
+    "walkthrough": "问得奖的画在哪儿，就找 that won the prize 那一句，后半段是 will be shown in the hall。美术教室那句写的是 did not win。",
+    "guidedAnswers": [
+      [
+        "在礼堂展出"
+      ],
+      [
+        "在美术教室收着",
+        "美术教室对应的是 that did not win 那一句。"
+      ],
+      [
+        "先放礼堂，再收进美术教室",
+        "这两句说的是两批不同的画，不是同一批的两个步骤。"
+      ]
+    ],
+    "independent": "Bags that have a name card will be kept at the front desk. Bags that have no name card will be kept in the office.",
+    "checkPrompt": "你的书包上没有名牌。按这张说明，该去哪里找？",
+    "answers": [
+      [
+        "去前台找",
+        "前台对应的是 that have a name card，也就是有名牌的书包。"
+      ],
+      [
+        "去办公室找"
+      ],
+      [
+        "先到前台登记，再去办公室拿",
+        "说明里没有登记这一步；没有名牌的书包直接放在办公室。"
+      ]
+    ],
+    "recap": "先认 who 或 that 指的是哪一批，再从同一句读地点，别跨句拼。",
+    "transferGlossary": [
+      [
+        "name card",
+        "名牌"
+      ],
+      [
+        "front desk",
+        "前台"
+      ]
+    ]
+  },
+  {
+    "unit": 21,
+    "id": "unit-21-practice",
+    "number": "第一百二十课",
+    "title": "加练：借进来、借出去、什么时候还",
+    "goal": "在借用场景里分清 borrow 和 lend 的方向，再用 keep 和 return 读出期限和归还日。",
+    "example": "Chen borrowed a pen from Lin. He can keep it for two days and must return it on Thursday.",
+    "chinese": "Chen 从 Lin 那里借了一支笔，可以留两天，星期四必须还。",
+    "terms": [
+      [
+        "borrowed",
+        "借进来了"
+      ],
+      [
+        "from Lin",
+        "从 Lin 那里"
+      ],
+      [
+        "keep it for two days",
+        "留两天"
+      ],
+      [
+        "return",
+        "归还"
+      ]
+    ],
+    "rule": "borrow 是借进来，from 后面是从谁或哪里借来；lend 是借出去，后面接借给谁。keep 说可以在手里留多久，return 说要还回去。",
+    "guided": "Mei borrowed a ruler from the office. She can keep it for three days and must return it on Friday.",
+    "walkthrough": "borrow 前面是 Mei，她是借到尺子的人；from the office 说明尺子从办公室来。所以借出尺子的是办公室，不是 Mei。",
+    "guidedAnswers": [
+      [
+        "办公室把尺子借给 Mei"
+      ],
+      [
+        "Mei 把尺子借给办公室",
+        "borrow 前面的 Mei 是借到的人；from 后面才是东西来的地方。"
+      ],
+      [
+        "Mei 从办公室买了一把尺子",
+        "borrow 是借，不是买；后面还说星期五要 return。"
+      ]
+    ],
+    "independent": "Bo lent Jia his dictionary on Monday. Jia can keep it until Thursday. Jia must return it on Thursday afternoon.",
+    "checkPrompt": "谁把词典借了出去，Jia 最晚什么时候还？",
+    "answers": [
+      [
+        "Jia 借出，Bo 星期四下午还",
+        "lent 前面是 Bo，他才是借出词典的人。"
+      ],
+      [
+        "Bo 借出，Jia 可以一直留着",
+        "keep it until Thursday 说明只留到星期四，不是一直留。"
+      ],
+      [
+        "Bo 借出，Jia 星期四下午还"
+      ]
+    ],
+    "recap": "borrow 是借进来，lend 是借出去；keep 管留多久，return 管哪天还。",
+    "transferGlossary": [
+      [
+        "dictionary",
+        "词典"
+      ],
+      [
+        "until",
+        "直到"
+      ],
+      [
+        "return",
+        "归还"
+      ]
+    ]
+  },
+  {
+    "unit": 22,
+    "id": "unit-22-practice",
+    "number": "第一百二十一课",
+    "title": "加练：两张海报，报名和活动分开看",
+    "goal": "同时核对参加条件、报名地点和开始时间，从几张海报里选出可行的那一个。",
+    "example": "Dance Club: No experience needed. Sign up in Room 105. Meet in the hall at 3 p.m. on Tuesday.",
+    "chinese": "舞蹈社不要求经验。在 105 室报名，星期二下午三点在礼堂活动。",
+    "terms": [
+      [
+        "Dance Club",
+        "舞蹈社"
+      ],
+      [
+        "no experience needed",
+        "不要求经验"
+      ],
+      [
+        "sign up",
+        "报名"
+      ],
+      [
+        "hall",
+        "礼堂"
+      ]
+    ],
+    "rule": "Sign up 后面是报名的地方，Meet 后面是活动的地方，两个地点可以不一样。先看自己符不符合条件，再看时间赶不赶得上，最后才看报名去哪儿。",
+    "guided": "Cooking Club: No experience needed. Sign up at the school office. Meet in the dining hall at 4 p.m. on Wednesday.",
+    "walkthrough": "题目问报名去哪儿。跟 Sign up 走：at the school office。食堂跟着 Meet，是活动地点。",
+    "guidedAnswers": [
+      [
+        "去学校办公室报名"
+      ],
+      [
+        "去食堂报名",
+        "食堂跟着 Meet，是活动的地方；报名写的是 Sign up at the school office。"
+      ],
+      [
+        "不用报名，直接去食堂",
+        "海报写了 Sign up，说明要先报名。"
+      ]
+    ],
+    "independent": "Singing Club: You must already be able to sing one song. Sign up in Room 107. Meet in the music room at 5 p.m. on Friday. Chess Club: No experience needed. Sign up in Room 108. Meet in the reading room at 6 p.m. on Friday.",
+    "checkPrompt": "你星期五下午五点能到，六点不能到，也已经会唱一首歌。该去哪里报名？",
+    "answers": [
+      [
+        "去 108 室报名",
+        "108 室是棋社的报名地点；棋社六点才开始，不是五点。"
+      ],
+      [
+        "去音乐教室报名",
+        "音乐教室是唱歌社的活动地点；报名写在 Sign up in Room 107。"
+      ],
+      [
+        "去 107 室报名"
+      ]
+    ],
+    "recap": "先按条件选社团，再跟 Sign up 找报名地点，别把 Meet 的地点当报名处。",
+    "transferGlossary": [
+      [
+        "experience",
+        "经验"
+      ],
+      [
+        "sign up",
+        "报名"
+      ],
+      [
+        "music room",
+        "音乐教室"
+      ]
+    ]
+  },
+  {
+    "unit": 23,
+    "id": "unit-23-practice",
+    "number": "第一百二十二课",
+    "title": "加练：三句连读，中间放哪一句",
+    "goal": "选一句能同时接住前一句和后面那句的话，不只接一边。",
+    "example": "Mei’s pen had no ink. Lin gave her a new pen. Now Mei could fill in the form.",
+    "chinese": "Mei 的笔没墨了。Lin 给了她一支新笔。现在 Mei 能填表了。",
+    "terms": [
+      [
+        "ink",
+        "墨水"
+      ],
+      [
+        "gave her",
+        "给了她"
+      ],
+      [
+        "fill in the form",
+        "填表"
+      ],
+      [
+        "pen",
+        "笔"
+      ]
+    ],
+    "rule": "先看前一句缺什么，再看后一句为什么能成立。笔没墨，后面又能填表，中间要有能写字的新笔。只跟前一句有关、却解释不了后一句的选项，要排除。放进去以后，把三句连着读一遍。",
+    "guided": "The classroom clock stopped at nine. ____ Now the class could see the time again.",
+    "walkthrough": "前面说钟停了，后面说又能看时间。中间要填能解释这个变化的事：换电池。钟是圆的说得通，但解释不了为什么又能看时间。",
+    "guidedAnswers": [
+      [
+        "The teacher put in a new battery."
+      ],
+      [
+        "The clock was round.",
+        "只说了钟的样子，没解释为什么又能看时间。"
+      ],
+      [
+        "The clock was on the wall.",
+        "只说了位置，没解释钟为什么恢复。"
+      ]
+    ],
+    "independent": "The reading room was too dark. ____ Now the students could read there.",
+    "checkPrompt": "哪一句能同时接住「太暗」和「学生又能看书」？",
+    "answers": [
+      [
+        "The reading room was on the first floor.",
+        "只说了位置，没解决太暗的问题。"
+      ],
+      [
+        "A worker put in two new lights in the office.",
+        "装了灯，但装在了办公室，阅览室还是暗的。"
+      ],
+      [
+        "A worker put in two new lights."
+      ]
+    ],
+    "recap": "选句要看两头：前一句的问题和后一句的变化都要接上，再把三句连读一遍。",
+    "transferGlossary": [
+      [
+        "reading room",
+        "阅览室"
+      ],
+      [
+        "dark",
+        "暗的"
+      ],
+      [
+        "put in",
+        "安装"
+      ]
+    ]
+  },
+  {
+    "unit": 24,
+    "id": "unit-24-practice",
+    "number": "第一百二十三课",
+    "title": "加练：空里缺什么，括号里的词怎么变",
+    "goal": "没给括号先看后文缺的是「什么」还是「哪里」；给了括号先看空在句里做什么，别见词就加 -ly。",
+    "example": "I don’t know what Mei wants to borrow. Mei reads the notice carefully.",
+    "chinese": "我不知道 Mei 想借什么。Mei 仔细地读通知。",
+    "terms": [
+      [
+        "what",
+        "什么"
+      ],
+      [
+        "where",
+        "在哪里"
+      ],
+      [
+        "borrow",
+        "借进来"
+      ],
+      [
+        "careful",
+        "仔细的"
+      ],
+      [
+        "carefully",
+        "仔细地"
+      ]
+    ],
+    "rule": "没给括号时，看后一句回答的是东西还是地点：东西用 what，地点用 where。给了括号，先看空在句里做什么：描述人或物本身用形容词，这里要描述读的方式，careful 变成 carefully。括号只是起点，不一定原样抄。",
+    "guided": "Bo checks the time ____. (careful)",
+    "walkthrough": "空格说明 Bo 怎样检查时间，这里需要描述动作的方式。用 carefully。",
+    "guidedAnswers": [
+      [
+        "carefully"
+      ],
+      [
+        "careful",
+        "这里在描述 checks 这个动作。careful 用来形容人或物。"
+      ],
+      [
+        "care",
+        "care 是动词或名词，这里要的是表示方式的词。"
+      ]
+    ],
+    "independent": "Can you tell me ____ Bo wants to buy? — He wants a new pen.",
+    "checkPrompt": "哪一个词能让前后两句接上？",
+    "answers": [
+      [
+        "where",
+        "后一句给的是笔，是东西，不是在说地点。"
+      ],
+      [
+        "who",
+        "后一句说的是想买的东西，不是在问人。"
+      ],
+      [
+        "what"
+      ]
+    ],
+    "recap": "没括号先找缺的信息：东西用 what，地点用 where；有括号先看空在句里做什么，再决定该用 careful 还是 carefully。"
+  },
+  {
+    "unit": 25,
+    "id": "unit-25-practice",
+    "number": "第一百二十四课",
+    "title": "加练：补半句，先看时间，再看两边",
+    "goal": "用句子给的过去时间定词形，只补空格缺的部分，不重复右边已经写好的内容。",
+    "example": "Yesterday, we cleaned the windows after class.",
+    "chinese": "昨天，我们下课后擦了窗户。",
+    "terms": [
+      [
+        "yesterday",
+        "昨天"
+      ],
+      [
+        "cleaned",
+        "擦了"
+      ],
+      [
+        "windows",
+        "窗户"
+      ],
+      [
+        "after class",
+        "下课后"
+      ]
+    ],
+    "rule": "Yesterday 把动作放到过去，clean 要写成 cleaned。补的时候只看空格：主语和 after class 已经给了，就不再写一遍。右边如果已经有 of、问号或地点，也不重复。",
+    "guided": "Last week, Mei ____ in the school garden.",
+    "walkthrough": "要补「种了三棵树」。Last week 指过去，plant 写成 planted；in the school garden 已经在空格右边，不再写。空里只放 planted three trees。",
+    "guidedAnswers": [
+      [
+        "planted three trees"
+      ],
+      [
+        "plants three trees",
+        "Last week 指过去，动词要用过去式 planted。"
+      ],
+      [
+        "planted three trees in the school garden",
+        "in the school garden 已经在空格右边，不要再写一遍。"
+      ]
+    ],
+    "independent": "The parents ____ of the show last night.",
+    "checkPrompt": "根据中文「感到自豪」，选出只填进空格的部分。",
+    "answers": [
+      [
+        "was proud",
+        "last night 指过去；主语 the parents 是复数，要用 were。"
+      ],
+      [
+        "were proud of",
+        "were 对了，但右边已经有 of，空里再写一次就多了。"
+      ],
+      [
+        "were proud"
+      ]
+    ],
+    "recap": "时间定词形，主语定 be 的形式；空格两边已经有的词和标点，都不重复写。",
+    "transferGlossary": [
+      [
+        "parents",
+        "家长"
+      ],
+      [
+        "last night",
+        "昨晚"
+      ]
+    ]
+  },
+  {
+    "unit": 26,
+    "id": "unit-26-practice",
+    "number": "第一百二十五课",
+    "title": "加练：同一行找课，再按通知排掉",
+    "goal": "用星期几和几点定到一行，再用通知排掉取消的或不符合条件的项目。",
+    "example": "Monday 9:00, English, Room 104. Monday 10:00, Music, Room 106. Notice: From this week, Monday Music is in Room 202.",
+    "chinese": "星期一九点英语，104 室；星期一十点音乐，106 室。通知：从这周起，星期一音乐改到 202 室。",
+    "terms": [
+      [
+        "timetable",
+        "时间表"
+      ],
+      [
+        "notice",
+        "通知"
+      ],
+      [
+        "from this week",
+        "从这周起"
+      ],
+      [
+        "Room 202",
+        "202 室"
+      ]
+    ],
+    "rule": "先用星期几和几点定到一行，课名和教室都从这一行读。通知只改其中一项：说 Music 改到 202 室，就只换音乐的教室，英语那行不动。音乐课这次不再用 106 室。",
+    "guided": "Tuesday 9:00, Math, Room 106. Tuesday 10:00, Art, Room 108. Notice: From this week, Tuesday Art is in Room 205.",
+    "walkthrough": "问星期二十点美术。先定到 Art 那一行，再看通知：Art 改到 Room 205。108 是旧信息。",
+    "guidedAnswers": [
+      [
+        "美术在 205 室"
+      ],
+      [
+        "美术在 108 室",
+        "108 是时间表上的旧教室；通知说从这周起改到 205。"
+      ],
+      [
+        "数学在 205 室",
+        "通知点的是 Art；数学那行没改，仍在 106 室。"
+      ]
+    ],
+    "independent": "Thursday 9:00, Swim Club, Room 106. Thursday 10:00, Drawing Club, Room 203. Notice: Swim Club is only for students who can swim 50 meters.",
+    "checkPrompt": "一个游不到 50 米的同学，星期四能参加哪一项？",
+    "answers": [
+      [
+        "9:00 游泳社，106 室",
+        "通知说游泳社只招能游 50 米的学生；到不了 50 米就不符合这个条件。"
+      ],
+      [
+        "10:00 绘画社，106 室",
+        "把两行拼在一起了：绘画社是 10:00、203 室。"
+      ],
+      [
+        "10:00 绘画社，203 室"
+      ]
+    ],
+    "recap": "先按星期和几点定行，再按通知排掉不能参加的；时间和教室都从同一行读。",
+    "transferGlossary": [
+      [
+        "only for",
+        "只限"
+      ],
+      [
+        "meters",
+        "米"
+      ]
+    ]
+  },
+  {
+    "unit": 27,
+    "id": "unit-27-practice",
+    "number": "第一百二十六课",
+    "title": "加练：回执走到哪一步，只改点名的一项",
+    "goal": "按 Status 判断下一步，再照更正通知只改点名的一项，其余信息保持原样。",
+    "example": "Status: Needs correction. Note: Please write your class in the Class field.",
+    "chinese": "状态：需要更正。备注：请把班级写进 Class 那一栏。",
+    "terms": [
+      [
+        "status",
+        "状态"
+      ],
+      [
+        "needs correction",
+        "需要更正"
+      ],
+      [
+        "field",
+        "栏目"
+      ],
+      [
+        "note",
+        "备注"
+      ]
+    ],
+    "rule": "Status 只写一种状态：Submitted 是已交、还要等新回执；Confirmed 是已确认，可以按时间和地点去；Needs correction 是有一项要改。更正通知只说改哪一项，没点名的那项照抄回执。填表时先认栏名，再填内容。",
+    "guided": "Status: Submitted. Note: We have your form. Please wait for our reply.",
+    "walkthrough": "Submitted 表示表已经交了。Please wait for our reply 让你等回复。",
+    "guidedAnswers": [
+      [
+        "等回复"
+      ],
+      [
+        "已经确认，可以按时间去了",
+        "Confirmed 才是已确认；这一行写的是 Submitted。"
+      ],
+      [
+        "改一项再交一次",
+        "Needs correction 才要改；这里 Note 没点出哪一项有错。"
+      ]
+    ],
+    "independent": "Receipt: Wednesday 2:00, Room 108. Notice: Please change the room to Room 302. The time stays the same.",
+    "checkPrompt": "按通知改过以后，时间和教室分别是多少？",
+    "answers": [
+      [
+        "星期三 2:00，108 室",
+        "通知写的是 change the room，108 是回执上的旧教室，教室这一项没改。"
+      ],
+      [
+        "星期三 2:00，302 室"
+      ],
+      [
+        "星期二 2:00，302 室",
+        "教室改对了；回执上的日期是 Wednesday，通知也没有点名改日期。"
+      ]
+    ],
+    "recap": "先读 Status 决定下一步；要更正时，只换通知点名的那一项，另一项照回执抄。",
+    "transferGlossary": [
+      [
+        "receipt",
+        "回执"
+      ],
+      [
+        "stays the same",
+        "保持不变"
+      ]
+    ]
+  },
+  {
+    "unit": 28,
+    "id": "unit-28-practice",
+    "number": "第一百二十七课",
+    "title": "加练：单价、门槛和小票，哪行对不上",
+    "goal": "分清每个的价和一组价，读清数量门槛，再逐行核对小票上的单价。",
+    "example": "Tag: Pencil 2 yuan each. Tag: Notebook 3 for 12 yuan. Receipt: 2 pencils, 2 yuan each. Total: 4 yuan.",
+    "chinese": "价签：铅笔每支 2 元，笔记本 3 本 12 元。小票：2 支铅笔，每支 2 元，合计 4 元。",
+    "terms": [
+      [
+        "each",
+        "每一个"
+      ],
+      [
+        "3 for 12 yuan",
+        "3 本 12 元"
+      ],
+      [
+        "total",
+        "合计"
+      ],
+      [
+        "receipt",
+        "小票"
+      ],
+      [
+        "glue stick",
+        "胶棒"
+      ],
+      [
+        "rolls of tape",
+        "几卷胶带"
+      ]
+    ],
+    "rule": "each 跟在价钱后面，是每一个的价；3 for 12 yuan 是这一组 3 本一共 12 元，不是每本 12 元。total 是整单合起来。核对小票时，先看这一行买了几件，再回价签找同一样东西的价钱或组价。",
+    "guided": "Tag: Glue stick 4 yuan each. Tag: Tape 2 for 7 yuan. Receipt: 1 glue stick, 4 yuan each. Receipt: 2 rolls of tape, 9 yuan each.",
+    "walkthrough": "胶棒：价签 4 元一支，小票也是 4 元，对得上。胶带：价签写 2 for 7 yuan，2 卷一共 7 元；小票写的是每卷 9 元，两边对不上。",
+    "guidedAnswers": [
+      [
+        "胶带这一行：价签 2 卷 7 元，小票收每卷 9 元"
+      ],
+      [
+        "胶棒这一行：价签 4 元，小票收 4 元",
+        "胶棒两边都是 4 元，这一行对得上；题目要找对不上的那行。"
+      ],
+      [
+        "两行都对得上",
+        "再回价签看胶带：2 for 7 yuan 是 2 卷一共 7 元，小票写的每卷 9 元跟它对不上。"
+      ]
+    ],
+    "independent": "Tag: Notebook 6 yuan each. Offer: Three or more notebooks, 5 yuan each. Receipt: 3 notebooks, 6 yuan each. Tag: Pen 2 yuan each. Receipt: 2 pens, 2 yuan each.",
+    "checkPrompt": "哪一项的收费跟价签和优惠对不上？",
+    "answers": [
+      [
+        "笔：价签 2 元，小票也按 2 元收",
+        "笔两边都是 2 元，这一行对得上。"
+      ],
+      [
+        "两项都对得上，没有问题",
+        "再看笔记本：买了 3 本，够 three or more，优惠价是每本 5 元，小票却按每本 6 元收。"
+      ],
+      [
+        "笔记本：买了 3 本，小票按每本 6 元收"
+      ]
+    ],
+    "recap": "先看买了几个，够不够门槛；再回价签找同一样东西的价。两边数字不一样，就是收费对不上的那一行。",
+    "transferGlossary": [
+      [
+        "receipt",
+        "小票"
+      ],
+      [
+        "offer",
+        "优惠"
+      ],
+      [
+        "three or more",
+        "三个或更多"
+      ]
+    ]
+  }
+].map(({ unit, ...content }) => ({ ...teachingLesson(content), practiceUnit: unit })),
+]);
 
 // 只复习通知单元教过的线索。requires 是出题的硬门槛，不是掌握评级。
 window.NOTICE_REVIEW = Object.freeze([
