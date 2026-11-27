@@ -1119,6 +1119,14 @@
       explanation.append(el('h2', '怎么读这句话', 'study-label'), steps);
       card.append(explanation);
     }
+    const guidance = window.LESSON_GUIDANCE?.[lesson.id];
+    if (guidance) {
+      const walkthrough = el('section', null, 'lesson-explanation lesson-guidance');
+      const steps = el('ol', null, 'teaching-steps');
+      for (const step of guidance) steps.append(el('li', step));
+      walkthrough.append(el('h2', '用例句走一遍', 'study-label'), steps);
+      card.append(walkthrough);
+    }
     if (example.extraExample) {
       const { title, lines } = example.extraExample;
       card.append(exampleDetails(title, lines, 'lesson-extra'));

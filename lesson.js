@@ -4545,3 +4545,514 @@ window.EMAIL_WRITING = Object.freeze({
   ],
   example: 'My favorite after-school activity is playing basketball. I play with my classmates on Fridays. We usually practice for about an hour after class. I like this activity because it helps me relax and gives me time to talk with friends.',
 });
+
+window.LESSON_GUIDANCE = Object.freeze({
+  'first-hello': [
+    '把 Hi, I’m Lin. 分两拍读：先用 Hi 打招呼，停一下，再说 I’m Lin. 让对方知道你是谁。',
+    '换成 Bo 做自我介绍时，只把 Lin 换成 Bo。说话人嘴里说出来的 I，指的始终是说话人自己。',
+  ],
+  'ask-name': [
+    '先圈住 your name，确定你想知道的是「对方的名字」。问完 What’s your name?，可以停下来等对方回答。',
+    '如果对方回答 I’m Lin.，你听到 I’m 后留心最后一个词。现在已经知道对方叫什么，可以接一句 Nice to meet you.',
+  ],
+  'first-conversation': [
+    '把例句里的话按两个人分开读。Chen 先报自己的名字，再问 Lin。中间的问号提示轮到对方开口了。',
+    '听到 Nice to meet you.，双方已经交换过名字。最后一句里的 too 放在句尾，意思是「我也很高兴认识你」。',
+  ],
+  'notice-time': [
+    '用手指从 starts at 往右读，先框出 4 p.m.，可以记成 16:00。继续读到 on Friday，把「星期五」记在时刻旁边。',
+    '如果同一张纸上还写着 Doors open at 3:30 p.m.，就分别记「开门 15:30」「开始 16:00」。问开始时间只抄第二项。',
+  ],
+  'notice-place': [
+    '把 Meet in Room 203. 切成「去集合」和「在哪儿」两段。Room 203 整体是房间号，看到 203 时先认清它前面的 Room。',
+    '把 Room 203 换成 the computer lab，集合这件事没变。遇到长一点的地点名称，可以把 in 后面整段圈起来。',
+  ],
+  'notice-bring': [
+    '先在纸上写两栏「自己带」「学校提供」。把 Bring 后的 a notebook 放进第一栏，把 lend you 后的 a pen 放进第二栏。',
+    '读 lend 那句时先看谁在借出，主语是 The school。读到 you 才找到借给谁，所以准备清单上只记笔记本。',
+  ],
+  'notice-whole': [
+    '试着从最后一行往上找。想整理书包，先看 Bring，记下 notebook；想确定往哪走，再看 Meet in，记下 Room 105。',
+    '最后用 starts at 和 on 补齐「周一上午九点」。合上原文，按「什么时候／去哪里／带什么」说一遍，漏哪项就回原文找。',
+  ],
+  'sentence-core': [
+    '在 Mei reads a book. 上从左到右标「谁／做什么／读什么」：Mei／reads／a book。把 a 和 book 一起当作最后一块。',
+    '如果只把 reads 换成 borrows，做事的人和书都相同，动作变成了「借」。翻译前先确认句中间的动作词。',
+  ],
+  'be-state': [
+    '读到 The room is quiet. 时，先问「谁安静？」答案是 the room。quiet 就是对这个房间的描述。',
+    '试着把一个房间换成两个：The rooms are quiet.。前面数量变了，连起来的词也跟着变，安静这个状态用同一个 quiet。',
+  ],
+  'time-verbs': [
+    '先遮住两个动作词，只看句尾。every day 表示重复发生的习惯，yesterday 把事情放在昨天。给两句分别贴上「平时」「过去」。',
+    '再掀开动作词，发现两句都在说打篮球。变的是 play 的形式。自己把 I play after class. 改成昨天的事，可写 I played after class yesterday.',
+  ],
+  'noun-count': [
+    '从 and 切开，左边 one pen 写成 1 支笔，右边 two notebooks 写成 2 本笔记本。数数时把数量和后面的名词绑在一起。',
+    '把笔记本从两本改成一本，试读 one notebook。变化有两处：two 换成 one，notebooks 的尾巴 s 去掉了。',
+  ],
+  'reference-basics': [
+    '把 It is red. 里的 It 暂时换成 the notebook。读成 The notebook is red.，看看「笔记本是红色的」和前一句能不能连起来。',
+    '如果前文出现两个东西，继续找颜色以外的线索。例如 It has pages. 说它有一页一页的纸，这有助于在书包和笔记本中认出笔记本。',
+  ],
+  'request-reply': [
+    '听到 Could you help me?，把它理解成请你帮忙。回答 Of course. 是答应，后面的 I have time. 补上了可以帮忙的原因。',
+    '可以把两句连起来核对语气。先说 Sure，再说 I’m busy right now，听起来前后不一致；现在没空时可以说 Sorry, I’m busy right now.',
+  ],
+  'conversation-purpose': [
+    '先读 I passed the test!，抓住 passed the test（通过测试）。这是分享好消息，用 Glad to hear that. 可以回应这个消息。',
+    '换一句 Is this your bag?，对方要确认归属。此时 Yes, it is. 可以直接把事情说清楚。选答句前，先给上一句话贴一个用途标签。',
+  ],
+  'context-actions': [
+    '给第一句加上停顿 Please / open the door.，能听出是在请人「做」一件事，the door 告诉你打开什么。',
+    '第二句从 The door 开始，后半句 is open 描述门现在的样子。翻译时可以用「门开着」，不必自己加一个开门的人。',
+  ],
+  'context-cloze': [
+    '下雨一般会妨碍玩耍，still played 却说「还是玩了」。先在纸上写「下雨 → 仍然玩」，两边有反差，就试读 but。',
+    '玩的位置改到 inside，it rained 能解释为什么要在屋内。先说「在屋里玩」再说「因为下雨」，整句放回文章读一遍。',
+  ],
+  'reading-main-idea': [
+    '在原文挑三个有变化的地方：afraid to talk、practised with a friend、spoke to the whole class。试着用箭头把它们按先后连起来。',
+    '缩成一句可说「Bo 通过和朋友练习，从不敢开口到能在全班面前说话」。还能看见起点、办法和结果，才算抓住这段的主线。',
+  ],
+  'reading-inference': [
+    '把两个时刻放到一条线上：4:00 开会在前，4:10 到达在后。时钟往后走了十分钟，所以 Bo 在开始后十分钟才到。',
+    '检验每个判断能不能指回原文。可以指给别人看两个时刻，所以「迟到」有依据；要判断路上发生了什么，还得有别的句子。',
+  ],
+  'link-a-sentence': [
+    '读 It is blue. 时先往前找一件能是蓝色的东西。把前句的 a bag 换进 It，读 The bag is blue.，蓝色就有了明确对象。',
+    '假如前句只写 Mei has two bags.，单数 It 就不够清楚。补句时留意数量和指代，前后合读才能发现这种接不上的地方。',
+  ],
+  'action-now': [
+    '先看时间。every day 把 reads 放在每天的习惯里，now 则让你想象此刻正在发生的画面。',
+    '描述现在的画面可以分三块读 Mei / is / reading。把 Mei 换成两个人 Mei and Bo 时，用 are reading，因为做事的人变成了复数。',
+  ],
+  'past-form': [
+    '给三个句子标时间，第一句说平时，后两句都有 Yesterday。相同的时间提示可以让不同的动词进入过去式。',
+    '用两行记住这组变化：play → played，go → went。自己把 I go home at five. 放到昨天，就换成 went，再补上 yesterday。',
+  ],
+  'one-with-article': [
+    '读 a pen 和 an apple 时，把 a／an 与后面的词连起来。先听 pen 的开头 /p/，再听 apple 开头的元音，比较两个起始音。',
+    '做题可以先把 a 或 an 留空，轻声念后面那个词。读 egg 时用 an，读 bag 时用 a；有形容词时，听紧跟在 a／an 后面的那个词。',
+  ],
+  'adjective-adverb': [
+    '给两句配两个小问题：Mei 是怎样的人？她写得怎么样？第一个用 careful 描述人，第二个用 carefully 补充 writes。',
+    '检查自己的句子时找被描述的词。写 Mei reads carefully. 时，carefully 回答的是「怎么读」，所以跟着动作 reads。',
+  ],
+  'embedded-question': [
+    '把直接问句圈成 When / does the meeting start?。接在 tell me 后留下 when，再把「会议」the meeting 放回动作前。',
+    'the meeting 是单数，把原来放在 does 里的标记放回动词，写成 starts。整段读作 when the meeting starts，中间不再加 does。',
+  ],
+  'link-a-list': [
+    '找到 I 后，用手指依次点 read、write、draw。每点一个都可以补回 I，说明它们是同一个人的三件事。',
+    '如果换成描述两件事，可以写 I read and draw.。遇到三项时，先用逗号分开前两项，再用 and 接最后一项。',
+  ],
+  'time-duration': [
+    '想象看墙上的钟：at two 告诉你指针指在哪儿。想象用计时器：for one hour 告诉你过了多长时间。',
+    '如果两种信息都要写，可以说 I read at two for one hour.。先标「两点开始」，再标「持续一小时」，就知道两个数字各在做什么。',
+  ],
+  'own-things': [
+    '先找这张海报是谁的。句首的 Mei 是一个女生，所以最后用 her own 来强调海报归她自己。',
+    '模仿时连着换两处：I make a poster of my own.。说的人变成 I 后，海报的归属跟着换成 my own。',
+  ],
+  'after-ing': [
+    '先按时间画箭头：reading 在前，write a note 在后。After reading 先交代时间，逗号后再读这句话主要在说什么。',
+    '看 after 后有没有明确的主语。直接跟 reading 时用 -ing；写 After I read, I write a note. 时，after 后已经有 I，可以接完整的小句子。',
+  ],
+  'past-in-progress': [
+    '先在时间线上点出 the phone rang，再画一条穿过这个点的读书线。铃响那一下发生时，读书这件事已经在进行。',
+    '写的时候用 was reading 画出持续的背景，用 rang 交代那一刻。把 I 换成两个人 We 时，相应地说 We were reading。',
+  ],
+  'enough-to': [
+    '先找房间的条件 quiet，再问「安静到够做什么？」to read in 把要做的事补出来：能在这个房间里读书。',
+    '模仿时按「怎样／够不够／做什么」三格写。换成灯光，可说 The room is bright enough to read in.，enough 仍放在 bright 后面。',
+  ],
+  'advice-pride': [
+    '先把 had better 整块圈起来，再找建议做的动作 read。读到 You had better read the notice.，可以理解为「你最好读一下通知」。',
+    '第二句先用 I am 表明是谁有这个感受，再用 proud of our class 说明为谁感到自豪。把 I 换成 We 时，连着把 am 换成 are。',
+  ],
+  'phrases-in-context': [
+    '先把 looks for 合起来读，后面 his pen 是寻找的东西。读到下一句的 finds，可以把两句串成「先找笔，后来找到了」。',
+    '再看 finds 后的 it；把它换回 the pen，故事仍说得通。短语的意思和代词指的东西，都可以用前后句核对。',
+  ],
+  'email-plan': [
+    '把范文的正文分成三句，分别写在「活动／怎么参加／为什么」三格里。Sports Day 是活动，run and play games 是做法，work together 是原因。',
+    '再看看正文外的两头。Dear Bo 确定写给谁，Mei 是署名。换题练习时，按新题给的人名和三格内容写自己的邮件。',
+  ],
+  'reading-question-words': [
+    '先只看问号前每句的第一个词。把 When、Where、What 分别记成「时间」「地点」「东西」，再去找文章里对应的那一项。',
+    '回看问题的动作也很重要。When does the meeting start? 问会议几点开始；同样以 When 开头，问上交日期时就要找上交那一行。',
+  ],
+  'reading-paraphrase': [
+    '把 8:50 和 9:00 放在同一条时间线上。Mei 在前一个时刻到场，会议在后一个时刻开始，所以她早到了十分钟。',
+    '看到 She arrived before the meeting. 时，before 给出的先后顺序和原文相同。把选项的先后、人物和数字换回原文核对。',
+  ],
+  'reading-exceptions': [
+    '给每一样东西画不同记号：pen 是要带，food 是不能带，notebook 是可带可不带。一个 not 能改变整条指示。',
+    '读第二、三句时，把 Do not bring 和 do not need to bring 各圈成一块。第三句有 need to，去掉的是「必须带」的要求。',
+  ],
+  'notice-deadline': [
+    '做两个提醒：3 p.m. 前发名字，4 p.m. 开会。把「最迟三点」和「正好四点开始」分别记在日程表上。',
+    '用一个时间检验理解：2:50 发名字来得及，3:10 才发就迟了。会议仍在 4 p.m. 开始，by 后的时间属于发名字这件事。',
+  ],
+  'notice-condition': [
+    '从逗号切开，左边 if you are new 写「条件：新同学」，右边写「动作：最晚周五发姓名」。先判断自己是否符合左边。',
+    '如果是新同学，记下发姓名的任务和周五的截止时间。已经加入的同学要找适用于自己的说明，这条 if 句只给新同学的要求。',
+  ],
+  'notice-change': [
+    '把星期在纸上写成一条修改记录「Monday → Friday」。now 后是现行的时间，not 后点出被替换的旧时间。',
+    '读 Room stays the same 时只在教室一栏做「沿用」标记。写自己的日程时更新星期，地点翻回旧通知的教室栏抄。',
+  ],
+  'email-use-details': [
+    '第一句 I like basketball. 已经把项目说清楚。第二句用 play 把喜欢的活动写成一件平时真的在做的事。',
+    '在第二句分别圈 who 和 when 的信息：with my classmates 说明和谁，after class 说明何时。仿写时先补一项真实细节，再看需不需要另一项。',
+  ],
+  'email-specific-reason': [
+    '在 because 处停一下，自己先问「为什么喜欢篮球？」从 I can 开始读完整回答，发现理由是有机会和朋友一起打球。',
+    '仿写时想一个自己的场景，可以用 I like drawing because I can make cards for my friends.。读到 because 后，检查是否说出了一个可想象的原因。',
+  ],
+  'email-revise': [
+    '把草稿读给自己听，在题目旁做三道勾：book club 回答活动，meet on Fridays 回答参加时间，read with my friends 回答原因。',
+    '再逐句检查有没有一句可以删掉而信息仍齐全。We meet on Fridays. 提供了具体时间；最后一句虽然又写 I like，但 because 后提供了新信息。',
+  ],
+  'cloze-collocations': [
+    '暂时把冒号后遮住，先读 made ___ of things to bring。把 a list 放进去，可以和 made 组成「列清单」。',
+    '再看冒号后的 water and cups，它们就是清单里的两项东西。选词时让空格同时过两关：前后搭配读得通，后面的细节也对得上。',
+  ],
+  'cloze-later-clue': [
+    '读完 Bo went to the library. 可以先猜他去了什么地方；要知道他接着做什么，还要再读一句。',
+    'opened a book 给了对象，started to read 给了动作。做选择后把地点、拿出的东西和动作连起来读，第二句的线索通常更具体。',
+  ],
+  'cloze-read-back': [
+    '在 so 处连出「下雨 → 留在屋内」。接着扫下一句，in the classroom 又给出一个确实在屋内的地点。',
+    '填完以后把这些词读成一个小故事。如果试填 outside，「教室里玩」就和去户外对不上；这时回去改空格。',
+  ],
+  'service-borrow': [
+    '先从 Can I borrow a ruler? 找出谁想借和想借什么：I 想借一把 ruler（尺子）。',
+    '分开听回答的两拍。Sure 表示同意，Here you are 表示正在递给你。借到后可以回 Thanks.，把这次对话收好。',
+  ],
+  'service-directions': [
+    '从问句提取目标 the library。答句开头的 It’s 把这个目标接过来，后面的 the gym 是用来指路的参照物。',
+    '在纸上画两个相邻的框，一个写 gym，一个写 library。next to 表示在旁边；图上仍要等更多信息才能确定具体在左侧还是右侧。',
+  ],
+  'service-booking': [
+    '对第一个提议 Monday 先记一个问号，等下一句话。听到 I’m busy on Monday，把这个候选时间划掉。',
+    '再记录后一个提议 Friday。直到对方说 Friday is fine.，才给周五打勾。用同样方法区分对话里的所有提议和最后的约定。',
+  ],
+  'reading-order': [
+    '用 1、2、3 标出 First、Then、Finally，再把每句的动作抄在数字旁：读通知、写姓名、发邮件。',
+    '假如题目问发邮件之前做什么，就找到 send the email 所在的第 3 步，再往上找第 2 步。问哪一步就回到相应的标记。',
+  ],
+  'reading-examples': [
+    '先把两句分别贴标签。「小改动可以省时间」是能用在许多场景的观点，把钥匙放门边是其中一个具体做法。',
+    '在 For example 前画一条分隔线。问作者要说明什么时看前一句；问钥匙放哪里时在后一句找 by the door。',
+  ],
+  'reading-purpose': [
+    'Join our reading club! 直接邀请读者加入，感叹号前还给了 this Friday，说明了邀请的时间。',
+    '再读 Sign up in Room 105.，它让有意加入的人知道下一步去哪里报名。用这两个动词说明材料的目的，再核对题目问的是目的还是细节。',
+  ],
+  'present-routine': [
+    '两句共有 after class，都是在说课后的习惯。先把时间和动作圈起来，再比较句首换了谁。',
+    '主语从 I 换成一个人 Mei 时，read 加上 s。可以反过来小声练一遍 Mei reads → I read，读完回看动词的词尾。',
+  ],
+  'present-negative': [
+    '先找主语。例句从 I 换成 Mei 时，表示否定的 don’t 换成 doesn’t，星期和打球这件事没有变化。',
+    '把 doesn’t 和 play 接成一块来读。改写 Mei plays on Mondays. 时，用 Mei doesn’t play on Mondays.，原来的 s 已经由 doesn’t 承担。',
+  ],
+  'present-questions': [
+    '看到问句开头的 Do／Does 就先等一个 Yes 或 No，再看问的是谁。对 you 回答时从自己的角度说 I；说到 Mei 时用 she。',
+    '短答要和问句的开头配套。第一问的 Do 接 Yes, I do.，第二问的 Does 接 No, she doesn’t.，两句回答都可以省去已经问过的动作。',
+  ],
+  'past-negative': [
+    '把 Monday 和 Friday 分成两栏。同一件打球的事，周一栏记录 played（发生了），周五栏记录 didn’t play（没有发生）。',
+    '用第二句改写另一件事：I didn’t read on Friday.。先用 didn’t 表过去和否定，再接你要说的动作原形。',
+  ],
+  'past-questions': [
+    'Did 已经把问题放到过去，后面的 read 用原形。听第一句的 read，可留意 /riːd/，和现在时 I read every day. 的 read 同音。',
+    '把回答和问的人配好：问 you 时可以答 Yes, I did.；问 Bo 时，例句答 No, he didn’t.。短答里的 did 或 didn’t 接住整个动作。',
+  ],
+  'past-story': [
+    '从 Yesterday 开始画昨天的时间线。第一个地点是 the library；Later 之后发生的是 played basketball。',
+    '读到 didn’t go 时，在 shop 旁写「没去」。复述时把发生的两件事按顺序说，最后单独说明商店没去。',
+  ],
+  'future-will': [
+    '把 every day 和 Tomorrow 写到两栏。「每天打球」是习惯，「明天在学校打球」是还没发生的安排。',
+    '换到明天这一句，先找 will，再检查后面写的是 play。可用同样方式把 Mei reads every day. 改写为 Tomorrow, Mei will read.',
+  ],
+  'future-negative': [
+    '看两句中 will 和 won’t 各接了什么地点。shop 前的 go 跟 won’t，明天不去；library 前的 go 跟 will，明天要去。',
+    '如果只记一条明天的出门提醒，就抄去图书馆那条。朗读时留意 will 和 won’t 的声音，判断这个地点是否真的在安排里。',
+  ],
+  'future-notice': [
+    '先写一张新日程：Friday／4 p.m.／Room 204。每填一格都回通知指给自己看它对应哪几个词。',
+    'Room 101 前面是 won’t meet，划掉这个地点。末句的 will meet 提供的是现行教室和时间，可以用来检查自己有没有记错。',
+  ],
+  'compare-direction': [
+    '找到 than 后向左找被描述的 bus，向右找用来比较的 bike。faster 放在 bus 的陈述里，所以更快的是公交车。',
+    '如果换成从自行车开头，想保持同一件事实，要说 The bike is slower than the bus.。可以画一个箭头指向更快的那辆车来核对。',
+  ],
+  'compare-quantity': [
+    '把 10 分钟写在中间，左边放步行，右边放公交。less than 告诉你在 10 左边，more than 告诉你在右边。',
+    '用 9、10、11 试一下：9 可当作步行时间的例子，11 可当作车程的例子。读到原文时只知道各在界线哪边，具体分钟数需要另外给出。',
+  ],
+  'compare-reading': [
+    '按题目圈范围。要比较 music club，只抄 Class A 的 5 和 Class B 的 15，把写在 art club 旁的 12 留在原来的栏目。',
+    '把两个同类数字摆在一起，15 比 5 多 10。写结论时带上「选音乐社」和班级名称，就能看出这两个数字比的是什么。',
+  ],
+  'reason-or-purpose': [
+    '先圈 went to the library，再分别问「为什么选图书馆」「过去想做什么」。because it was quiet 答前一个问题，to study 答后一个。',
+    'there 指前面去的图书馆。用中文把两条线索连起来：图书馆安静，所以 Mei 选择去那里，打算学习。想做的事有没有做成还需要往后读。',
+  ],
+  'purpose-or-result': [
+    '在第一句看到 so that 时，把 could catch the bus 圈为 Lin 出发前想实现的目标。想赶上车这个目的，解释了她为什么提早出发。',
+    '第二句的 so 左边是已经发生的事「公交车晚点」，右边是接着发生的事「她等了十分钟」。两句连着读，前一句的目标和后一句的结果各有自己的线索。',
+  ],
+  'reason-purpose-reading': [
+    '给 was closed 和 to study 分别贴上「换地方的原因」「去新教室的目的」。这时只知道 Mei 到 203 室打算学习。',
+    '看到 But 继续读到最后，without studying 说明她没学就回家了。复述时可以说「想学习」，再加一句交代最后发生了什么。',
+  ],
+  'rules-can-must': [
+    '先把两句写成一张行动卡：use a computer 是获准做的事，show your student card 是需要做的事。',
+    '第二句中的 first 说明了先后。实际使用时先出示学生证，再使用电脑。读规则除了辨认 can／must，也留意 first 这一类词。',
+  ],
+  'rules-mustnt-optional': [
+    '把 eat 和 bring a notebook 写到纸上，分别标「禁止」和「可选」。遇到 mustn’t，把它和动词放一起看，意思是这件事禁止做。',
+    '用书包里的笔记本检验第二条：带一本可以，空手来也可以。don’t have to 去掉的是要求，理解成「不用非带不可」。',
+  ],
+  'rules-who-reading': [
+    '根据 if 先分新同学和老同学。新同学在 sign in 一栏标「要签到」，老同学标「无需签到」。',
+    '读到 For everyone，把「室内禁食」同时记到两栏下面。做题时读完自己那条，还要看看有没有适用于所有人的规定。',
+  ],
+  'passive-roles': [
+    '在两句里分别给制作者和海报划线。第一句是 Mei 开头，第二句把 The poster 挪到了开头，制作这件事发生在海报上。',
+    '沿着 was made 找到 by Mei，就能回到第一句的制作者。遇到类似句子，分别问「什么被做了」「谁做的」，再给两边配对。',
+  ],
+  'passive-no-agent': [
+    '把句子分成三块：The books 是被搬的东西，to Room 204 是搬到哪里，yesterday 是什么时候搬。',
+    '如果题目问现在去哪找书，答案从 to 后面的地点来。原文只给了动作、地点和时间，负责搬书的人需要另外的线索才能确定。',
+  ],
+  'passive-notice': [
+    '用 from 和 to 画箭头「101 室 → 205 室」。如果要去买书，地点记箭头指向的那一端。',
+    '另起一行抄 still start at 3 p.m.。still 告诉你开始时间沿用，写提醒时更新教室，再把下午三点原样记上。',
+  ],
+  'relative-people': [
+    '从 The students 往右读，把 who signed up on Monday 整段框起来，给学生贴上「周一报名」的标签。',
+    '找到框右边的 will meet on Friday。Monday 说明哪一批学生，Friday 才是开会那天。遇到两个星期时，分别认它们旁边的动作。',
+  ],
+  'relative-things': [
+    '先看 Bring the bag. 知道要带一个包。接下来读 that has your name on it，得到挑这只包的线索。',
+    '想象桌上一只包有你的名字，另一只写的是同学的名字。用 that 后面的说明去检查标签，拿写有自己名字的那只。',
+  ],
+  'relative-notice': [
+    '把两句里的 who 说明各抄一格：signed up online 对应网上报名的人，signed up at the office 对应在办公室报名的人。',
+    '再从每格横着读到该条的 meet in。网上报名看 202 室，办公室报名看 105 室；先确认自己的报名方式，再抄同一行的教室。',
+  ],
+  'vocab-borrow-lend': [
+    '画一个箭头 Mei → I，表示书从 Mei 手里到我手里。第一句以 I 开头，用 borrow from 说「从 Mei 那里借来」。',
+    '第二句跟着同一条箭头走，换由 Mei 开头，用 lends me 说「借给我」。遇到这两个词，先认句首是拿到的人还是给出的人。',
+  ],
+  'vocab-return-keep': [
+    '给 keep 和 return 各填一格。keep 后的 for one week 是可以拿在手上多久，return 后的 on Friday 是具体哪天交回去。',
+    '把 it 换回 the book 读一次：Return the book on Friday.。如果要记在日历里，写下星期五和要还的物品，时长另记一栏。',
+  ],
+  'vocab-library-reading': [
+    '先在纸上写 book 和 map 两行。读 Keep the book for one week. 时，只把「可借一周」填进 book 那行。',
+    '从 and 把最后一句拆为 return the map on Monday 和 return the book on Friday。两个日期和各自名词一起抄，能避免把地图也记成周五还。',
+  ],
+  'poster-signup': [
+    '把海报上的动词写到两个栏目。Sign up 下的 Room 106 是报名地点，Meet 下的 the classroom 是参加活动的地点。',
+    '再把 on Friday 写在 Meet 的一栏，因为它在那一句。想参加时先去 106 室报名，活动当天按集合那行走。',
+  ],
+  'poster-no-experience': [
+    '把 No experience needed 整体读成「没有经验也可以」。如果你刚开始学画画，这条告诉你已经满足关于经验的要求。',
+    '下一句 Bring a pencil 单独提供了准备事项。给自己留两个勾选框「可以报名」「准备铅笔」，避免只核对一项。',
+  ],
+  'poster-compare': [
+    '分开筛两轮。第一轮看经验：零基础符合 Photo Club，想加入 Swim Club 要先会游泳。',
+    '第二轮对照时间：摄影社 16:00 开始，游泳社 17:00 开始。假如新手 16:30 才能到，两个社团都各有一个条件没过。',
+  ],
+  'insert-reference': [
+    '先从 They said hello. 倒着找人物。They 在这里指复数，前面刚介绍的 Two students 可以填进 They 的位置。',
+    '把三句连读成「开门 → 发现两名学生 → 两名学生问好」。如果中间句只介绍一个人的名字，最后的 They 就缺少能接上的对象。',
+  ],
+  'insert-relation': [
+    '第一句的 small ways 意思有点宽。读到 For example 后等一个具体行动，lend a pen 就是借出一支笔给同学这种小事。',
+    '把后一句拿掉，前一句仍说得完整，只是少了做法。做衔接题时，可以先问后一句在说明前一句、转到相反情况，还是继续讲下一件事。',
+  ],
+  'insert-both-sides': [
+    '只读第一句和最后一句，会看到「本子湿了」跳到「又可以写了」。先想中间缺了一件让情况改善的事。',
+    'Lin gave her a dry notebook. 补上这一步，her 指 Mei，dry 和前面的 wet 相对。插入后从头读一遍，看看 now 的新情况能否解释。',
+  ],
+  'gap-what': [
+    '把后一句倒回去接到问法里：She wants a book. 回答的是「她想借什么东西」，a book 就是要找的对象。',
+    '写进 I don’t know 后，放 what 再放 Mei wants to borrow。试读时留心 Mei 在 wants 前面，最后按完整陈述来读。',
+  ],
+  'gap-word-job': [
+    '先把括号给的词和空格暂时遮住。看第一句 is 后是在描述 Mei，选 careful；第二句空格跟着 reads the notice，描述她怎样阅读。',
+    '第二句需要副词 carefully。做完问自己「如果去掉这个词，还剩不剩 Mei reads the notice 这个动作？」如果剩下，刚补的词就在说明读法。',
+  ],
+  'gap-spend-ing': [
+    '从 spends 后找时长 an hour，再找用这段时间做的事 reading。把句子读成 Lin / spends an hour / reading every day。',
+    '仿写半小时做画画练习，可说 Lin spends half an hour drawing every day.。留下时长的位置，后面的动作仍写成 -ing。',
+  ],
+  'sentence-past-phrase': [
+    '把 Two days ago 单独圈出。两天前已经结束，选 wash 的过去式 washed，再从中文找被洗的东西 a cup。',
+    '如果题目已经印了 Two days ago, we，在空格里写 washed a cup 即可。写完把印好的部分也读一遍，检查主语、时间和宾语有没有重复。',
+  ],
+  'sentence-location-question': [
+    '在 Where is the school office? 里找三块：where／is／the school office。接在 tell me 后，where 留在最前面。',
+    '接着把地点名放在 is 前：where the school office is。自己空读一遍整句 Could you tell me …?，核对空格只填从 where 到 is 的部分。',
+  ],
+  'sentence-proud-boundary': [
+    '先圈出主语和时间。Mei 说现在的感受用 is，Yesterday 加 we 时就要用 were，后面的 proud of 保持连在一起。',
+    '分清空格的右边已经印了什么。若题目右边是 of our work，只填 were proud；若右边只有 our work，就连着填 were proud of。',
+  ],
+  'timetable-locate': [
+    '假设你找星期一九点的课，先用 Monday 筛掉第三行，再用 9:00 筛掉第二行。',
+    '从留下的第一行向右读出 Math 和 Room 106。第三行也有 106 室，所以可以用星期和时刻确认这是自己要去的那节课。',
+  ],
+  'timetable-change': [
+    '先在更改通知圈 Friday Art，把它和旧表里同样写着 Friday、Art 的那行配起来。两门课时刻相同，课程名才分得开。',
+    '就在美术行把 108 室换成 203 室。音乐那行仍读作 Friday 4:00, Music, Room 106，抄最新教室时沿着课程名找到同一行。',
+  ],
+  'timetable-decide': [
+    '先照时间表抄两个候选：九点音乐社、十点美术社。然后读这周通知，把 no Music Club 对到音乐社那行并划掉。',
+    '想找这周还能去的一项，就从剩下的美术社那行一起抄时间和 203 室。同一行里三项都对上，出门时才知道几点到哪里。',
+  ],
+  'form-field': [
+    '把表名和可填写的栏分开。Drawing Club: Sign-up form 告诉你是哪张表，有空格的 Name、Email、Activity 才是要落笔的三栏。',
+    '如果手里有一个活动名，沿着 Activity 右边填；邮箱放 Email。填完再读表下 Please write in English，把书写要求应用到表格上。',
+  ],
+  'receipt-status': [
+    '先对照 Drawing Club 和 Name，确认是自己这一次报名，再读 Status: Submitted。这个状态说明表已经送到了。',
+    '到 Note 找接下来做什么。We will check 说明还在等核对，Please wait 指示先等新回执；可以把当前进度记成「已交，待确认」。',
+  ],
+  'receipt-fix': [
+    '看到 Needs correction 先去读更正通知。change the room to Room 106 同时告诉你要动的是教室栏、要写的新值是 106。',
+    '按通知逐项核对：把 Room 203 改成 106；看到 The time stays the same，把 Friday 4:00 从旧回执原样抄到新记录。',
+  ],
+  'price-tag': [
+    '从价格旁找 each 和 for。Notebook 的 each 给每本价；Pencil 的 2 for 5 yuan 给两支一组的价。买两支时按一组写 5 元。',
+    'Total: 12 yuan 出现在小票末尾，表示这张小票加起来的金额。查某种东西的单价时回价签找对应的那一行。',
+  ],
+  'price-offer': [
+    '列两个核对项：买两本及以上；有学生证。优惠行上的 5 yuan each 要在这两项都满足时才用。',
+    '拿「有学生证，买 1 本」来试一下。证件符合，数量没到两本，查下面的 One notebook，单本价是 6 元。',
+  ],
+  'price-receipt': [
+    '先从小票抄数量：笔记本 2 本，橡皮 1 块。把笔记本的 2 跟 two or more 核对，刚好够，正确单价应是 5 元。',
+    '再逐行比较单价。橡皮的 1 元和价签相同；笔记本写成每本 6 元，需要更正，按 2 本重新算应该是 10 元。',
+  ],
+  'unit-01-practice': [
+    '把 Bo 的话按用途拆成三小段：Hi 先招呼，I’m Bo. 报自己的名字，Nice to meet you. 把初次见面的问候说完。',
+    '换一个同学来接话时，可以先用 I’m 加自己的名字，再回 Nice to meet you, too.。还不知道对方名字时，用 What’s your name? 来问。',
+  ],
+  'unit-02-practice': [
+    '把例句抄成三栏。先写 show 的开始时间 Friday 7 p.m.，再用 Meet in 找集合点 school hall，用 Bring 找要带的 chair。',
+    '核对时把信息说成一句出门提醒：「周五晚上七点，到学校礼堂，带一把椅子。」看新通知时，即使三句换顺序，也按动作找回对应的那栏。',
+  ],
+  'unit-03-practice': [
+    '第一句读成 Mei／buys／a bag，先看清「谁买了什么」。第二句的 It 需要从这三个部分里找一个能接住的事物。',
+    '试着在 It is small. 里换回 the bag，意思是「包很小」。顺手圈住 is small，这一段是在说包的样子。',
+  ],
+  'unit-04-practice': [
+    '沿同一条线记「08:00 公交车离开 → 08:15 Mei 到车站」。两个时刻相差 15 分钟，可以推出她错过了这班车。',
+    '想加一句「因为起晚了」时，回材料找有没有起床的线索。例句里只有车离开和她到站的时间，可以用这两点说明判断。',
+  ],
+  'unit-05-practice': [
+    '先把两句共同的动作 cleaning the desk 圈起来，再找时间。now 是此刻，Yesterday at eight 是昨天八点。',
+    '时间决定前面配哪一个 be：Mei is cleaning 说现在，she was cleaning 说过去那一刻。把 she 换成两个人 they 时，可说 they were cleaning。',
+  ],
+  'unit-06-practice': [
+    '从第一句把 Ms. Chen 抄到「收件人」，所以开头可以写 Dear Ms. Chen。她对应后一句里的 her。',
+    '把题目的 and 当成核对线：which club 要写一个社团，why 要交代想参加的原因。写完用两句原话分别勾掉这两个要求。',
+  ],
+  'unit-07-practice': [
+    '把原文记成两行事实：开会在 Thursday；new members 带照片可选。看改写时先核对日期，再核对说的是哪群人。',
+    '如果选项说 New members can come without a photo.，意思接得上。写成 They must bring a photo. 就把可选变成了必须。',
+  ],
+  'unit-08-practice': [
+    '把 Wednesday 4 p.m. 记进「发姓名的截止时间」。if 只管紧接着的要求，新同学发姓名时在后面写 NEW。',
+    '用 now 和 not 给两个房间贴新旧标签：现用 102 室，原来是 201 室。最后按「截止／给谁的附加要求／现用教室」自己念一遍。',
+  ],
+  'unit-09-practice': [
+    '用三个小框读原句：cooking club 是喜欢的活动，we cook together on Fridays 既写到做法和时间，也在 because 后解释喜欢的原因。',
+    '如果要讲得再具体些，可以加 We make simple dishes together.。补充前回看题目的要求，选一句能带来新信息的放进草稿。',
+  ],
+  'unit-10-practice': [
+    '把 took a short break 读成一组，意思是「短暂休息」。这里 took 已经表示过去，break 是这组表达里的名词。',
+    '从 so 两边画箭头「天气热 → 到树下休息」。试词时先读搭配，再检查这个行动能不能接住前面的原因。',
+  ],
+  'unit-11-practice': [
+    '前半段先解决「现在能不能借」。听到 Sorry 和 I need it now，就在「现在」旁标暂时借不到。',
+    'How about after lunch? 只是提了新时间，直到 After lunch is fine. 才约成。用两个记号把「提议」和「确认」分开。',
+  ],
+  'unit-12-practice': [
+    '先标出三步：填写表格、把它交给老师、等卡。第二句的 it 回指第一步填好的 form。',
+    '从结尾往前核对一次。要拿到卡，前面要先等；等待前要把表给老师。题目问交给谁时，就去第 2 步读 to the teacher。',
+  ],
+  'unit-13-practice': [
+    '先把两句相同的部分 to school every day 框起来，说明都是每天步行去上学。剩下的差别是 I walk 和 Mei walks。',
+    '从 Mei 换回 I 时，把 walks 改回 walk。默念一遍 I walk / she walks，再带着同一个 every day 把两句说完整。',
+  ],
+  'unit-14-practice': [
+    '从 yesterday 和 Did 找到过去的时间，Did 已经标明过去，所以读 clean the room。例句中的 Yes, she did. 就是在说 Mei 确实打扫了。',
+    '试说相反的情况：Mei didn’t clean the room yesterday.。动词仍是 clean，因为表示过去的任务交给了 didn’t。',
+  ],
+  'unit-15-practice': [
+    '先写下将来时的时间格「周一下午两点」。接着从用场地的两句里找 won’t，划掉 front hall。',
+    '把 will use 后的 reading room 填到地点格。提醒自己出门时拿到的是「周一下午两点，阅览室」，时间和地点都要有依据。',
+  ],
+  'unit-16-practice': [
+    '第一句从 bigger 往两边找：new dining hall 在左，old one 在右。one 代替 dining hall，所以比较的是新旧两个食堂。',
+    '第二句单独看座位数。more than 60 表示超过 60，61 符合，60 刚好在界线上。例句给出了范围，具体有多少座位还要查其他信息。',
+  ],
+  'unit-17-practice': [
+    '把 because the bus was slow 和 to buy a card 放进两栏。公交车慢解释为什么早出发，买卡说明去了店里想做什么。',
+    '读到 But 先找遇到的问题：店关门了。接着用 so 找结果：她回来了。复述时保留「想买」这个词，买成了需要另外的线索。',
+  ],
+  'unit-18-practice': [
+    '先按组别画两行。A 组读 must bring，地图记为必带；B 组读 don’t have to bring，地图记为可选。',
+    '最后一条从 For everyone 开头，两组都要遵守。无论哪组，mustn’t take photos 都应记成「礼堂内禁止拍照」。',
+  ],
+  'unit-19-practice': [
+    '用两行记这次搬动。旧桌子是 moved out，周一搬出去；新桌子是 put in，周二放进去。out 和 in 给出了相反的方向。',
+    '第二句省去了同一个教室名，可以根据上下文接到 202 室。复述给同学时可以先说教室，再按两天分开说桌子的变化。',
+  ],
+  'unit-20-practice': [
+    '前半句都从 the books 开始，先圈各自的 that 说明，用 green mark／red mark 把两批书分开。',
+    '从各自的标记连线到 will go to 后的班级，连出绿色 → 1 班、红色 → 2 班。拿到一本书，先看标记，再沿同一条线找班级。',
+  ],
+  'unit-21-practice': [
+    'Chen 作主语，borrowed … from Lin 说明他从 Lin 手里借来一支笔。画箭头 Lin → Chen，笔先到 Chen 手里。',
+    '把还笔写成一条提醒「周四归还这支笔」。for two days 表示能留多久，on Thursday 表示具体哪天还，两个时间各填一栏。',
+  ],
+  'unit-22-practice': [
+    '先读 No experience needed，舞蹈零基础符合这条要求。然后给自己记「报名到 105 室」「活动到礼堂」两处地点。',
+    'at 3 p.m. on Tuesday 跟着 Meet 写，所以贴到活动格。对比另一张海报时，也各自抄出资格、报名和活动三项再比较。',
+  ],
+  'unit-23-practice': [
+    '先从两头找缺口：开头说笔没墨，结尾说 Mei 现在能填表了。缺的是能让她重新写字的那件事。',
+    '把 Lin gave her a new pen. 接进去，新的笔解决「没墨」，her 也接住前文的 Mei。把三句连读，看最后的 Now 有没有从中间句得到解释。',
+  ],
+  'unit-24-practice': [
+    '第一句从 borrow 往回问「想借什么」。用 what 占要借的东西的位置，然后按 Mei wants 的顺序接到 I don’t know 后。',
+    '第二句把 reads the notice 连着看。carefully 说明 Mei 读得怎么样，给动作补细节；在 is 后描述 Mei 的特点时，可用 careful。',
+  ],
+  'unit-25-practice': [
+    '先框出 Yesterday 和 after class。前者确定用过去式 cleaned，后者补充事情发生在昨天的哪个时段。',
+    '如果空格左边已有 Yesterday, we，右边已有 after class，只写 cleaned the windows。合起来读一遍，确认已经印出的时间和主语各出现一次。',
+  ],
+  'unit-26-practice': [
+    '把原表按课程分两行：English 九点 104 室，Music 十点 106 室。查课时，同一个课程的时间和教室一起从那行读。',
+    '通知点名 Monday Music，只把音乐行的教室换成 202。十点这个时刻在原表里，通知只更新教室，写新日程时再把时刻带上。',
+  ],
+  'unit-27-practice': [
+    '先从 Status 读出还在等更正，接着到 Note 找要做的事。Note 点名 Class field，所以在表里找班级栏。',
+    '用班级名填进 Class，回读一次说明，确认这一项已补。其他栏按原表填写，重新提交后看新的 Status。',
+  ],
+  'unit-28-practice': [
+    '先把每种东西的计价方式单独记下：铅笔每支 2 元，笔记本 3 本一组 12 元。each 按件算，for 前的数字告诉你这一组有几件。',
+    '用小票的 2 pencils 对回铅笔价签。2 支乘每支 2 元得到 4 元，和 Total 一致。核对小票时逐行用自己的商品和数量算，再看总价。',
+  ],
+});
