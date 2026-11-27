@@ -49,6 +49,10 @@
   const legacyKey = 'english-start:first-hello:1';
   const reviewKey = 'english-start:learned-review:1';
   const examScoreKey = 'english-start:2026-score:1';
+  const readingSessionKey = 'english-start:reading-session:1';
+  const readingModes = ['readingStart', 'reading', 'readingStory', 'readingGuide'];
+  const writingSessionKey = 'english-start:writing-session:1';
+  const writingLimits = { grammar: 40, sentence: 160, sentenceBridge: 160, email: 1600 };
   // 题型用于推荐课程；旧满分只用于显示以前手填的成绩。
   const examSections = [
     ['dialogue', '补全对话', 10, ['request-reply', 'conversation-purpose', 'service-borrow', 'service-directions', 'service-booking']],
@@ -61,10 +65,11 @@
     ['email', '应用写作', 10, ['email-plan', 'email-use-details', 'email-specific-reason', 'email-revise']],
   ];
   const screens = ['example', 'build', 'transfer', 'done'];
+  const defaultStepLabels = ['先看一句', '拼一句', '认一句'];
   let activeAudio = null;
   let lesson = null;
   let state = null;
-  const practiceDrafts = {};
+  const practiceDrafts = { ...loadReadingDrafts(), ...loadWritingDrafts() };
   let practiceMode = null;
   let directory = null;
   const course = load();
@@ -130,6 +135,86 @@
 
   function storageUnavailable() {
     storageNote.textContent = '这个浏览器不允许保存进度，关掉页面后可能需要重来。';
+  }
+
+  function loadReadingDrafts() {
+    const drafts = {};
+    try {
+      const saved = JSON.parse(window.sessionStorage.getItem(readingSessionKey));
+      for (const mode of readingModes) {
+        const draft = saved?.[mode];
+        if (!Number.isInteger(draft?.index) || draft.index < 0 || draft.index >= practiceSets[mode].tasks.length) continue;
+        drafts[mode] = {
+          index: draft.index,
+          answered: draft.answered === true,
+          readingExampleSeen: mode === 'readingStart' && (draft.index > 0 || draft.readingExampleSeen === true),
+        };
+      }
+    } catch { /* Reading remains available when browser storage is blocked. */ }
+    return drafts;
+  }
+
+  function saveReadingDrafts(mode) {
+    if (!readingModes.includes(mode)) return;
+    const drafts = {};
+    for (const readingMode of readingModes) {
+      const draft = practiceDrafts[readingMode];
+      if (draft && draft.index < practiceSets[readingMode].tasks.length) {
+        const { index, answered, readingExampleSeen } = draft;
+        drafts[readingMode] = { index, answered, readingExampleSeen };
+      }
+    }
+    try { window.sessionStorage.setItem(readingSessionKey, JSON.stringify(drafts)); }
+    catch { /* Keep the in-memory draft if this tab cannot store it. */ }
+  }
+
+  function normalizeWriting(text) {
+    return text.normalize('NFKC').trim().toLowerCase();
+  }
+
+  function matchSentence(task, text) {
+    const normalize = (value) => normalizeWriting(value).replace(/[‘’]/g, "'").replace(/\s+/g, ' ');
+    const written = normalize(text);
+    return task.accepted.find((answer) => normalize(answer) === written);
+  }
+
+  function loadWritingDrafts() {
+    const drafts = {};
+    try {
+      const saved = JSON.parse(window.sessionStorage.getItem(writingSessionKey));
+      for (const [mode, limit] of Object.entries(writingLimits)) {
+        const draft = saved?.[mode];
+        if (!Number.isInteger(draft?.index) || draft.index < 0) continue;
+        const typed = typeof draft.typed === 'string' ? draft.typed.slice(0, limit) : '';
+        const task = practiceSets[mode].tasks[draft.index];
+        if (mode === 'email') {
+          const hasEnglish = /[a-z]/i.test(normalizeWriting(typed));
+          const checks = practiceSets.email.tasks[0].checks.map((_, i) => hasEnglish && draft.checks?.[i] === true);
+          const index = draft.index === 1 && checks.every(Boolean) ? 1 : 0;
+          drafts[mode] = { index, typed, checks, recheck: draft.recheck === true && !checks.every(Boolean) };
+        } else if (task) {
+          const matched = task.accepted && matchSentence(task, typed);
+          const correct = mode === 'grammar' ? normalizeWriting(typed) === task.answer : Boolean(matched);
+          drafts[mode] = { index: draft.index, typed, answered: draft.answered === true && correct,
+            matched: draft.answered === true ? matched : '', compare: draft.compare === true };
+        }
+      }
+    } catch { /* Writing remains available when this tab cannot store drafts. */ }
+    return drafts;
+  }
+
+  function saveWritingDrafts(mode) {
+    if (!Object.hasOwn(writingLimits, mode)) return;
+    const drafts = {};
+    for (const writingMode of Object.keys(writingLimits)) {
+      const draft = practiceDrafts[writingMode];
+      if (draft && (writingMode === 'email' || draft.index < practiceSets[writingMode].tasks.length)) {
+        const { index, typed, answered, compare, checks, recheck } = draft;
+        drafts[writingMode] = { index, typed, answered, compare, checks, recheck };
+      }
+    }
+    try { window.sessionStorage.setItem(writingSessionKey, JSON.stringify(drafts)); }
+    catch { /* Keep the in-memory draft if this tab cannot store it. */ }
   }
 
   function normalize(saved, item, legacy = false) {
@@ -276,6 +361,8 @@
         if (!tasks.length && mode !== 'learnedReview') return;
         practiceDrafts[mode] = { index: 0, answered: false, tasks, focus, repeatSeen };
       } else practiceDrafts[mode] = { index: 0, answered: false };
+      saveReadingDrafts(mode);
+      saveWritingDrafts(mode);
     }
     lesson = null;
     state = null;
@@ -494,7 +581,7 @@
     const hero = el('section', null, 'home-hero');
     const intro = el('div', null, 'home-intro');
     heading('广东中职 3＋证书 · 英语备考', '英语第一步',
-      nextLesson ? '从一句打招呼开始，慢慢读懂校园通知。' : '课程已学完，可以回练对话，或按题型继续练。', intro);
+      nextLesson ? '先看讲解，跟着做，再自己试一次。' : '课程已学完，可以回练对话，或按题型继续练。', intro);
     const reassurance = el('p', null, 'reassurance');
     reassurance.id = 'home-reassurance';
     reassurance.append(el('strong', '不用开口、不用录音，读不准也没关系。'),
@@ -506,10 +593,17 @@
       const last = lessons.find((item) => item.id === 'first-conversation');
       intro.append(actionRow(start, button('回练第三课', 'btn', () => openLesson(last, course.lessons[last.id]?.screen === 'done'))));
     } else {
-      const start = button(`${course.lessons[nextLesson.id] ? '继续' : '开始'}${nextLesson.number}`, 'btn primary',
-        () => openLesson(nextLesson));
-      start.setAttribute('aria-describedby', reassurance.id);
-      intro.append(actionRow(start, el('p', nextLesson.title, 'home-next')));
+      const saved = course.lessons[nextLesson.id];
+      const start = button(`${saved ? '继续' : '开始'}${nextLesson.number}`, 'btn primary', () => openLesson(nextLesson));
+      const details = el('p', nextLesson.title, 'home-next');
+      details.id = 'home-next';
+      if (saved) {
+        const step = screens.indexOf(saved.screen);
+        const name = (nextLesson.stepLabels || defaultStepLabels)[step];
+        if (name) details.append(el('span', `第 ${step + 1} 步 · ${name}`, 'home-step'));
+      }
+      start.setAttribute('aria-describedby', `${details.id} ${reassurance.id}`);
+      intro.append(actionRow(start, details));
     }
     const arrow = el('span', '→', 'start-arrow');
     arrow.setAttribute('aria-hidden', 'true');
@@ -591,7 +685,10 @@
       ['读社团招新海报：报名、条件与时间', 78, 81, '找准报名和集合地点，再按条件和时间挑活动。'],
       ['短文选句：看前面，也看后面', 81, 84, '找到代词指谁、句子怎样转折或举例，再放回原文核对。'],
       ['语法填空：先判断空里缺什么', 84, 87, '没括号先找缺的信息，有括号先看词在句子里做什么。'],
-      ['完成句子：看两边，只补缺的部分', 87, lessons.length, '用时间、语序和固定搭配核对要补的半句；课末可以选做书写。'],
+      ['完成句子：看两边，只补缺的部分', 87, 90, '用时间、语序和固定搭配核对要补的半句；课末可以选做书写。'],
+      ['看时间表：按同一行的字段找信息', 90, 93, '先按星期几和几点定到一行，再用通知排掉被改过的旧信息。'],
+      ['看报名表和回执：按栏名填、按状态走', 93, 96, '先按栏名把信息填进对应的一栏，再按回执状态决定下一步，最后只改更正通知点名的一项。'],
+      ['看价签和优惠：单价、门槛和小票', 96, lessons.length, '先分清单价和成组价，再读清数量与对象门槛，最后拿两份材料核对小票上收费不符的那一项。'],
     ];
     const catalog = el('div', null, 'lesson-directory');
     const next = lessons.indexOf(recommendedLesson());
@@ -754,7 +851,7 @@
         }
         const currentRecords = `可补入：课程 ${count.lessons} 项、综合复习 ${count.reviews} 项、词汇 ${count.vocab} 项及复习起点 ${count.vocabDates} 项、原创卷草稿 ${count.drafts} 份、原创卷历史 ${count.paperHistory} 套、旧手填记录 ${count.scores} 项。`;
         details.textContent = archiveNote ? `${currentRecords} ${archiveNote}` : currentRecords;
-        tell(note, '预览完成，尚未写入。确认后会刷新，单项练习的临时草稿不会保留。', 'hint');
+        tell(note, '预览完成，尚未写入。确认后会刷新。本标签页的阅读和书写练习可以继续。', 'hint');
         apply.disabled = false;
       } catch (error) {
         if (current === selection && panel.isConnected) tell(note, `未导入：${error.message}`, 'hint');
@@ -850,7 +947,7 @@
     const writingMode = directory === 'writing';
     const title = writingMode ? '书写练习' : '点选练习';
     heading('广东中职 3＋证书 · 原创练习', title, writingMode
-      ? '选做，不影响入门。可以从写一个词开始。草稿只在当前页面保留，刷新或关闭就会丢失。'
+      ? '选做，可以从写一个词开始。同一标签页刷新后，在这里点「继续」续写。'
       : '补全对话、词义、阅读、完形和选句。都不用打字，选你想练的。');
     card.setAttribute('aria-label', title);
     studyNav();
@@ -884,7 +981,7 @@
     const readingTitle = el('h3', practiceSets.reading.title);
     readingTitle.id = 'reading-title';
     reading.setAttribute('aria-labelledby', readingTitle.id);
-    reading.append(readingTitle, el('p', '第一次读短文，可以先看导学：示范一次，带做一题，再自己找一句。也可以直接练。', 'note'),
+    reading.append(readingTitle, el('p', '第一次读短文，可以从导学开始。同一标签页刷新后，在这里点「继续」接着做。', 'note'),
       actionRow(button(practiceLabel('readingStart'), 'btn', () => openPractice('readingStart')),
         button(practiceLabel('reading'), 'btn', () => openPractice('reading'))));
     for (const [mode, description] of [
@@ -1137,11 +1234,14 @@
     heading(null, task.title || '换个名字，还认得吗？', task.prompt);
     const evidenceLines = [];
     const evidenceIndexes = [].concat(task.evidence ?? []);
+    let passageTitle;
+    let readingJumps;
     let currentBlank;
     if (task.passage) {
       const passage = english(el('section', null, 'speech bridge-dialogue reading-passage'));
-      const name = el('h2', task.passage.title);
-      passage.append(name);
+      passageTitle = el('h2', task.passage.title);
+      passageTitle.tabIndex = -1;
+      passage.append(passageTitle);
       task.passage.lines.forEach((line, index) => {
         const paragraph = el('p', line, 'line-en');
         if (task.blank !== undefined && line.includes('____')) {
@@ -1159,9 +1259,11 @@
         } else wordText(paragraph, line);
         passage.append(paragraph);
         if (evidenceIndexes.includes(index)) {
-          const label = el('p', '原文依据：', 'reading-evidence-label');
+          const labelText = evidenceIndexes.length > 1 ? `原文依据 ${evidenceLines.length + 1}` : '原文依据';
+          const label = el('h3', labelText, 'reading-evidence-label');
           label.lang = 'zh-CN';
           label.hidden = true;
+          label.tabIndex = -1;
           paragraph.before(label);
           evidenceLines.push({ paragraph, label });
         }
@@ -1225,6 +1327,11 @@
     finish.setAttribute('aria-describedby', `${gate.id} ${note.id}`);
     const controls = new Map();
 
+    function focusReadingTarget(target) {
+      target.focus({ preventScroll: true });
+      target.scrollIntoView({ block: 'center' });
+    }
+
     function showResult() {
       gate.hidden = passed();
       finish.disabled = !waitingText && !passed();
@@ -1243,6 +1350,14 @@
       for (const { paragraph, label } of evidenceLines) {
         paragraph.classList.add('reading-evidence');
         label.hidden = false;
+      }
+      if (evidenceLines.length) {
+        // 答对后重建跳转条时保留「回看原文」，不能只留依据按钮。
+        readingJumps.replaceChildren(button('回看原文', 'btn reading-jump', () => focusReadingTarget(passageTitle)),
+          ...evidenceLines.map(({ label }, index) => {
+            const text = evidenceLines.length === 1 ? '回看原文依据' : `回看依据 ${index + 1}`;
+            return button(text, 'btn reading-jump', () => focusReadingTarget(label));
+          }));
       }
       tell(note, task.success, 'ok');
     }
@@ -1266,6 +1381,13 @@
       controls.set(option.id, control);
       options.append(control);
     }
+    if (passageTitle) {
+      const toAnswers = button('到答题区', 'btn reading-jump', () => focusReadingTarget(passed() ? finish : options.firstElementChild));
+      readingJumps = el('div', null, 'reading-jumps');
+      readingJumps.append(button('回看原文', 'btn reading-jump', () => focusReadingTarget(passageTitle)));
+      card.insertBefore(toAnswers, passageTitle.parentElement);
+      card.append(readingJumps);
+    }
     card.append(options, note, gate);
     if (backLabel) actions(finish, button(backLabel, 'btn', back));
     else actions(finish);
@@ -1273,7 +1395,7 @@
   }
 
   function draftNotice() {
-    const notice = el('p', '返回首页再进可以续写；刷新或关闭页面，草稿不会保留。', 'draft-notice');
+    const notice = el('p', '草稿保存在当前标签页。刷新后可从「书写练习」接着写。', 'draft-notice');
     notice.id = 'written-draft-notice';
     return notice;
   }
@@ -1295,8 +1417,9 @@
   }
 
   function showSentenceWriting(set, task, draft) {
+    const mode = set.guide || 'sentence';
     heading(null, `第 ${draft.index + 1} 题：补全句子`, '根据中文提示，只写空格里的部分。');
-    writingGuide(set.guide || 'sentence', draft);
+    writingGuide(mode, draft);
     const prompt = el('div', null, 'speech bridge-dialogue');
     const sentence = english(el('p', null, 'line-en'));
     const [before, after] = task.line.split('____');
@@ -1315,7 +1438,7 @@
     input.autocomplete = 'off';
     input.autocapitalize = 'none';
     input.spellcheck = false;
-    input.maxLength = 160;
+    input.maxLength = writingLimits[mode];
     input.value = draft.typed || '';
     input.readOnly = draft.answered;
     const note = feedback('sentence-feedback');
@@ -1328,6 +1451,7 @@
     check.hidden = draft.answered;
     const reference = button('查看参考写法', 'btn', () => {
       draft.compare = true;
+      saveWritingDrafts(mode);
       compare.hidden = false;
       selfCheck.hidden = false;
       tell(note, '参考写法不是唯一答案。你可以修改再检查，也可以对照后继续。', 'hint');
@@ -1340,6 +1464,7 @@
       draft.typed = '';
       draft.matched = '';
       draft.compare = false;
+      saveWritingDrafts(mode);
       render(true);
     };
     const final = draft.index === set.tasks.length - 1;
@@ -1349,7 +1474,10 @@
     next.hidden = !draft.answered;
     if (draft.answered) tell(note, `这是一种参考范围内的写法。${task.takeaway}`, 'ok');
     else if (draft.compare) tell(note, '参考写法不是唯一答案。可以修改再检查，也可以对照后继续。', 'hint');
-    input.addEventListener('input', () => { draft.typed = input.value; });
+    input.addEventListener('input', () => {
+      draft.typed = input.value;
+      saveWritingDrafts(mode);
+    });
     input.addEventListener('keydown', (event) => {
       if (event.key === 'Enter' && (event.isComposing || event.keyCode === 229)) event.preventDefault();
     });
@@ -1357,13 +1485,12 @@
       event.preventDefault();
       if (draft.answered) return;
       draft.typed = input.value;
-      const normalize = (text) => text.normalize('NFKC').trim().toLowerCase().replace(/[‘’]/g, "'").replace(/\s+/g, ' ');
-      const value = normalize(draft.typed);
-      if (!value) return tell(note, '先写出空缺的部分，再检查。', 'hint');
-      const matched = task.accepted.find((item) => normalize(item) === value);
+      if (!normalizeWriting(draft.typed)) return tell(note, '先写出空缺的部分，再检查。', 'hint');
+      const matched = matchSentence(task, draft.typed);
       if (!matched) return tell(note, `没有匹配到已收录的写法，不一定错。${task.hint} 也可以查看参考写法。`, 'hint');
       draft.answered = true;
       draft.matched = matched;
+      saveWritingDrafts(mode);
       blank.textContent = matched;
       input.readOnly = true;
       check.hidden = reference.hidden = selfCheck.hidden = true;
@@ -1406,7 +1533,7 @@
     input.autocomplete = 'off';
     input.autocapitalize = 'none';
     input.spellcheck = false;
-    input.maxLength = 40;
+    input.maxLength = writingLimits.grammar;
     input.value = draft.typed || '';
     input.readOnly = draft.answered;
     const note = feedback('grammar-feedback');
@@ -1419,11 +1546,15 @@
       draft.index += 1;
       draft.answered = false;
       draft.typed = '';
+      saveWritingDrafts('grammar');
       render(true);
     });
     next.hidden = !draft.answered;
     if (draft.answered) tell(note, task.takeaway, 'ok');
-    input.addEventListener('input', () => { draft.typed = input.value; });
+    input.addEventListener('input', () => {
+      draft.typed = input.value;
+      saveWritingDrafts('grammar');
+    });
     input.addEventListener('keydown', (event) => {
       if (event.key === 'Enter' && (event.isComposing || event.keyCode === 229)) event.preventDefault();
     });
@@ -1431,11 +1562,12 @@
       event.preventDefault();
       if (draft.answered) return;
       draft.typed = input.value;
-      const answer = draft.typed.normalize('NFKC').trim().toLowerCase();
+      const answer = normalizeWriting(draft.typed);
       if (!answer) return tell(note, '先写一个词，再检查。', 'hint');
       if (!/^[a-z]+$/.test(answer)) return tell(note, '这个空只填一个英语单词，不加标点。', 'hint');
       if (answer !== task.answer) return tell(note, task.hint, 'hint');
       draft.answered = true;
+      saveWritingDrafts('grammar');
       entryHint.hidden = true;
       current.textContent = task.answer;
       current.removeAttribute('data-empty');
@@ -1456,7 +1588,11 @@
       heading(null, '短邮件自查完成', '这不代表考试得分。你可以回来再修改刚写的正文。');
       const body = english(el('p', draft.typed, 'speech email-draft'));
       card.append(body);
-      actions(button('改刚才的邮件', 'btn primary', () => { draft.index = 0; render(true); }),
+      actions(button('改刚才的邮件', 'btn primary', () => {
+        draft.index = 0;
+        saveWritingDrafts('email');
+        render(true);
+      }),
         button('回课程首页', 'btn', backToCourse));
       return;
     }
@@ -1467,7 +1603,7 @@
     const input = english(el('textarea'));
     input.id = label.htmlFor = 'email-body';
     input.rows = 5;
-    input.maxLength = 1600;
+    input.maxLength = writingLimits.email;
     input.spellcheck = false;
     input.value = draft.typed || '';
     const count = el('p', '', 'note');
@@ -1489,6 +1625,7 @@
       draft.typed = input.value;
       if (draft.checks.some(Boolean)) draft.recheck = true;
       draft.checks = [];
+      saveWritingDrafts('email');
       checklist.querySelectorAll('input').forEach((box) => { box.checked = false; });
       showRecheck();
       tell(status, '', null);
@@ -1506,6 +1643,7 @@
       box.addEventListener('change', () => {
         draft.checks[index] = box.checked;
         if (task.checks.every((_, i) => draft.checks[i])) { draft.recheck = false; showRecheck(); }
+        saveWritingDrafts('email');
       });
       row.append(box, el('span', text));
       checklist.append(row);
@@ -1519,7 +1657,7 @@
     form.addEventListener('submit', (event) => {
       event.preventDefault();
       draft.typed = input.value;
-      if (!/[a-z]/i.test(draft.typed.normalize('NFKC'))) {
+      if (!/[a-z]/i.test(normalizeWriting(draft.typed))) {
         tell(status, '先写一点英文正文，再做自查。', 'hint');
         input.focus();
         return;
@@ -1529,6 +1667,7 @@
         return;
       }
       draft.index = 1;
+      saveWritingDrafts('email');
       render(true);
     });
     form.append(draftNotice(), label, english(el('p', 'Dear Alex,', 'mail-frame')), input,
@@ -1570,6 +1709,7 @@
       card.append(steps);
       actions(button('跟着找一次', 'btn primary', () => {
         draft.readingExampleSeen = true;
+        saveReadingDrafts('readingStart');
         render(true);
       }), button(practiceLabel('reading'), 'btn', () => openPractice('reading')));
       return;
@@ -1579,9 +1719,21 @@
       id: 'reading-start', nextLabel: guided ? '下一步：换张通知自己找' : '看导学小结',
       backLabel: guided ? '回看示范' : undefined,
       passed: () => draft.answered,
-      pass: () => { draft.answered = true; },
-      advance: () => { draft.index++; draft.answered = false; render(true); },
-      back: () => { draft.readingExampleSeen = false; render(true); },
+      pass: () => {
+        draft.answered = true;
+        saveReadingDrafts('readingStart');
+      },
+      advance: () => {
+        draft.index++;
+        draft.answered = false;
+        saveReadingDrafts('readingStart');
+        render(true);
+      },
+      back: () => {
+        draft.readingExampleSeen = false;
+        saveReadingDrafts('readingStart');
+        render(true);
+      },
     });
   }
 
@@ -1651,11 +1803,13 @@
       pass: () => {
         if (mode === 'learnedReview') recordReviewAnswer(task, draft.hinted);
         draft.answered = true;
+        saveReadingDrafts(mode);
       },
       advance: () => {
         draft.index += 1;
         draft.answered = false;
         draft.hinted = false;
+        saveReadingDrafts(mode);
         render(true);
       },
       waitingText: mode === 'learnedReview' || mode === 'noticeReview' || task.wordLine || set.passage ? '先选一个答案，答对就能继续。' : '先点一句英语，答对就能继续。',
@@ -1754,7 +1908,7 @@
       home();
     } else {
       const index = screens.indexOf(state.screen);
-      const names = lesson.stepLabels || ['先看一句', '拼一句', '认一句'];
+      const names = lesson.stepLabels || defaultStepLabels;
       progress.hidden = index >= names.length;
       progress.textContent = progress.hidden ? '' : `第 ${index + 1} 步，共 ${names.length} 步 · ${names[index]}`;
       card.setAttribute('aria-label', `${lesson.number}：${lesson.title}`);
