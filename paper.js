@@ -73,11 +73,12 @@ window.PAPER_MODE = (() => {
     };
   }
 
-  function create({ el, button, heading, card, render, storageUnavailable, suggestLesson, enterPaper }) {
+  function create({ el, button, heading, card, render, storageUnavailable, suggestLesson, reviewPractice, enterPaper, backToPrep }) {
     const entries = Object.create(null);
     try { Object.assign(entries, JSON.parse(localStorage.getItem(key)) || {}); } catch { /* Optional storage. */ }
     const a = buildMixed([window.READING_INTRO, window.READING_STORY, window.READING_GUIDE]);
     const forms = [a, window.EXAM_B].filter(Boolean);
+    const topics = window.EXAM_FOCUS || [];
     const formLabel = (paper) => paper === a ? 'A 卷' : 'B 卷';
     const paperTitle = (paper) => paper === a ? `${a.title} · A 卷` : paper.title;
     let selected = null;
@@ -125,6 +126,16 @@ window.PAPER_MODE = (() => {
       enterPaper?.();
       change('result');
     }
+    function prepButton(paper, title) {
+      const record = entries[paper.id] || {};
+      const draft = record.draft;
+      const submitted = !draft && attempts(record).length > 0;
+      return button(`${draft ? '继续' : submitted ? '查看' : '开始'}${title}`, 'btn', () => {
+        if (submitted) return openResults(paper);
+        enterPaper?.();
+        start(paper);
+      });
+    }
     function list() {
       heading('整卷作答 · 统一交卷', '试卷', '单独做题只是练习，不计入试卷成绩。这里可以按整卷作答，交卷后再看参考答案。');
       const mixed = el('section', null, 'paper-panel');
@@ -144,7 +155,7 @@ window.PAPER_MODE = (() => {
     function work() {
       const draft = get(selected).draft;
       const section = selected.sections[sectionIndex];
-      heading(paperTitle(selected), section.title, '可以跳题和回改。卷内不提示对错；同浏览器可继续作答。');
+      heading(topics.includes(selected) ? '题型专项' : paperTitle(selected), section.title, '可以跳题和回改。交卷后看解析，同一浏览器可续做。');
       const moved = el('p', '', 'gate-note');
       moved.setAttribute('role', 'status');
       moved.hidden = true;
@@ -187,12 +198,36 @@ window.PAPER_MODE = (() => {
         grid.append(jump);
       }));
       sheet.append(grid);
-      card.append(status, nav, sheet);
-      if (section.passage) card.append(el('div', section.passage, 'speech paper-text'));
+      card.append(status);
+      if (selected.sections.length > 1) card.append(nav);
+      card.append(sheet);
+      let lastQuestion;
+      if (section.passage) {
+        const source = el('div', section.passage, 'speech paper-text');
+        source.lang = 'en';
+        if (topics.includes(selected)) {
+          const jump = (target) => {
+            target.focus({ preventScroll: true });
+            target.scrollIntoView({ block: 'start' });
+          };
+          source.tabIndex = -1;
+          source.classList.add('paper-jump-target');
+          const controls = el('nav', null, 'paper-jumps');
+          controls.setAttribute('aria-label', '原文与答题区');
+          controls.append(button('回看原文', 'btn', () => jump(source)), button('到答题区', 'btn', () => jump(lastQuestion)));
+          card.append(controls);
+        }
+        card.append(source);
+      }
       for (const q of section.questions) {
         const field = el('fieldset', null, 'paper-question');
         field.id = `paper-item-${q.id}`;
         field.tabIndex = -1;
+        if (section.passage && topics.includes(selected)) {
+          lastQuestion ||= field;
+          field.classList.add('paper-jump-target');
+          field.addEventListener('focusin', () => { lastQuestion = field; });
+        }
         field.append(el('legend', `${q.id}.（${q.points} 分）`), promptNode(q));
         const store = (value) => {
           draft.answers ||= {};
@@ -274,7 +309,7 @@ window.PAPER_MODE = (() => {
         switcher.append(control);
         return control;
       });
-      card.append(switcher);
+      if (attemptButtons.length > 1) card.append(switcher);
       const comparison = el('p', '', 'note');
       comparison.setAttribute('role', 'status');
       const total = el('p', '', 'paper-total');
@@ -282,6 +317,8 @@ window.PAPER_MODE = (() => {
       card.append(total, comparison);
       const groupLabels = [];
       const followUps = [];
+      const priorities = el('p', '', 'paper-priorities');
+      card.append(priorities);
       function update() {
         for (const { section, followUp, lesson } of followUps) {
           followUp.hidden = !lesson || !section.questions.some((q) => {
@@ -291,6 +328,19 @@ window.PAPER_MODE = (() => {
         }
         const report = summarize(selected, last);
         total.textContent = totalLabel(report);
+        const weak = report.sections
+          .map((part, index) => ({ index, lost: part.max - part.score - part.pending }))
+          .filter(part => part.lost > 0).sort((left, right) => right.lost - left.lost);
+        priorities.replaceChildren();
+        if (weak.length) {
+          priorities.append(el('strong', '优先回看'), ...weak.slice(0, 3).map(({ index }) =>
+            button(report.sections[index].title, 'btn', () => {
+              const heading = groupLabels[index];
+              heading.parentElement.open = true;
+              heading.focus();
+            })));
+        }
+        priorities.hidden = !weak.length;
         const totals = history.map((attempt) => summarize(selected, attempt));
         attemptButtons.forEach((control, i) => { control.textContent = `${attemptLabel(history[i], i)} · ${totalLabel(totals[i])}`; });
         const previous = totals[resultIndex + 1];
@@ -306,8 +356,10 @@ window.PAPER_MODE = (() => {
       for (const section of selected.sections) {
         const panel = el('details', null, 'paper-panel');
         const followUp = el('div', null, 'paper-follow-up');
-        const lesson = suggestLesson?.(section.id);
-        if (lesson) followUp.append(el('p', '这部分有失分。可以先回看相关课，再回来对照原题。', 'note'), lesson);
+        const practice = reviewPractice?.(section.id, selected.id);
+        const lesson = suggestLesson?.(section.id, practice);
+        if (lesson) followUp.append(el('p', '先看错在哪里，再补课或直接复练。', 'note'), lesson);
+        if (practice) followUp.append(button(practice.label, 'btn', practice.run));
         panel.append(followUp);
         followUps.push({ section, followUp, lesson });
         if (section.passage) {
@@ -359,18 +411,25 @@ window.PAPER_MODE = (() => {
       }
       update();
       card.append(button('返回试卷列表', 'btn', () => change('list')));
+      if (backToPrep) card.append(button('回备考页', 'btn', backToPrep));
       if (forms.includes(selected)) {
         const paper = selected;
         const next = nextForm();
         if (next !== paper) card.append(button(get(next).draft ? `继续答卷（${formLabel(next)}）` : `换一套题（${formLabel(next)}）`, 'btn primary', () => start(next)));
         card.append(button(get(paper).draft ? `继续这套（${formLabel(paper)}）` : `重做本套（${formLabel(paper)}）`, 'btn', () => start(paper)));
+      } else {
+        const paper = selected;
+        card.append(button(get(paper).draft ? '继续这组专项' : '重做这组专项', 'btn', () => start(paper)));
       }
     }
     return {
       resetView() { view = 'list'; },
       show() { ({ list, work, confirm, result })[view](); },
+      diagnosticButton() { return prepButton(window.EXAM_B || a, '原创 B 卷'); },
+      topicButton(paper) { return prepButton(paper, paper.title); },
+      startTopic(paper) { enterPaper?.(); start(paper); },
       showResults(parent) {
-        const reports = forms.filter((paper) => attempts(get(paper)).length);
+        const reports = [...forms, ...topics].filter((paper) => attempts(get(paper)).length);
         if (!reports.length) parent.append(el('p', '还没有原创整卷成绩。去「试卷」做完一份并交卷，这里就会显示。', 'note'));
         for (const paper of reports) {
           const history = attempts(get(paper));

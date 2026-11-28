@@ -68,9 +68,11 @@
   ];
   const screens = ['example', 'build', 'transfer', 'done'];
   const defaultStepLabels = ['先看一句', '拼一句', '认一句'];
+  const examTopics = window.EXAM_FOCUS || [];
   let activeAudio = null;
   let lesson = null;
   let state = null;
+  let examFollowUp = null;
   const practiceDrafts = { ...loadReadingDrafts(), ...loadWritingDrafts() };
   let practiceMode = null;
   let directory = null;
@@ -79,17 +81,29 @@
   const vocab = window.VOCAB_REVIEW?.create({ words: window.VOCAB_WORDS || [], storage: () => window.localStorage,
     isComplete: (id) => course.lessons[id]?.complete, storageUnavailable });
   let vocabRound = null;
-  const paperMode = window.PAPER_MODE.create({ el, button, heading, card, render, storageUnavailable, suggestLesson,
-    enterPaper: () => { directory = 'papers'; } });
+  const paperMode = window.PAPER_MODE.create({ el, button, heading, card, render, storageUnavailable, suggestLesson, reviewPractice,
+    enterPaper: () => { directory = 'papers'; }, backToPrep: openExamPrep });
 
-  function suggestLesson(sectionId) {
-    const id = /^reading(?:-|$)/.test(sectionId) ? 'reading' : sectionId;
+  const examSection = id => /^reading(?:-|$)/.test(id) ? 'reading' : id;
+
+  function reviewPractice(sectionId, paperId) {
+    const id = examSection(sectionId);
+    const topic = examTopics.find((item) => item.sections[0].id === id);
+    if (topic && topic.id !== paperId) return { label: `做同类题 · ${topic.title}`, run: () => paperMode.startTopic(topic) };
+    const mode = { dialogue: 'bridge', words: 'context', reading: 'readingStory', cloze: 'cloze', insert: 'insert',
+      grammar: 'grammar', sentence: 'sentenceBridge', email: 'email' }[id];
+    if (mode) return { label: `去练${practiceSets[mode].label}`, run: () => openPractice(mode) };
+  }
+
+  function suggestLesson(sectionId, followUp) {
+    const id = examSection(sectionId);
     const ids = examSections.find(([section]) => section === id)?.[3];
     if (!ids) return null;
     const target = lessons.find((item) => ids.includes(item.id) && !course.lessons[item.id]?.complete)
       || lessons.find((item) => item.id === ids[0]);
     if (!target) return null;
-    return button(`${course.lessons[target.id]?.complete ? '回看' : '补课'}：${target.title}`, 'btn', () => openLesson(target));
+    return button(`${course.lessons[target.id]?.complete ? '回看' : '补课'}：${target.title}`, 'btn',
+      () => openLesson(target, course.lessons[target.id]?.complete === true, followUp));
   }
 
   function loadReviewHistory() {
@@ -272,10 +286,11 @@
     }
   }
 
-  function openLesson(item, replay = false) {
+  function openLesson(item, replay = false, followUp = null) {
     directory = null;
     practiceMode = null;
     lesson = item;
+    examFollowUp = followUp;
     const previous = course.lessons[item.id];
     state = (!previous || replay) ? fresh(previous?.complete) : previous;
     course.lessons[item.id] = state;
@@ -582,21 +597,19 @@
     const nextLesson = recommendedLesson();
     const hero = el('section', null, 'home-hero');
     const intro = el('div', null, 'home-intro');
-    heading('广东中职 3＋证书 · 英语备考', '英语第一步',
-      nextLesson ? '先看讲解，跟着做，再自己试一次。' : '正课已学完，可以去课程目录选做单元加练，或按题型继续练。', intro);
-    const reassurance = el('p', null, 'reassurance');
+    heading(null, '3＋证书英语备考', nextLesson
+      ? '先做一组题，找出容易丢分的题型。刚开始学英语，可以从基础课学起。'
+      : '正课已学完。可以按题型查漏，也能从课程目录选做单元加练。', intro);
+    const examStart = button('按题型备考', 'btn primary exam-start', openExamPrep);
+    const reassurance = el('p', '基础课可以点读和点选。备考写作可以自己动笔。', 'note home-reassurance');
     reassurance.id = 'home-reassurance';
-    reassurance.append(el('strong', '不用开口、不用录音，读不准也没关系。'),
-      el('span', '入门课只看文字、点选项，不用打字。'));
-    intro.append(reassurance);
     if (!nextLesson) {
-      const start = button(practiceLabel('review'), 'btn primary', () => openPractice('review'));
-      start.setAttribute('aria-describedby', reassurance.id);
       const last = lessons.find((item) => item.id === 'first-conversation');
-      intro.append(actionRow(start, button('回练第三课', 'btn', () => openLesson(last, course.lessons[last.id]?.screen === 'done'))));
+      intro.append(actionRow(examStart, button(practiceLabel('review'), 'btn', () => openPractice('review')),
+        button('回练第三课', 'btn', () => openLesson(last, course.lessons[last.id]?.screen === 'done'))));
     } else {
       const saved = course.lessons[nextLesson.id];
-      const start = button(`${saved ? '继续' : '开始'}${nextLesson.number}`, 'btn primary', () => openLesson(nextLesson));
+      const start = button(`${saved ? '继续' : '开始'}${nextLesson.number}`, 'btn foundation-start', () => openLesson(nextLesson));
       const details = el('p', nextLesson.title, 'home-next');
       details.id = 'home-next';
       if (saved) {
@@ -605,11 +618,12 @@
         if (name) details.append(el('span', `第 ${step + 1} 步 · ${name}`, 'home-step'));
       }
       start.setAttribute('aria-describedby', `${details.id} ${reassurance.id}`);
-      intro.append(actionRow(start, details));
+      intro.append(actionRow(examStart, start), details);
     }
     const arrow = el('span', '→', 'start-arrow');
     arrow.setAttribute('aria-hidden', 'true');
-    intro.querySelector('.primary').append(arrow);
+    examStart.append(arrow);
+    intro.append(reassurance);
     hero.append(intro, document.querySelector('#intro-art').content.cloneNode(true));
     card.append(hero);
     studyNav(true);
@@ -717,6 +731,46 @@
     ['papers', '试卷', '做整卷、看成绩', 'M6 3h8l4 4v14H6z M14 3v5h4 M9 12h6 M9 16h6'],
     ['progress', '学习进度', '查看已学课程', 'M4 20h16 M7 16v-4 M12 16V8 M17 16V4'],
   ];
+
+  function openExamPrep() {
+    lesson = null;
+    state = null;
+    practiceMode = null;
+    examFollowUp = null;
+    directory = 'exam';
+    render(true);
+  }
+
+  function showExamPrep() {
+    heading('广东中职 3＋证书', '按题型备考', '做题看失分，回课补方法，再换一组同类题。');
+    card.setAttribute('aria-label', '按题型备考');
+    const diagnostic = el('section', null, 'exam-diagnostic');
+    const start = paperMode.diagnosticButton();
+    start.classList.add('primary');
+    diagnostic.append(el('h2', '先做诊断卷'), el('p', '原创 B 卷覆盖各题型，共 26 题。交卷后可以按失分回课。'), start);
+    card.append(diagnostic);
+
+    const headingTopics = el('h2', '直接练薄弱题型', 'exam-topic-heading');
+    const grid = el('div', null, 'exam-topic-grid');
+    const descriptions = {
+      cloze: '读完整故事，练搭配、转折和后文线索。',
+      insert: '用指代和段落关系，把五个句子放回去。',
+      grammar: '在同一篇短文里补词，或写出括号词的正确形式。',
+      sentence: '按中文提示写半句，检查空格两边。',
+      email: '写一封约 40 词的邮件，再按要点自查。',
+    };
+    for (const topic of examTopics) {
+      const section = topic.sections[0];
+      const item = el('section', null, 'exam-topic-card');
+      const title = el('h3', topic.title);
+      const link = paperMode.topicButton(topic);
+      item.append(title, el('p', descriptions[section.id]), el('span', `${section.questions.length} 题`, 'exam-topic-count'), link);
+      grid.append(item);
+    }
+    card.append(headingTopics, grid);
+    actions(button('更多点选练习', 'btn', () => { directory = 'choices'; render(true); }),
+      button('查看练习成绩', 'btn', () => { directory = 'progress'; render(true); }));
+  }
 
   function studyNav(detailed = false) {
     const nav = el('nav', null, detailed ? 'study-nav home-nav' : 'study-nav');
@@ -939,6 +993,7 @@
   function showDirectory() {
     if (directory === 'backup') return showStudyBackup();
     if (directory === 'vocab') return showVocab();
+    if (directory === 'exam') return showExamPrep();
     if (directory === 'papers') {
       card.setAttribute('aria-label', '试卷');
       return paperMode.show();
@@ -1841,6 +1896,11 @@
     practice.append(el('h2', '这课记住一句', 'study-label'), phrase, el('p', result.practice, 'translation'),
       soundButton('再听示范', result.audio || lesson.example.english), audioFeedback());
     card.append(practice);
+    if (examFollowUp) {
+      const followUp = examFollowUp;
+      actions(button(followUp.label, 'btn primary', followUp.run), button('回备考页', 'btn', openExamPrep));
+      return;
+    }
     const replay = button('再练一次', 'btn', () => openLesson(lesson, true));
     if (lesson.id === 'notice-whole') actions(button(practiceLabel('readingStart'), 'btn', () => openPractice('readingStart')),
       el('p', '选做：看一道阅读题怎么回通知里找依据。', 'note'));

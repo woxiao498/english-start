@@ -93,7 +93,7 @@ window.STUDY_BACKUP = (() => {
     const lessonIds = new Set(window.LESSONS.map((lesson) => lesson.id));
     const reviewIds = new Set(window.LEARNED_REVIEW.map((task) => task.reviewId));
     const words = new Map(window.VOCAB_WORDS.map((word) => [word.id, word.variants.length]));
-    const paperIds = new Set(['mixed', window.EXAM_B?.id, archivedPaper]);
+    const paperIds = new Set(['mixed', window.EXAM_B?.id, archivedPaper, ...(window.EXAM_FOCUS || []).map(item => item.id)]);
     const idsIn = (value, known) => Object.keys(value ?? {}).every((key) => known.has(key));
     ensure(idsIn(records[course]?.lessons, lessonIds) && idsIn(records[vocab]?.introduced, lessonIds)
       && idsIn(records[review], reviewIds) && idsIn(records[papers], paperIds)

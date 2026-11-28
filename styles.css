@@ -52,14 +52,13 @@ html:has(.masthead.is-learning) { scroll-padding-top: 68px; }
 .is-home .card { border: 0; background: transparent; padding: 0; box-shadow: none; }
 .home-hero { display: grid; grid-template-columns: minmax(0, 1.2fr) minmax(0, 1fr); overflow: hidden; border: 1px solid var(--line); border-radius: 22px; background: var(--panel); }
 .home-intro { min-width: 0; padding: clamp(24px, 4vw, 44px); align-self: center; }
-.home-intro .tag { border-radius: 4px; margin-bottom: 13px; letter-spacing: .04em; }
-.home-intro h1 { font-size: clamp(38px, 5.85vw, 76px); font-weight: 830; letter-spacing: -.065em; line-height: 1.09; text-wrap: balance; }
+.home-intro h1 { max-width: 10em; font-size: clamp(32px, 5.25vw, 64px); font-weight: 830; line-height: 1.13; text-wrap: balance; }
 .home-intro .lead { margin: 12px 0 19px; font-size: clamp(15px, 1.55vw, 18px); }
-.home-intro .reassurance { border-left: 3px solid var(--green); border-radius: 5px; background: var(--surface); font-size: 14px; padding: 8px 11px; }
 .home-intro .primary:not([data-waiting]) { display: inline-flex; justify-content: center; align-items: center; gap: 11px; }
 .start-arrow { font-size: 1.15em; line-height: 1; }
 .home-intro .primary { min-width: min(160px, 100%); }
-.card .home-next { margin: 0; color: var(--muted); font-size: 14px; font-weight: 620; overflow-wrap: anywhere; }
+.card .home-next { margin: 9px 0 0; color: var(--muted); font-size: 14px; font-weight: 620; overflow-wrap: anywhere; }
+.card .home-reassurance { margin: 7px 0 0; }
 .home-step { display: block; color: var(--green-deep); }
 .intro-art { display: block; width: 100%; height: 100%; min-height: 0; background: #204d3e; align-self: stretch; }
 .home-progress-strip { display: grid; grid-template-columns: auto minmax(0, 1fr); align-items: center; gap: 16px; margin-top: 17px; padding: 12px 15px; border-block: 1px solid var(--line); }
@@ -97,6 +96,28 @@ html:has(.masthead.is-learning) { scroll-padding-top: 68px; }
 .paper-question:focus-visible { outline: 3px solid var(--green); }
 .paper-follow-up { padding: 8px 0; }
 .card .paper-follow-up p { margin-bottom: 4px; }
+.paper-follow-up .btn { margin: 4px 8px 4px 0; }
+.paper-priorities { display: flex; flex-wrap: wrap; align-items: center; gap: 8px; }
+.paper-priorities .btn { min-height: 40px; }
+.paper-jumps { position: sticky; top: 61px; z-index: 1; display: flex; flex-wrap: wrap; gap: 8px; padding: 6px 0; background: var(--panel); }
+.paper-jumps .btn { min-height: 42px; }
+.paper-jump-target { scroll-margin-top: 64px; }
+.paper-jump-target:focus-visible { outline: 3px solid var(--green); outline-offset: 2px; }
+.exam-diagnostic { display: grid; grid-template-columns: minmax(0, 1fr) auto; gap: 4px 20px; align-items: center; padding: clamp(14px, 3.5vw, 24px); border: 1px solid #c2d6c5; border-radius: 16px; background: var(--green-light); }
+.exam-diagnostic h2, .exam-diagnostic p { margin: 0; }
+.exam-diagnostic p, .exam-topic-card p { color: var(--muted); }
+.exam-diagnostic .btn { grid-column: 2; grid-row: 1 / 3; }
+.exam-topic-heading { margin: 25px 0 10px; }
+.exam-topic-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 12px; }
+.exam-topic-card { display: grid; grid-template-columns: minmax(0, 1fr) auto; column-gap: 8px; align-content: start; padding: 15px; border: 1px solid var(--line); border-radius: 12px; background: var(--surface); }
+.exam-topic-card h3 { margin: 0; font-size: 17px; }
+.exam-topic-card p { grid-column: 1 / -1; grid-row: 2; margin: 4px 0 11px; font-size: 14px; }
+.exam-topic-count { grid-column: 2; grid-row: 1; color: var(--green-deep); font-size: 13px; font-weight: 700; }
+.exam-topic-card .btn { grid-column: 1 / -1; justify-self: start; text-align: left; }
+@media (max-width: 540px) {
+  .exam-diagnostic, .exam-topic-grid { grid-template-columns: 1fr; }
+  .exam-diagnostic .btn { grid-column: 1; grid-row: auto; justify-self: start; margin-top: 7px; }
+}
 @media (max-width: 480px) { .study-nav { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
 .card .home-progress { margin: 0; font-size: 13px; font-weight: 650; color: var(--muted); font-variant-numeric: tabular-nums; }
 .card progress { width: 100%; accent-color: var(--green); }
@@ -300,7 +321,6 @@ html:has(.masthead.is-learning) { scroll-padding-top: 68px; }
   .masthead-note { font-size: 12px; letter-spacing: 0; }
   .card { border-radius: 17px; }
   .actions > .btn.primary, .next-action > .btn.primary { width: 100%; }
-  .home-intro .tag { font-size: 12px; }
   .nav-description { font-size: 11px; }
   .lesson-track { gap: 6px; margin: 13px 0 19px; }
   .lesson-track li { gap: 4px; font-size: 12px; }
@@ -314,6 +334,5 @@ html:has(.masthead.is-learning) { scroll-padding-top: 68px; }
 @media (max-width: 360px) {
   .home-intro { padding: 15px; }
   .home-intro .lead { font-size: 14px; }
-  .home-intro .reassurance { font-size: 13px; line-height: 1.55; }
   .home-nav .btn { min-height: 53px; }
 }
