@@ -624,6 +624,8 @@
     arrow.setAttribute('aria-hidden', 'true');
     examStart.append(arrow);
     intro.append(reassurance);
+    const mistakes = paperMode.mistakeButton();
+    if (mistakes) intro.append(actionRow(mistakes));
     hero.append(intro, document.querySelector('#intro-art').content.cloneNode(true));
     card.append(hero);
     studyNav(true);

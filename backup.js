@@ -29,6 +29,7 @@ window.STUDY_BACKUP = (() => {
   const score = (value, max) => Number.isFinite(value) && value >= 0 && value <= max;
   const attempt = (item) => object(item) && answers(item.answers)
     && optional(item.review, (value) => answerMap(value, (points) => score(points, 10)))
+    && optional(item.corrected, (value) => answerMap(value, (done) => done === true))
     && optional(item.timedOut, flag)
     && optional(item.at, (value) => number(value, 8_640_000_000_000_000));
   const paperRecord = (item) => object(item)

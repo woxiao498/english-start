@@ -93,6 +93,7 @@ window.PAPER_MODE = (() => {
     let sectionIndex = 0;
     let resultIndex = 0;
     let liveClock = null;
+    const retried = new Set();
     const historyLimit = 5;
     const usableResult = (item) => item && typeof item === 'object' && item.answers && typeof item.answers === 'object' && !Array.isArray(item.answers);
     const attempts = (record) => [record.last, ...(Array.isArray(record.past) ? record.past : [])].filter(usableResult).slice(0, historyLimit);
@@ -111,6 +112,11 @@ window.PAPER_MODE = (() => {
         if (paper.minutes && records[paper.id]?.last && (submitting || !entries[paper.id].last)) {
           entries[paper.id] = records[paper.id];
           return;
+        }
+        const previousCorrections = paper.minutes && records[paper.id]?.last?.corrected;
+        if (previousCorrections && entries[paper.id].last) {
+          const result = entries[paper.id].last;
+          result.corrected = { ...previousCorrections, ...result.corrected };
         }
         localStorage.setItem(key, JSON.stringify({ ...records, [paper.id]: entries[paper.id] }));
       } catch { storageUnavailable(); }
@@ -133,6 +139,19 @@ window.PAPER_MODE = (() => {
       q.prompt.split(/(\*\*[^*]+\*\*)/).forEach((part) => node.append(part.startsWith('**') && part.endsWith('**') ? el('u', part.slice(2, -2)) : part));
       return node;
     };
+    function choiceLabels(question, value, select) {
+      return question.options.map((option, index) => {
+        const label = el('label');
+        const input = el('input');
+        input.type = 'radio';
+        input.name = `paper-${question.id}`;
+        input.value = option.id;
+        input.checked = option.id === value;
+        input.addEventListener('change', () => select(option.id));
+        label.append(input, el('span', `${String.fromCharCode(65 + index)}. ${option.label}`));
+        return label;
+      });
+    }
     const start = (paper) => {
       selected = paper;
       const record = paper.minutes ? latest(paper) : get(paper);
@@ -213,10 +232,97 @@ window.PAPER_MODE = (() => {
         change('mockReview');
       });
     }
-    function mockReview() {
-      const stored = readRecords();
-      const reports = mocks.map(paper => ({ paper, result: attempts(latest(paper, stored))[0] }))
+    function submittedMocks() {
+      const stored = readRecords() || entries;
+      return mocks.map(paper => ({ paper, result: attempts(stored[paper.id] || {})[0] }))
         .filter(({ result }) => result).sort((a, b) => (b.result.at || 0) - (a.result.at || 0));
+    }
+    function mockMistakes() {
+      const mistakes = [];
+      for (const { paper, result } of submittedMocks()) {
+        for (const section of paper.sections) {
+          for (const question of section.questions) {
+            const response = result.answers[question.id];
+            if (response === question.answer || !question.options?.some(option => option.id === response)) continue;
+            mistakes.push({ paper, section, question, result, id: `${paper.id}/${question.id}` });
+          }
+        }
+      }
+      return mistakes;
+    }
+    const isCorrected = ({ result, question }) => result.corrected?.[question.id] === true;
+    function openMistakes() {
+      retried.clear();
+      enterPaper?.();
+      change('mistakes');
+    }
+    function mistakeButton() {
+      const items = mockMistakes();
+      if (!items.length) return null;
+      const count = items.filter(item => !isCorrected(item)).length;
+      return button(count ? `重做错题（${count} 题）` : '重做错题（已做完）', 'btn', openMistakes);
+    }
+    function appendMistakeButton(parent = card) {
+      const control = mistakeButton();
+      if (control) parent.append(control);
+    }
+    function showMistakes() {
+      heading('限时模拟考', '重做错题', '逐题重做模考里答错的选择题。确认答案后可以看解析。');
+      card.setAttribute('aria-label', '重做错题');
+      const items = mockMistakes();
+      const pending = items.filter(item => !isCorrected(item));
+      const round = pending.filter(item => !retried.has(item.id));
+      const item = round[0];
+      if (!item) {
+        if (items.length) card.append(el('p', `已经重做答对 ${items.length - pending.length} 题。\n${pending.length ? `尚有 ${pending.length} 题待复练。` : '这批错题都已复练。'}`, 'paper-text'));
+        else card.append(el('p', '模考交卷后，答错的选择题会出现在这里。', 'note'));
+        if (pending.length) card.append(button('再练剩下的题', 'btn primary', openMistakes));
+        card.append(mockReviewButton());
+        return;
+      }
+      const { paper, section, question, result, id } = item;
+      card.append(el('p', `${paper.title} · ${section.title} · 待复练 ${pending.length} 题`, 'note'));
+      if (section.passage) {
+        const passage = el('details', null, 'paper-panel');
+        const original = el('div', section.passage, 'speech paper-text');
+        original.lang = 'en';
+        passage.append(el('summary', '展开原文'), original);
+        card.append(passage);
+      }
+      const field = el('fieldset', null, 'paper-question');
+      const footer = el('div', null, 'actions');
+      const advance = () => { retried.add(id); change('mistakes'); };
+      const skip = button('暂时跳过', 'btn', advance);
+      let value;
+      const submit = button('确认答案', 'btn primary', () => {
+        if (!value || field.disabled) return;
+        const correct = value === question.answer;
+        if (correct) {
+          const current = latest(paper).last;
+          if (current?.at === result.at && current?.answers?.[question.id] === result.answers[question.id]) {
+            current.corrected = { ...current.corrected, [question.id]: true };
+            save(paper);
+          }
+        }
+        const feedback = el('div', null, 'paper-panel');
+        feedback.tabIndex = -1;
+        feedback.setAttribute('role', 'status');
+        const answer = question.options.find(option => option.id === question.answer);
+        feedback.append(el('strong', correct ? '这次答对了。' : '这次还没答对。'),
+          el('p', `参考答案：${answer.label}`, 'paper-text'), el('p', question.reference, 'note'));
+        field.disabled = true;
+        footer.before(feedback);
+        footer.replaceChildren(button(round.length > 1 ? '下一题' : '看复练小结', 'btn primary', advance));
+        feedback.focus();
+      });
+      submit.disabled = true;
+      field.append(el('legend', `第 ${question.id} 题`), promptNode(question),
+        ...choiceLabels(question, undefined, selected => { value = selected; submit.disabled = false; }));
+      footer.append(submit, skip);
+      card.append(field, footer);
+    }
+    function mockReview() {
+      const reports = submittedMocks();
       heading('限时模拟考', '跨卷复盘', '反复丢分的题型排在前面。未答和待核对分别计数。');
       card.setAttribute('aria-label', '跨卷复盘');
       if (!reports.length) {
@@ -277,8 +383,10 @@ window.PAPER_MODE = (() => {
         for (const [kind, label] of [['missed', '看失分题'], ['pending', '核对题目'], ['blank', '看未答题']]) {
           const target = group.links[kind];
           if (!target) continue;
-          const control = button(`${label} · ${target.paper.title.slice(-2)}`, 'btn',
-            () => openResults(target.paper, target.sectionId, target.questionId));
+          const control = button(`${label} · ${target.paper.title.slice(-2)}`, 'btn', () => {
+            latest(target.paper);
+            openResults(target.paper, target.sectionId, target.questionId);
+          });
           actions.append(control);
         }
         if (group.missed) {
@@ -294,7 +402,9 @@ window.PAPER_MODE = (() => {
         row.append(actions);
         details.append(row);
       }
-      card.append(details, button('返回模拟考', 'btn', openMockList));
+      card.append(details);
+      appendMistakeButton();
+      card.append(button('返回模拟考', 'btn', openMockList));
     }
     function mockList() {
       const stored = readRecords();
@@ -324,6 +434,7 @@ window.PAPER_MODE = (() => {
         }));
       } else card.append(el('p', '本批新卷已全部交卷。可以查看各套成绩与解析。', 'note mock-finished'));
       if (mocks.some(paper => attempts(get(paper)).length)) card.append(mockReviewButton());
+      appendMistakeButton();
       if (backToPrep) card.append(button('回备考页', 'btn', backToPrep));
     }
     function prepButton(paper, title) {
@@ -468,17 +579,7 @@ window.PAPER_MODE = (() => {
           save(); update();
         };
         if (q.options) {
-          for (const [index, option] of q.options.entries()) {
-            const label = el('label');
-            const input = el('input');
-            input.type = 'radio';
-            input.name = `paper-${q.id}`;
-            input.value = option.id;
-            input.checked = option.id === draft.answers?.[q.id];
-            input.addEventListener('change', () => store(option.id));
-            label.append(input, el('span', `${String.fromCharCode(65 + index)}. ${option.label}`));
-            field.append(label);
-          }
+          field.append(...choiceLabels(q, draft.answers?.[q.id], store));
         } else {
           const input = el(q.openEnded || q.rubric ? 'textarea' : 'input');
           if (input.tagName === 'INPUT') input.type = 'text';
@@ -664,7 +765,8 @@ window.PAPER_MODE = (() => {
             row.append(label, input, button('确认这题得分', 'btn', () => {
               const score = input.valueAsNumber;
               if (!validScore(score, q.points)) { message.textContent = '请按本题分值范围填写。'; return; }
-              last.review[q.id] = score;
+              const current = selected.minutes ? latest(selected).last || last : last;
+              last.review = current.review = { ...current.review, [q.id]: score };
               status.textContent = `第 ${q.id} 题 · ${score} / ${q.points} 分（人工核对）`;
               message.textContent = '已计入整卷。';
               save();
@@ -679,6 +781,7 @@ window.PAPER_MODE = (() => {
       update();
       if (selected.minutes) {
         card.append(button('返回模拟考', 'btn primary', openMockList), mockReviewButton());
+        appendMistakeButton();
         if (backToPrep) card.append(button('回备考页', 'btn', backToPrep));
         return;
       }
@@ -707,8 +810,9 @@ window.PAPER_MODE = (() => {
     }
     return {
       resetView() { view = 'list'; },
-      show() { ({ list, work, confirm, result, mocks: mockList, mockReview })[view](); },
+      show() { ({ list, work, confirm, result, mocks: mockList, mockReview, mistakes: showMistakes })[view](); },
       mockButton() { return mocks.length ? button('进入模拟考', 'btn primary', openMockList) : null; },
+      mistakeButton,
       diagnosticButton() { return prepButton(window.EXAM_B || a, '原创 B 卷'); },
       topicButton(paper) { return prepButton(paper, paper.title); },
       startTopic(paper) { enterPaper?.(); start(paper); },
