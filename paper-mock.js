@@ -12,6 +12,8 @@ window.EXAM_MOCKS = (() => {
     'DBCDBDCCACCBBCADBDACABBDAACDBBDABCDADCAA',
     'DABDACCBDADCCADBDCDADCBBDABABACACCBBADCB',
     'CADBACABADDBBACCBADCCDDBBCADDBCABABDCCAD',
+    'CAACBCDDCACBBDBACDBBCACCDDAADBDBCDABBADA',
+    'BDDBCADCDBBCAABBCCDDBBDAACCACBADACACDDAB',
   ];
 
   function makePaper(number, bank) {
@@ -409,5 +411,251 @@ One day, a girl found a water bottle with [7] (it) label still attached. A volun
     ]]],
   ]);
 
-  return [first, second, third];
+  const fourth = makePaper(4, [
+    ['dialogue', [
+      ['—Is the art room free now?\n—____ The class there has just ended.', ['Yes, you can use it.', 'No, I didn’t draw it.', 'Turn to page two.', 'That was yesterday.'], 0, '教室里的课刚结束，可以使用该教室。'],
+      ['—Could I leave my bag here for a minute?\n—____ Just put it under the chair.', ['I don’t have a bag.', 'Yes, that’s fine.', 'It’s ten dollars.', 'This is for you.'], 1, '后句告诉对方包可以放在哪里，前句应答应请求。'],
+      ['—I can’t find the file we worked on.\n—____ I saved a copy on my laptop.', ['I’m glad you liked it.', 'That’s the wrong size.', 'Don’t worry.', 'So do I.'], 2, '说话人有副本，用 Don’t worry 安慰对方。'],
+      ['—Would two o’clock suit you?\n—____ I’ll still be on the bus then.', ['I’m afraid it’s too early.', 'That would be perfect.', 'There are two of them.', 'I took the bus.'], 0, '两点时仍在车上，委婉说明时间太早。'],
+      ['—We’re opening the club room this afternoon. Would you like to come?\n—____ What time shall I arrive?', ['It’s not for me.', 'I’d love to.', 'You can keep it.', 'Not that one.'], 1, '对方问几点到，说明接受邀请。'],
+    ]],
+    ['words', [
+      ['The road is **blocked** by a fallen tree, so drivers have to take another route.', ['有标记的', '被检查的', '被堵住的', '被拓宽的'], 2, '树倒在路上，车辆需要绕行，说明路被堵住。'],
+      ['The small fan can **reduce** the heat around your desk.', ['产生', '减轻', '测量', '保存'], 1, '风扇可以减轻桌边的热感。'],
+      ['The school **provides** tools for this course, so you do not need to buy them.', ['提供', '归还', '收费', '查找'], 0, '学生不用买工具，因为学校提供。'],
+      ['This table is **steady** now; it no longer moves when you write on it.', ['崭新的', '光滑的', '轻便的', '稳固的'], 3, '写字时桌子已不再晃，说明稳固。'],
+      ['The message **applies to** all visitors, including those who have booked online.', ['适用于', '来自于', '回复给', '脱离'], 0, 'including 说明这条通知的适用范围。'],
+      ['Please **sort** the photos by date before you put them into the folder.', ['上传', '分类整理', '拍摄', '复印'], 1, 'by date 表示整理照片时按日期分类。'],
+      ['There was a **noticeable** difference after we turned on the extra light.', ['很轻的', '末尾的', '难以改善的', '明显的'], 3, '开灯后差别能够明显察觉，noticeable 是明显的。'],
+      ['To **avoid** the stairs, follow the path behind the building.', ['打扫', '走向', '避开', '拆除'], 2, '从楼后走另一条路，目的是避开楼梯。'],
+      ['The cupboard is **nearly** empty. Only one cup is left.', ['几乎', '起初', '恰好', '偶尔'], 0, '只剩一只杯子，所以柜子几乎空了。'],
+      ['We **went over** the safety rules once more before the trip.', ['越过', '忽略', '取消', '复习'], 3, '规则在出发前又过了一遍，go over 在这里表示复习。'],
+    ]],
+    ['cloze', [
+      [null, ['began', 'marked', 'crossed', 'joined'], 1, '班级先用纸箭头给路线做标记。'],
+      [null, ['clear', 'cheap', 'short', 'busy'], 0, '站在纸标旁看觉得很清楚，后文用实走检验。'],
+      [null, ['unless', 'since', 'because', 'while'], 3, 'while 这里连接边走边找标记的两个行为。'],
+      [null, ['opened', 'missed', 'washed', 'followed'], 1, '回头才看见箭头，说明第一次走过时没注意到。'],
+      [null, ['below', 'between', 'behind', 'across'], 2, '牌子被树从来路方向挡住，转身才看到。'],
+      [null, ['read', 'attract', 'remove', 'repeat'], 2, 'remove the old sign 后面才有换位置的动作。'],
+      [null, ['where', 'who', 'how', 'why'], 0, 'where 引出把下一个标记放在哪儿。'],
+      [null, ['test', 'rule', 'message', 'prize'], 0, '他们请第一次走路线的人试走，是一次测试。'],
+      [null, ['then', 'yet', 'also', 'instead'], 2, '试走者既看见新箭头，又指出字应更大。'],
+      [null, ['seldom', 'easily', 'together', 'neatly'], 1, '大一点的字让人从较远处更容易读到。'],
+      [null, ['similar', 'spare', 'missing', 'final'], 3, '根据反馈改好之后做出最终版标记。'],
+      [null, ['at', 'under', 'with', 'without'], 3, 'without asking 表示无须问路就找到了终点。'],
+      [null, ['refused', 'learnt', 'feared', 'doubted'], 1, 'learnt 后面的完整句子是这次学到的经验。'],
+      [null, ['think', 'hear', 'see', 'stay'], 2, '标牌要从走路人的角度实际能看见。'],
+      [null, ['carry', 'lift', 'draw', 'keep'], 3, '保留路线记录，明年活动可以参考。'],
+    ], `
+Our class helped plan a short walk for a community festival. We [1] the route with paper arrows. When we stood beside each arrow, everything looked [2]. Our teacher asked us to walk the route [3] looking for the signs as a first-time visitor would.
+
+At the first turn, we [4] an arrow. We could see it only when we looked back. From the direction we were walking, the sign was [5] a tree. We decided to [6] the old sign and walked back to see [7] we could put its replacement.
+
+For a second [8], we asked someone who had never followed the route before. He saw the new arrow straight away. He [9] suggested making the words bigger so people could read them more [10] from a distance. We changed the design and made the [11] signs.
+
+On the festival day, a family found the end of the walk [12] asking for directions. We [13] that it is easy to believe a sign works when you already know where it is. The important question is what a visitor can [14]. We decided to [15] a record of the route for next year’s group.`],
+    ['reading-1', [
+      ['Who is the open studio mainly for?', ['People waiting for a bus.', 'People interested in trying simple pottery.', 'People buying a new phone.', 'People bringing things for repair.'], 1, '首段面向想尝试做陶器的人。'],
+      ['When must visitors come to collect their work?', ['Later on the same afternoon.', 'Before the first visit.', 'On the following Saturday.', 'At lunchtime the next day.'], 2, '第二段明确作品处理后下周六取。'],
+      ['Why are people asked to report access needs when booking?', ['So staff can plan a suitable workspace.', 'So they can be sent extra clay.', 'So they can choose a different course price.', 'So the visit can last three hours.'], 0, '第三段说工作人员可按情况安排合适的工作位。'],
+      ['What can visitors do without a working place?', ['Use the kiln by themselves.', 'Make a large clay bowl.', 'Bring extra guests to a reserved table.', 'Watch a short demonstration.'], 3, '工作位有限，没预约到仍可观看演示。'],
+      ['What is the main purpose of this text?', ['To explain where clay comes from.', 'To give information about a studio event.', 'To sell a collection of cups.', 'To describe the history of a building.'], 1, '文章给出活动、领作品和预约方式，目的是介绍工作室开放活动。'],
+    ], `
+Saturday Open Studio
+
+The Oak Street Arts Center will open its pottery room this Saturday. If you have never worked with clay, you can book a place to make a small flat dish. A tutor will show you how to shape the clay, then let you choose a simple pattern. The first group starts at ten and the second at eleven.
+
+Clay and tools are provided. Bring an old shirt to wear over your clothes. The dishes need to dry before the studio can prepare them for use. You can collect your finished dish from the front desk the following Saturday. Write your booking number on the card next to your dish so staff can find it later.
+
+There are eight working places in each group. If you need to work at a lower table or use a seat with a back, tell the staff when you book. They will arrange a place that suits you. Visitors without a working place are welcome to watch a short demonstration at noon. Find the booking form on the center’s notice board.`],
+    ['reading-2', [
+      ['What did the students want to measure?', ['The cost of buying small bowls.', 'The number of people waiting for lunch.', 'The amount of soup left in bowls.', 'The temperature of the kitchen.'], 2, '第一段提出比较不同份量时剩下多少汤。'],
+      ['What did servers do in the second week?', ['They stopped offering more soup.', 'They served a smaller amount at first.', 'They changed the soup every day.', 'They used only large bowls.'], 1, '第二周先盛少量，想再添的仍可添。'],
+      ['Which result was recorded?', ['The leftovers weighed less in the second week.', 'Nobody asked for more soup.', 'The bowls became more expensive.', 'Fewer people were allowed to have lunch.'], 0, '第二周称出的剩汤重量下降。'],
+      ['Why did the students count the number of meals?', ['To raise the price of lunch.', 'To check whether bowls were clean.', 'To find who took extra soup.', 'To compare leftovers in weeks with similar attendance.'], 3, '两周人数差不多，有助于排除就餐人少造成的下降。'],
+      ['What does the final paragraph suggest?', ['The experiment should be checked with other foods.', 'The kitchen should stop making soup.', 'All portions must be small from now on.', 'The same result is certain in every school.'], 0, '结尾建议用另一道菜复测，说明结论有范围。'],
+    ], `
+Students at Mill Road School noticed that a lot of soup went back to the kitchen untouched. Their class decided to check whether the size of the first serving made a difference. They planned to weigh the soup left in the bowls after lunch.
+
+For one week, the servers filled each bowl as usual. The next week, they gave everyone a smaller first serving. Any student who wanted more could come back for a second serving at no extra cost. The soup was kept the same for both weeks.
+
+At the end of each lunch, student helpers counted the meals and weighed the leftovers. The two weeks had nearly the same number of meals. However, the leftover soup weighed much less during the second week. Some students came back for more, while others found that the smaller serving was enough.
+
+The helpers suggested trying the idea with a different dish before changing the serving size for everything. They also told the kitchen to keep offering more to anyone who wanted it. Their aim was to waste less food and still let everyone have enough to eat.`],
+    ['insert', [
+      [null, null, 3, '首段提出看标签查是否适用，下文分别说明该看哪些信息。'],
+      [null, null, 4, '下文 soap and cleaning liquid 是不能只凭外观区分的例子。'],
+      [null, null, 0, '后文说 same unit，指把价格换算到同一计价单位。'],
+      [null, null, 2, '下句两种处理分别是标签写重用或写请用新容器。'],
+      [null, null, 1, '下句 the receipt 指打印的小票，最后比对付款记录。'],
+    ], `
+Some shops now have refill stations. You can bring a container instead of buying a new one each time. Before you fill it, read the label on the station. [1]
+
+First, check the name and the purpose of the product. [2] For instance, hand soap and cleaning liquid can have the same color, although they are used for different things.
+
+Next, look at the price and the amount it covers. [3] If both prices are written in the same unit, you can make a fair comparison.
+
+Then check the rule about containers. [4] One station may accept a clean used bottle, while another may ask you to take a new empty one from a shelf.
+
+Finally, check the amount before you pay. [5] The receipt should show what you bought and the correct amount of product.`,
+      ['Work out the price per liter before comparing two products.', 'Then compare it with the receipt.',
+       'Shops can set different rules for what you can bring.', 'It answers several questions that matter before you buy.',
+       'The appearance of the liquid does not tell you what it is for.']],
+    ['grammar', [
+      [null, ['made'], 'Last October 提示过去，make 的过去式为 made。'],
+      [null, ['a'], 'chart 以辅音音素起始，首次提到用 a。'],
+      [null, ['measurements'], 'several 后接名词复数。'],
+      [null, ['clearly'], '修饰 write，用副词 clearly。'],
+      [null, ['who', 'that'], '先行词是两位同学，从句缺主语。'],
+      [null, ['to collect'], 'tell somebody to do something 表示告诉某人去做某事。'],
+      [null, ['for', 'over'], 'for two days 表示持续两天。'],
+      [null, ['but', 'yet'], '白天暖和、晚上降温，前后转折。'],
+      [null, ['writing'], 'finish doing 表示完成一个动作。'],
+      [null, ['their'], 'pictures 前需形容词性物主代词 their。'],
+    ], `
+Last October, a group in our class [1] (make) a short weather report for the local radio station. At the start, our teacher gave us [2] chart with space for several [3] (measurement). We had to write the figures [4] (clear) so the rest of the class could read them.
+
+Two students [5] lived near the school checked the thermometer before class. The teacher told them [6] (collect) the data at the same time every morning. No rain fell [7] two days. The days were warm, [8] the temperature went down sharply each evening.
+
+After we finished [9] (write) the report, we asked the two students to share [10] (they) pictures of the school yard. The pictures helped the rest of us see what the weather had actually been like.`],
+    ['sentence', [
+      ['The new chairs ____ yesterday.（被送到了办公室）', ['were delivered to the office', 'were sent to the office', 'were taken to the office', 'were brought to the office'], 'were delivered to the office。过去时间和复数主语对应 were + 过去分词。'],
+      ['This path is ____ for two people to walk side by side.（足够宽）', ['wide enough'], 'wide enough。enough 放在形容词之后。'],
+      ['Please tell us ____ before Friday.（我们需要准备什么）', ['what we need to prepare', 'what we should prepare', 'what we have to prepare'], 'what we need to prepare。what 后用陈述语序。'],
+      ['The plan will work ____ the instructions.（只要你遵守）', ['as long as you follow', 'so long as you follow', 'if you follow'], 'as long as you follow。空格右边已有 instructions。'],
+      ['My cousin is used to ____ early.（早起）', ['getting up', 'rising', 'waking up'], 'getting up。be used to 表示习惯于，to 后接动词 -ing。'],
+    ]],
+    ['email', [[
+      '假设你是 Yan。朋友 Kim 想改善课后学习习惯。给 Kim 写一封英语邮件，推荐一种具体做法，说明什么时候做、怎样做以及它有什么帮助。正文约 40 个英语单词。',
+      'Dear Kim,\n\nI suggest spending ten minutes on your notes after dinner. Choose two ideas from class and explain them in your own words. Mark anything you cannot explain and ask about it the next day. This makes it easier to remember what matters.\n\nBest wishes,\nYan',
+      ['内容（4 分）：说明推荐的做法、时间、步骤和好处。', '语言（4 分）：句子意思清楚，步骤之间连得上。', '格式（2 分）：称呼、正文和署名齐全，正文约 40 词。'],
+    ]]],
+  ]);
+
+  const fifth = makePaper(5, [
+    ['dialogue', [
+      ['—Could you show me how to save this file?\n—____ Then choose the folder you want.', ['Select “Save” first.', 'That box is full.', 'I’ll be there tomorrow.', 'It looks taller.'], 0, '后句 Then 继续说保存步骤，先选 Save。'],
+      ['—I’ve brought the tickets. Do we need anything else?\n—____ The notice says everyone must show an ID card.', ['Nothing at all.', 'Yes, bring your ID card.', 'One ticket is enough.', 'You can sit here.'], 1, '通知还要求出示证件，因此回答要带证件。'],
+      ['—Could you help us at the desk until three?\n—____ I need to leave at two.', ['Three is fine.', 'It’s on the table.', 'I’m afraid I can’t stay that long.', 'No one is there.'], 2, '两点要离开，无法帮到三点。'],
+      ['—Does this bus stop near the sports center?\n—____ The driver can tell you where to get off.', ['Yes, it does.', 'I bought two yesterday.', 'You’re welcome.', 'It’s too heavy.'], 0, '可以坐这趟车，请司机提醒下车的地点。'],
+      ['—What do you think of this practice plan?\n—____ We can try it for a week and see what happens.', ['It’s written on paper.', 'There are seven days.', 'I forgot the date.', 'It sounds worth trying.'], 3, '后句愿意试一周，前句说明这份计划值得一试。'],
+    ]],
+    ['words', [
+      ['Put the wet umbrellas in the stand to keep the **entrance** to the room clear.', ['窗户', '入口', '讲台', '屋顶'], 1, '清空的是进入房间的位置，entrance 表示入口。'],
+      ['Mei had to **adjust** the chair before she could reach the controls.', ['抬起', '擦干', '调整', '换掉'], 2, '为了够到控制装置，需要调整椅子的位置。'],
+      ['The results were **reliable** because three groups got similar numbers.', ['可靠的', '少见的', '过时的', '有趣的'], 0, '三个组结果接近，说明结果可信。'],
+      ['Can you **spot** the mistake in this list of dates?', ['复制', '修理', '消除', '发现'], 3, 'spot 在这里的对象是错误，表示发现。'],
+      ['The shop gives a **discount** to anyone who brings a used container.', ['押金', '折扣', '发票', '奖品'], 1, '自带用过的容器可少付钱，discount 表示折扣。'],
+      ['We can save time by doing the two jobs **at the same time**.', ['逐步', '按时', '同时', '再次'], 2, '两个任务一起做才能节约时间，这里是同时。'],
+      ['The new road will **connect** the village to the nearest town.', ['阻挡', '连接', '探访', '保护'], 1, '道路把村庄和城镇连起来。'],
+      ['Please read the **instructions** before you try the machine.', ['通知日期', '参考答案', '维修工人', '操作说明'], 3, '试用机器前应阅读操作说明。'],
+      ['He **ignored** the warning and went out without a coat.', ['忽视了', '听从了', '重复了', '补写了'], 0, '尽管收到提醒仍没穿外套，说明忽视了。'],
+      ['The room can get **crowded** just before an event begins.', ['干燥的', '便宜的', '拥挤的', '明亮的'], 2, '活动开始前人多，crowded 是拥挤的。'],
+    ]],
+    ['cloze', [
+      [null, ['collected', 'dropped', 'sold', 'locked'], 0, '规则是从回收箱里取材料，动作是收集。'],
+      [null, ['smallest', 'tallest', 'oldest', 'lightest'], 1, '比的是纸塔的高度，tallest 表示最高。'],
+      [null, ['especially', 'suddenly', 'exactly', 'quickly'], 3, '大家急着堆高，开始得很快。'],
+      [null, ['but', 'or', 'because', 'until'], 0, '前句写看起来很高，后句却开始倾斜，表示转折。'],
+      [null, ['bright', 'weak', 'wet', 'clean'], 1, '塔站不稳，底部不能支撑它，weak 表示不够牢固。'],
+      [null, ['returned', 'waited', 'suggested', 'refused'], 2, 'suggested folding 表示提议把纸板折起来。'],
+      [null, ['thin', 'short', 'dark', 'strong'], 3, '折叠后的底座更结实，可以支撑小塔。'],
+      [null, ['less', 'more', 'some', 'enough'], 0, '新塔矮一点，但晃动更少。'],
+      [null, ['across', 'below', 'on', 'behind'], 2, '把重物放在顶部，on top 是位置。'],
+      [null, ['stood', 'rolled', 'broke', 'turned'], 0, '十秒后还立着，说明没有倒。'],
+      [null, ['shared', 'hid', 'forgot', 'bought'], 0, '给别的组看做法，是分享。'],
+      [null, ['advice', 'practice', 'patience', 'attention'], 3, 'pay attention to 表示关注，其他组开始关注底部。'],
+      [null, ['manage', 'fail', 'lose', 'refuse'], 0, '虽然最终没赢，但成功做成了稳固的塔，manage to do 表示设法做到。'],
+      [null, ['fair', 'written', 'useful', 'cheap'], 2, '给将来的工作提供了可再用的经验。'],
+      [null, ['sketch', 'support', 'replace', 'follow'], 3, '遇到新任务打算沿用这套办法，follow the same method。'],
+    ], `
+In our design class, we [1] pieces of cardboard from a recycling box. Each team had the same amount of material. The challenge was simple: build the [2] tower that could stand for ten seconds with a small weight on it.
+
+Our team started [3] because we wanted to reach a great height. The tower looked tall, [4] it leaned as soon as we let go. The base was too [5] to support the top. Our youngest teammate [6] folding the cardboard at the bottom instead of adding more pieces at the top.
+
+After a few tries, the folded base was [7] enough to hold a shorter tower. This tower shook [8] when we touched the table. We put the small weight [9] top and waited. The tower [10] for the full ten seconds. We then [11] our method with a nearby team.
+
+Other teams began to pay more [12] to their bases too. We did not win the final challenge, but we did [13] to build a tower that stood. For us, that was a [14] lesson. The next time we face a problem like this, we will [15] the same method: test the base before building higher.`],
+    ['reading-1', [
+      ['Why did the center start a quiet hour?', ['To give more visitors a calmer time to read.', 'To teach young children how to sing.', 'To sell books before the center closed.', 'To prepare the building for a film.'], 0, '首段说明有人受不了普通时段的噪声，设安静时段方便阅读。'],
+      ['What can visitors do during the quiet hour?', ['Take a group tour of the center.', 'Use the room for a party.', 'Read books or talk softly to staff.', 'Play recorded music at the desk.'], 2, '第二段允许阅读，或低声向工作人员求助。'],
+      ['Why does the center show the time on a schedule?', ['To ask visitors to stay all day.', 'To make it easier for people to plan a visit.', 'To let staff sell tickets in the afternoon.', 'To change the opening time every week.'], 1, '固定时间加提前公示，方便按计划来。'],
+      ['What happens to other activities during that hour?', ['They are all stopped.', 'They move to the following week.', 'They use the reading room.', 'Some take place in another room.'], 3, '第三段说团体活动移到另一间房，照常进行。'],
+      ['Where would the text most likely appear?', ['On a community center’s information page.', 'In a sports team’s diary.', 'On the back of a bus ticket.', 'In a science textbook.'], 0, '列出开放安排、规则和适合谁，属于社区中心通知。'],
+    ], `
+Quiet Hour at Lake Road Center
+
+The reading room at Lake Road Center is often busy on Saturday mornings. Some visitors told us it was difficult for them to enjoy a book when the room was noisy. We will now offer a quieter time from nine to ten every Saturday.
+
+During this hour, visitors can read, work at a table or ask staff for help in a low voice. Phones should be silent. We will keep the lights at their usual level and put signs by the door, so visitors can see what to expect. The time will be printed on the monthly schedule to help families plan their visit.
+
+Group activities will still take place on Saturdays. They will use the room across the hall until the quiet hour ends. At ten, the reading room will return to its usual schedule. Anyone who prefers the regular atmosphere can arrive then.
+
+There is no charge and you do not need to book. Ask at the main desk if you want to know more before you come.`],
+    ['reading-2', [
+      ['What question did the class test?', ['Which color of cloth costs the least.', 'Whether a cloth dries faster when it is spread out.', 'How much water a cup can hold.', 'Which room in the school has the most shelves.'], 1, '首段比较湿布摊开还是折叠时干得更快。'],
+      ['Why did the students use pieces of cloth of the same size?', ['To make the test fairer.', 'To stop them from drying.', 'To practice cutting with a ruler.', 'To make the cloths easier to sell.'], 0, '第二段保持大小、用水量等相同，控制变量。'],
+      ['How did the students tell that a cloth had become drier?', ['Its color had become darker.', 'It covered a larger area.', 'Its weight had gone down.', 'Its shelf had moved.'], 2, '第三段说明蒸发的水使布变轻。'],
+      ['Why did they switch the positions of the two cloths the second time?', ['One shelf had been taken away.', 'They wanted to use a new kind of cloth.', 'They wanted each group to draw a map.', 'They wanted to check whether position changed the result.'], 3, '换位置是为了检验书架位置会不会导致差异。'],
+      ['What is a suitable title for the text?', ['Two Ways to Dry a Cloth', 'Buying a New Kitchen Shelf', 'How to Fix a Broken Ruler', 'A Lesson about Drawing Colors'], 0, '全文比较湿布摊开与折叠两种晾法。'],
+    ], `
+At home, people sometimes leave a wet cloth folded on a shelf, while others spread it out. Our class wanted to know which method helped the cloth dry faster. We planned a short test using two pieces cut from the same old towel.
+
+The pieces were the same size. We put the same amount of water on each piece and weighed them before placing them in the same room. One piece lay flat on a shelf. The other was folded in half on a shelf next to it.
+
+We weighed both pieces again every ten minutes. The flat piece became lighter more quickly. A smaller weight meant that more water had left the cloth as it dried. To check whether one shelf was simply in a better spot, we repeated the test and switched the two positions. The flat piece still dried faster.
+
+This test used only one kind of cloth in one room. We have not tested thicker material or a room with a strong fan. Still, the result helped explain why spreading a wet cloth out often works well at home.`],
+    ['insert', [
+      [null, null, 2, '这一空在首段承上启下，引出记录共享用品的办法。'],
+      [null, null, 0, '下句说 choose a time 和 return it 需要知道什么时候回来。'],
+      [null, null, 4, '下文 so people know which item you took 说明记清用品编号。'],
+      [null, null, 1, '下句说下一位可以决定等还是改用别的物品，需要先收到新的归还时间。'],
+      [null, null, 3, '下句 another group can see it is free，接标记已归还。'],
+    ], `
+A class often has a few things that everyone can borrow. When the items are useful, several people may need them on the same day. [1]
+
+Before taking an item, check the schedule. [2] Choose a time that leaves you enough room to finish and return it before the next person needs it.
+
+Write your name in the record and add the number on the item. [3] This is especially important if the class has two items that look the same.
+
+If you learn that you will be late, tell the next person as early as possible. [4] They can then decide whether to wait or find something else to use.
+
+When you bring the item back, put it in its usual place. [5] Another group can then see that it is free without asking you.`,
+      ['Find out when it needs to be back.', 'Give a new return time if you can.',
+       'A simple record can keep the borrowing fair.', 'Mark it as returned in the same record.',
+       'The number tells people which one you took.']],
+    ['grammar', [
+      [null, ['began'], 'Last September 提示过去，begin 的过去式是 began。'],
+      [null, ['a'], 'pair 以辅音音素开头，a pair of 表示一副。'],
+      [null, ['headphones'], 'two pairs of 后用 headphones。'],
+      [null, ['to speak'], 'advise somebody to do something 表示建议某人做某事。'],
+      [null, ['slowly'], '修饰 speak，用副词 slowly。'],
+      [null, ['who', 'that'], '修饰人且在从句中作主语，用 who 或 that。'],
+      [null, ['him'], 'listen to 后接人称代词宾格 him。'],
+      [null, ['because', 'as', 'since'], '后面解释重新录制的原因。'],
+      [null, ['editing'], 'finish doing 表示做完某事。'],
+      [null, ['on'], 'on Friday afternoon 表示在某个星期五下午。'],
+    ], `
+Last September, our class [1] (begin) producing short school news reports. There was [2] pair of speakers in the room, but we brought two pairs of [3] (headphone) so we could check our recordings without disturbing other classes.
+
+Our teacher advised us [4] (speak) [5] (slow) for the first recording. The student [6] read the school news practised three times. We listened to [7] (he) from the other end of the room. He recorded one part again [8] a few words were hard to hear.
+
+After we finished [9] (edit) the recording, we sent it to the teacher. The report was played for the whole school [10] Friday afternoon. Next time we hope to include an interview with one of the new students.`],
+    ['sentence', [
+      ['I found it ____ between the two documents.（很难区分）', ['hard to distinguish', 'difficult to distinguish', 'hard to tell the difference', 'difficult to tell the difference'], 'hard to distinguish。find it + 形容词 + to do 是常用结构。'],
+      ['The students ____ when the coach arrived.（正在做热身）', ['were warming up', 'were doing warm-up exercises', 'were doing warm up exercises'], 'were warming up。过去进行时用 were + -ing。'],
+      ['The room ____ our group next week.（将被借给）', ['will be lent to', 'is going to be lent to'], 'will be lent to。将来被动用 will be + 过去分词。'],
+      ['Remember to check the schedule ____ home.（在你离家之前）', ['before you leave', 'before leaving'], 'before you leave。home 由题面提供。'],
+      ['There were ____ chairs for our group to sit down.（足够的椅子）', ['enough'], 'enough chairs。enough 在名词前，空外已经给出 chairs。'],
+    ]],
+    ['email', [[
+      '假设你是 Zhou。朋友 Nia 想参加学校的物品捐赠活动。写一封英语邮件告诉她可以带哪类物品，什么时候、交到哪里，并说明捐赠会带来什么帮助。正文约 40 个英语单词。',
+      'Dear Nia,\n\nYou can bring clean winter clothes for our school donation day. Please leave them at the hall entrance before Friday afternoon. Our volunteer group will sort the clothes and send them to families nearby. Your donation can help someone stay warm.\n\nBest wishes,\nZhou',
+      ['内容（4 分）：交代物品、时间、交付地点和捐赠用途。', '语言（4 分）：表达准确，行动和作用的关系清楚。', '格式（2 分）：有称呼和署名，正文约 40 词。'],
+    ]]],
+  ]);
+
+  return [first, second, third, fourth, fifth];
 })();
