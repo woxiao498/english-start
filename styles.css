@@ -118,6 +118,16 @@ html:has(.masthead.is-learning) { scroll-padding-top: 68px; }
 .mock-row + .mock-row { border-top: 1px solid var(--line); }
 .mock-row .note { margin: 0; }
 .mock-row .btn { margin-inline-start: auto; }
+.mock-review-summary { padding: 14px 16px; border: 1px solid var(--line); border-radius: 12px; background: var(--green-light); }
+.mock-review-summary h2, .mock-review-summary p { margin: 0; }
+.mock-review-types { margin: 22px 0 16px; }
+.mock-review-types h2 { margin-bottom: 8px; }
+.mock-review-row { padding: 13px 0; border-bottom: 1px solid var(--line); }
+.mock-review-row h3 { margin: 0 0 3px; }
+.mock-review-row .note { margin: 0; }
+.mock-review-row .mock-review-repeat { width: fit-content; margin: 1px 0 4px; padding: 2px 7px; border-radius: 5px; color: var(--gold-text); background: var(--gold-pale); font-size: 13px; font-weight: 700; }
+.mock-review-actions { display: flex; flex-wrap: wrap; gap: 6px; }
+.mock-review-actions:not(:empty) { margin-top: 7px; }
 .exam-diagnostic { display: grid; grid-template-columns: minmax(0, 1fr) auto; gap: 4px 20px; align-items: center; padding: clamp(14px, 3.5vw, 24px); border: 1px solid #c2d6c5; border-radius: 16px; background: var(--green-light); }
 .exam-simulation { margin-bottom: 12px; background: var(--panel); }
 .exam-diagnostic h2, .exam-diagnostic p { margin: 0; }

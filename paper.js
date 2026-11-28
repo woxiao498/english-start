@@ -142,11 +142,18 @@ window.PAPER_MODE = (() => {
       save();
       change('work');
     };
-    function openResults(paper) {
+    function openResults(paper, sectionId, questionId) {
       selected = paper;
       resultIndex = 0;
       enterPaper?.();
       change('result');
+      if (!sectionId) return;
+      const panel = card.querySelector(`[data-paper-section="${sectionId}"]`);
+      if (!panel) return;
+      panel.open = true;
+      const target = panel.querySelector(`[data-paper-question="${questionId}"]`) || panel.querySelector('summary');
+      target.focus({ preventScroll: true });
+      target.scrollIntoView({ block: 'start' });
     }
     function submitPaper(paper, record, timedOut = false) {
       if (!record.draft || (paper.minutes && record.last)) return false;
@@ -199,6 +206,84 @@ window.PAPER_MODE = (() => {
       enterPaper?.();
       change('mocks');
     }
+    function mockReviewButton() {
+      return button('跨卷复盘', 'btn', () => {
+        enterPaper?.();
+        change('mockReview');
+      });
+    }
+    function mockReview() {
+      const stored = readRecords();
+      const reports = mocks.map(paper => ({ paper, result: attempts(latest(paper, stored))[0] }))
+        .filter(({ result }) => result).sort((a, b) => (b.result.at || 0) - (a.result.at || 0));
+      heading('限时模拟考', '跨卷复盘', '反复丢分的题型排在前面。未答和待核对分别计数。');
+      card.setAttribute('aria-label', '跨卷复盘');
+      if (!reports.length) {
+        card.append(el('p', '交卷后，这里会按题型汇总结果。', 'note'), button('返回模拟考', 'btn', openMockList));
+        return;
+      }
+      const groups = new Map();
+      for (const { paper, result } of reports) {
+        for (const section of paper.sections) {
+          const id = section.id.startsWith('reading-') ? 'reading' : section.id;
+          if (!groups.has(id)) groups.set(id, {
+            id, title: id === 'reading' ? '阅读理解' : id === 'insert' ? '短文选句' : section.title.replace(/^[Ⅰ-Ⅶ]\s+/, ''),
+            missed: 0, points: 0, missedPapers: new Set(), blank: 0, pending: 0, checked: 0, links: {},
+          });
+          const group = groups.get(id);
+          for (const question of section.questions) {
+            const mark = scoreQuestion(question, result);
+            const target = { paper, sectionId: section.id, questionId: question.id };
+            if (mark.kind === 'blank') {
+              group.blank++;
+              group.links.blank ||= target;
+            } else if (mark.kind === 'pending') {
+              group.pending++;
+              group.links.pending ||= target;
+            } else {
+              group.checked++;
+              if (mark.score < question.points) {
+                group.missed++;
+                group.points += question.points - mark.score;
+                group.missedPapers.add(paper.id);
+                group.links.missed ||= target;
+              }
+            }
+          }
+        }
+      }
+      const rows = [...groups.values()].sort((a, b) =>
+        b.missedPapers.size - a.missedPapers.size || b.points - a.points || b.pending - a.pending);
+      const total = key => rows.reduce((sum, group) => sum + group[key], 0);
+      const info = el('section', null, 'mock-review-summary');
+      info.append(el('h2', `已交 ${reports.length} / ${mocks.length} 套`),
+        el('p', `已核对 ${total('checked')} 题 · 未答 ${total('blank')} 题 · 待核对 ${total('pending')} 题`, 'note'));
+      card.append(info);
+      const details = el('section', null, 'mock-review-types');
+      details.append(el('h2', '各题型复盘'));
+      for (const group of rows) {
+        const row = el('article', null, 'mock-review-row');
+        row.append(el('h3', group.title));
+        if (group.missedPapers.size >= 2) row.append(el('p', `${group.missedPapers.size} 套出现已答失分`, 'mock-review-repeat'));
+        const loss = group.missed ? `，其中失分 ${group.missed} 题（${format(group.points)} 分）` : '';
+        row.append(el('p', `已核对 ${group.checked} 题${loss} · 未答 ${group.blank} 题 · 待核对 ${group.pending} 题`, 'note'));
+        const actions = el('div', null, 'mock-review-actions');
+        for (const [kind, label] of [['missed', '看失分题'], ['pending', '核对题目'], ['blank', '看未答题']]) {
+          const target = group.links[kind];
+          if (!target) continue;
+          const control = button(`${label} · ${target.paper.title.slice(-2)}`, 'btn',
+            () => openResults(target.paper, target.sectionId, target.questionId));
+          actions.append(control);
+        }
+        if (group.missed) {
+          const practice = reviewPractice?.(group.id);
+          if (practice) actions.append(button(practice.label, 'btn', practice.run));
+        }
+        row.append(actions);
+        details.append(row);
+      }
+      card.append(details, button('返回模拟考', 'btn', openMockList));
+    }
     function mockList() {
       const stored = readRecords();
       for (const paper of mocks) settleMock(paper, latest(paper, stored));
@@ -226,6 +311,7 @@ window.PAPER_MODE = (() => {
           start(next);
         }));
       } else card.append(el('p', '本批新卷已全部交卷。可以查看各套成绩与解析。', 'note mock-finished'));
+      if (mocks.some(paper => attempts(get(paper)).length)) card.append(mockReviewButton());
       if (backToPrep) card.append(button('回备考页', 'btn', backToPrep));
     }
     function prepButton(paper, title) {
@@ -514,6 +600,7 @@ window.PAPER_MODE = (() => {
       }
       for (const section of selected.sections) {
         const panel = el('details', null, 'paper-panel');
+        panel.dataset.paperSection = section.id;
         const followUp = el('div', null, 'paper-follow-up');
         const practice = reviewPractice?.(section.id, selected.id);
         const lesson = suggestLesson?.(section.id, practice);
@@ -532,6 +619,9 @@ window.PAPER_MODE = (() => {
         groupLabels.push(label);
         for (const q of section.questions) {
           const row = el('section', null, 'paper-question');
+          row.dataset.paperQuestion = q.id;
+          row.tabIndex = -1;
+          row.setAttribute('aria-label', `第 ${q.id} 题解析`);
           const value = last.answers?.[q.id];
           const displayed = q.options?.find((o) => o.id === value)?.label || value || '未答';
           const ref = q.options?.find((o) => o.id === q.answer)?.label || q.reference || q.accepted?.[0];
@@ -572,7 +662,7 @@ window.PAPER_MODE = (() => {
       }
       update();
       if (selected.minutes) {
-        card.append(button('返回模拟考', 'btn primary', openMockList));
+        card.append(button('返回模拟考', 'btn primary', openMockList), mockReviewButton());
         if (backToPrep) card.append(button('回备考页', 'btn', backToPrep));
         return;
       }
@@ -601,7 +691,7 @@ window.PAPER_MODE = (() => {
     }
     return {
       resetView() { view = 'list'; },
-      show() { ({ list, work, confirm, result, mocks: mockList })[view](); },
+      show() { ({ list, work, confirm, result, mocks: mockList, mockReview })[view](); },
       mockButton() { return mocks.length ? button('进入模拟考', 'btn primary', openMockList) : null; },
       diagnosticButton() { return prepButton(window.EXAM_B || a, '原创 B 卷'); },
       topicButton(paper) { return prepButton(paper, paper.title); },
@@ -609,6 +699,7 @@ window.PAPER_MODE = (() => {
       showResults(parent) {
         const reports = [...forms, ...topics, ...mocks].filter((paper) => attempts(get(paper)).length);
         if (!reports.length) parent.append(el('p', '还没有原创整卷成绩。去「试卷」做完一份并交卷，这里就会显示。', 'note'));
+        if (reports.some(paper => paper.minutes)) parent.append(mockReviewButton());
         for (const paper of reports) {
           const history = attempts(get(paper));
           parent.append(el('p', `${paper.title}：${totalLabel(summarize(paper, history[0]))}`),
