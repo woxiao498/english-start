@@ -12,6 +12,7 @@ window.STUDY_BACKUP = (() => {
   const scores = 'english-start:2026-score:1';
   // Recognize the old paper ID for backup only. No question data ships with this edition.
   const archivedPaper = '2026';
+  const mocks = new Set((window.EXAM_MOCKS || []).map(item => item.id));
   const groups = [course, legacy, review, vocab, papers, scores];
   const has = (object, key) => Object.hasOwn(object, key);
   const object = (value) => value !== null && typeof value === 'object' && !Array.isArray(value);
@@ -28,9 +29,11 @@ window.STUDY_BACKUP = (() => {
   const score = (value, max) => Number.isFinite(value) && value >= 0 && value <= max;
   const attempt = (item) => object(item) && answers(item.answers)
     && optional(item.review, (value) => answerMap(value, (points) => score(points, 10)))
+    && optional(item.timedOut, flag)
     && optional(item.at, (value) => number(value, 8_640_000_000_000_000));
   const paperRecord = (item) => object(item)
-    && optional(item.draft, (draft) => object(draft) && answers(draft.answers) && optional(draft.section, number) && optional(draft.sheetOpen, flag))
+    && optional(item.draft, (draft) => object(draft) && answers(draft.answers) && optional(draft.section, number)
+      && optional(draft.sheetOpen, flag) && optional(draft.deadline, (value) => number(value, 8_640_000_000_000_000)))
     && optional(item.last, attempt)
     && optional(item.past, (value) => Array.isArray(value) && value.length <= 4 && value.every(attempt));
   const rules = {
@@ -93,7 +96,7 @@ window.STUDY_BACKUP = (() => {
     const lessonIds = new Set(window.LESSONS.map((lesson) => lesson.id));
     const reviewIds = new Set(window.LEARNED_REVIEW.map((task) => task.reviewId));
     const words = new Map(window.VOCAB_WORDS.map((word) => [word.id, word.variants.length]));
-    const paperIds = new Set(['mixed', window.EXAM_B?.id, archivedPaper, ...(window.EXAM_FOCUS || []).map(item => item.id)]);
+    const paperIds = new Set(['mixed', window.EXAM_B?.id, archivedPaper, ...(window.EXAM_FOCUS || []).map(item => item.id), ...mocks]);
     const idsIn = (value, known) => Object.keys(value ?? {}).every((key) => known.has(key));
     ensure(idsIn(records[course]?.lessons, lessonIds) && idsIn(records[vocab]?.introduced, lessonIds)
       && idsIn(records[review], reviewIds) && idsIn(records[papers], paperIds)
@@ -154,13 +157,15 @@ window.STUDY_BACKUP = (() => {
       for (const [id, incoming] of Object.entries(records[papers])) {
         const local = { ...value[id] };
         const archived = id === archivedPaper;
-        const addDraft = !local.draft && Boolean(incoming.draft);
+        const timed = mocks.has(id);
+        const addDraft = !local.draft && Boolean(incoming.draft) && !(timed && (local.last || incoming.last));
         const addHistory = !local.last && !local.past?.length && Boolean(incoming.last || incoming.past?.length);
         if (!addDraft && !addHistory) continue;
         if (addDraft) local.draft = incoming.draft;
         if (addHistory) {
           if (incoming.last) local.last = incoming.last;
           if (incoming.past?.length) local.past = incoming.past;
+          if (timed && local.last) delete local.draft;
         }
         if (archived) {
           counts.archive = 1;

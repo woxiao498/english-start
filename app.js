@@ -728,7 +728,7 @@
     ['lessons', '课程目录', '按单元找课', 'M4 5h6a2 2 0 0 1 2 2v13a2 2 0 0 0-2-2H4z M20 5h-6a2 2 0 0 0-2 2v13a2 2 0 0 1 2-2h6z'],
     ['choices', '点选练习', '不用打字', 'M4 5h16v14H4z M8 12l2.5 2.5L16 9'],
     ['writing', '书写练习', '选做填空与邮件', 'M13.5 6.5l4 4 M4 20l1-5L16 4l4 4L9 19z'],
-    ['papers', '试卷', '做整卷、看成绩', 'M6 3h8l4 4v14H6z M14 3v5h4 M9 12h6 M9 16h6'],
+    ['papers', '试卷', '限时模拟、看成绩', 'M6 3h8l4 4v14H6z M14 3v5h4 M9 12h6 M9 16h6'],
     ['progress', '学习进度', '查看已学课程', 'M4 20h16 M7 16v-4 M12 16V8 M17 16V4'],
   ];
 
@@ -744,6 +744,12 @@
   function showExamPrep() {
     heading('广东中职 3＋证书', '按题型备考', '做题看失分，回课补方法，再换一组同类题。');
     card.setAttribute('aria-label', '按题型备考');
+    const mock = paperMode.mockButton?.();
+    if (mock) {
+      const simulation = el('section', null, 'exam-diagnostic exam-simulation');
+      simulation.append(el('h2', '限时模拟考'), el('p', '61 题 · 150 分 · 120 分钟。每套题目独立。'), mock);
+      card.append(simulation);
+    }
     const diagnostic = el('section', null, 'exam-diagnostic');
     const start = paperMode.diagnosticButton();
     start.classList.add('primary');

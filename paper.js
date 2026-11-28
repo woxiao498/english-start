@@ -74,17 +74,24 @@ window.PAPER_MODE = (() => {
   }
 
   function create({ el, button, heading, card, render, storageUnavailable, suggestLesson, reviewPractice, enterPaper, backToPrep }) {
-    const entries = Object.create(null);
-    try { Object.assign(entries, JSON.parse(localStorage.getItem(key)) || {}); } catch { /* Optional storage. */ }
+    function readRecords() {
+      try {
+        const records = JSON.parse(localStorage.getItem(key));
+        return records && typeof records === 'object' && !Array.isArray(records) ? records : {};
+      } catch { return null; }
+    }
+    const entries = Object.assign(Object.create(null), readRecords());
     const a = buildMixed([window.READING_INTRO, window.READING_STORY, window.READING_GUIDE]);
     const forms = [a, window.EXAM_B].filter(Boolean);
     const topics = window.EXAM_FOCUS || [];
+    const mocks = window.EXAM_MOCKS || [];
     const formLabel = (paper) => paper === a ? 'A 卷' : 'B 卷';
     const paperTitle = (paper) => paper === a ? `${a.title} · A 卷` : paper.title;
     let selected = null;
     let view = 'list';
     let sectionIndex = 0;
     let resultIndex = 0;
+    let liveClock = null;
     const historyLimit = 5;
     const usableResult = (item) => item && typeof item === 'object' && item.answers && typeof item.answers === 'object' && !Array.isArray(item.answers);
     const attempts = (record) => [record.last, ...(Array.isArray(record.past) ? record.past : [])].filter(usableResult).slice(0, historyLimit);
@@ -93,7 +100,20 @@ window.PAPER_MODE = (() => {
       if (!entries[paper.id] || typeof entries[paper.id] !== 'object' || Array.isArray(entries[paper.id])) entries[paper.id] = {};
       return entries[paper.id];
     };
-    const save = () => { try { localStorage.setItem(key, JSON.stringify(entries)); } catch { storageUnavailable(); } };
+    const latest = (paper, records = readRecords()) => {
+      if (records && Object.hasOwn(records, paper.id)) entries[paper.id] = records[paper.id];
+      return get(paper);
+    };
+    const save = (paper = selected, submitting = false) => {
+      try {
+        const records = readRecords() || entries;
+        if (paper.minutes && records[paper.id]?.last && (submitting || !entries[paper.id].last)) {
+          entries[paper.id] = records[paper.id];
+          return;
+        }
+        localStorage.setItem(key, JSON.stringify({ ...records, [paper.id]: entries[paper.id] }));
+      } catch { storageUnavailable(); }
+    };
     const nextForm = () => {
       const drafts = forms.find((paper) => get(paper).draft);
       if (drafts) return drafts;
@@ -114,8 +134,10 @@ window.PAPER_MODE = (() => {
     };
     const start = (paper) => {
       selected = paper;
-      const record = get(paper);
+      const record = paper.minutes ? latest(paper) : get(paper);
+      if (paper.minutes && (record.last || settleMock(paper, record))) return openResults(paper);
       record.draft ||= { answers: {}, section: 0 };
+      if (paper.minutes) record.draft.deadline ||= Date.now() + paper.minutes * 60_000;
       sectionIndex = Number.isInteger(record.draft.section) ? Math.min(paper.sections.length - 1, Math.max(0, record.draft.section)) : 0;
       save();
       change('work');
@@ -125,6 +147,86 @@ window.PAPER_MODE = (() => {
       resultIndex = 0;
       enterPaper?.();
       change('result');
+    }
+    function submitPaper(paper, record, timedOut = false) {
+      if (!record.draft || (paper.minutes && record.last)) return false;
+      const { answers, deadline } = record.draft;
+      if (!paper.minutes) record.past = attempts(record).slice(0, historyLimit - 1);
+      record.last = { answers: { ...answers }, review: {}, at: timedOut ? deadline : Date.now() };
+      if (timedOut) record.last.timedOut = true;
+      delete record.draft;
+      save(paper, true);
+      return true;
+    }
+    function settleMock(paper, record) {
+      return record.draft?.deadline <= Date.now() && submitPaper(paper, record, true);
+    }
+    function activeDraft(paper) {
+      const record = paper.minutes ? latest(paper) : get(paper);
+      if (paper.minutes && (record.last || settleMock(paper, record))) {
+        openResults(paper);
+        return null;
+      }
+      return record.draft;
+    }
+    function clockText(clock, deadline) {
+      const seconds = Math.max(0, Math.ceil((deadline - Date.now()) / 1000));
+      clock.textContent = `剩余 ${Math.floor(seconds / 3600)}:${String(Math.floor(seconds / 60) % 60).padStart(2, '0')}:${String(seconds % 60).padStart(2, '0')}`;
+      clock.toggleAttribute('data-ending', seconds <= 300);
+    }
+    function clockFor(paper) {
+      if (!paper.minutes) return;
+      const bar = el('div', null, 'mock-clock');
+      const clock = el('span');
+      clock.setAttribute('role', 'timer');
+      bar.append(clock, el('span', '到时自动交卷'));
+      liveClock = clock;
+      card.append(bar);
+      clockText(clock, get(paper).draft.deadline);
+    }
+    function tickMocks() {
+      let submitted = false;
+      for (const paper of mocks) {
+        if (get(paper).draft?.deadline <= Date.now() && settleMock(paper, latest(paper))) submitted = true;
+      }
+      if (submitted && card.querySelector('.mock-board')) render(false);
+      if (!liveClock?.isConnected) return;
+      const record = get(selected);
+      if (record.last) return openResults(selected);
+      if (record.draft) clockText(liveClock, record.draft.deadline);
+    }
+    function openMockList() {
+      enterPaper?.();
+      change('mocks');
+    }
+    function mockList() {
+      const stored = readRecords();
+      for (const paper of mocks) settleMock(paper, latest(paper, stored));
+      const running = mocks.find(paper => get(paper).draft && !get(paper).last);
+      const next = running || mocks.find(paper => !get(paper).last);
+      heading('广东中职 3＋证书 · 原创', '限时模拟考', '每套 61 题、150 分，限时 120 分钟。开始后持续计时，离开或刷新后可回来续考。');
+      const board = el('section', null, 'mock-board');
+      board.append(el('h2', '模拟卷进度'));
+      for (const paper of mocks) {
+        const record = get(paper);
+        const row = el('div', null, 'mock-row');
+        const status = record.last ? (record.last.timedOut ? '到时交卷' : '已交卷') : record.draft ? '进行中' : '未使用';
+        row.append(el('strong', paper.title), el('span', status, 'note'));
+        if (record.last) row.append(button(`查看${paper.title}成绩`, 'btn', () => openResults(paper)));
+        board.append(row);
+      }
+      card.append(board);
+      if (next) {
+        const label = running ? `继续${next.title}` : `开始${next.title}`;
+        card.append(button(label, 'btn primary', () => {
+          const shared = readRecords();
+          for (const paper of mocks) settleMock(paper, latest(paper, shared));
+          const available = mocks.find(paper => get(paper).draft && !get(paper).last) || mocks.find(paper => !get(paper).last);
+          if (available !== next) return change('mocks');
+          start(next);
+        }));
+      } else card.append(el('p', '本批新卷已全部交卷。可以查看各套成绩与解析。', 'note mock-finished'));
+      if (backToPrep) card.append(button('回备考页', 'btn', backToPrep));
     }
     function prepButton(paper, title) {
       const record = entries[paper.id] || {};
@@ -139,10 +241,15 @@ window.PAPER_MODE = (() => {
     function list() {
       heading('整卷作答 · 统一交卷', '试卷', '单独做题只是练习，不计入试卷成绩。这里可以按整卷作答，交卷后再看参考答案。');
       const mixed = el('section', null, 'paper-panel');
+      if (mocks.length) {
+        const timed = el('section', null, 'paper-panel');
+        timed.append(el('h2', '限时模拟考'), el('p', '61 题 · 150 分 · 120 分钟', 'note'), button('进入模拟考', 'btn primary', openMockList));
+        card.append(timed);
+      }
       const next = nextForm();
       const anySubmitted = forms.some((paper) => attempts(get(paper)).length);
       mixed.append(el('h2', '原创综合练习卷'), el('p', `${questions(a).length} 题 · 卷面 ${maxPoints(a)} 分 · 不计时`, 'note'),
-        el('p', '本版只提供原创 A、B 卷。两套题型和分值相同，题目不同；A 卷含站内练习。先做没做过的一套，没交卷就续做同一套。', 'note'));
+        el('p', '原创 A、B 卷的题型和分值相同，题目不同；A 卷含站内练习。先做没做过的一套，没交卷就续做同一套。', 'note'));
       mixed.append(button(get(next).draft ? `继续答卷（${formLabel(next)}）` : anySubmitted ? `换一套题（${formLabel(next)}）` : '开始答卷（A 卷）', 'btn primary', () => start(next)));
       for (const paper of forms) {
         const count = attempts(get(paper)).length;
@@ -153,9 +260,11 @@ window.PAPER_MODE = (() => {
     function answered(question, draft) { return Boolean(text(draft.answers?.[question.id]).trim()); }
     const questionLabel = (question, draft) => `${question.id} ${answered(question, draft) ? '已答' : '未答'}`;
     function work() {
-      const draft = get(selected).draft;
-      const section = selected.sections[sectionIndex];
+      const paper = selected;
+      let draft = get(paper).draft;
+      const section = paper.sections[sectionIndex];
       heading(topics.includes(selected) ? '题型专项' : paperTitle(selected), section.title, '可以跳题和回改。交卷后看解析，同一浏览器可续做。');
+      clockFor(paper);
       const moved = el('p', '', 'gate-note');
       moved.setAttribute('role', 'status');
       moved.hidden = true;
@@ -171,6 +280,8 @@ window.PAPER_MODE = (() => {
       const nav = el('nav', null, 'paper-sections');
       nav.setAttribute('aria-label', '试卷题型');
       const go = (i, questionId = null) => {
+        draft = activeDraft(paper);
+        if (!draft) return;
         draft.section = sectionIndex = i;
         save(); render(true);
         if (questionId) {
@@ -186,7 +297,13 @@ window.PAPER_MODE = (() => {
       });
       const sheet = el('details', null, 'paper-sheet');
       sheet.open = Boolean(draft.sheetOpen);
-      sheet.addEventListener('toggle', () => { draft.sheetOpen = sheet.open; save(); });
+      sheet.addEventListener('toggle', () => {
+        if (!sheet.isConnected) return;
+        draft = activeDraft(paper);
+        if (!draft) return;
+        draft.sheetOpen = sheet.open;
+        save();
+      });
       sheet.append(el('summary', '答题卡：按题号跳转'));
       const grid = el('div', null, 'paper-sheet-grid');
       selected.sections.forEach((part, i) => part.questions.forEach((q) => {
@@ -205,7 +322,7 @@ window.PAPER_MODE = (() => {
       if (section.passage) {
         const source = el('div', section.passage, 'speech paper-text');
         source.lang = 'en';
-        if (topics.includes(selected)) {
+        if (topics.includes(paper) || paper.minutes) {
           const jump = (target) => {
             target.focus({ preventScroll: true });
             target.scrollIntoView({ block: 'start' });
@@ -223,13 +340,15 @@ window.PAPER_MODE = (() => {
         const field = el('fieldset', null, 'paper-question');
         field.id = `paper-item-${q.id}`;
         field.tabIndex = -1;
-        if (section.passage && topics.includes(selected)) {
+        if (section.passage && (topics.includes(paper) || paper.minutes)) {
           lastQuestion ||= field;
           field.classList.add('paper-jump-target');
           field.addEventListener('focusin', () => { lastQuestion = field; });
         }
         field.append(el('legend', `${q.id}.（${q.points} 分）`), promptNode(q));
         const store = (value) => {
+          draft = activeDraft(paper);
+          if (!draft) return;
           draft.answers ||= {};
           const replaced = [];
           if (section.id === 'insert') {
@@ -283,15 +402,14 @@ window.PAPER_MODE = (() => {
       card.append(footer);
     }
     function confirm() {
-      const record = get(selected);
-      const blank = questions(selected).filter((q) => !answered(q, record.draft)).length;
+      const paper = selected;
+      const blank = questions(paper).filter((q) => !answered(q, get(paper).draft)).length;
       heading(paperTitle(selected), '确认交卷', `${blank ? `还有 ${blank} 题未答，交卷后这些题计 0 分。` : '所有题都已作答。'}交卷会锁定这次答案；提交后才显示参考答案。`);
+      clockFor(paper);
       card.append(button('继续答题', 'btn', () => change('work')), button('确认交卷并查看成绩', 'btn primary', () => {
-        record.past = attempts(record).slice(0, historyLimit - 1);
-        record.last = { answers: { ...record.draft.answers }, review: {}, at: Date.now() };
+        if (!activeDraft(paper)) return;
+        submitPaper(paper, get(paper));
         resultIndex = 0;
-        delete record.draft;
-        save();
         change('result');
       }));
     }
@@ -301,6 +419,7 @@ window.PAPER_MODE = (() => {
       if (!last) return list();
       last.review ||= {};
       heading(paperTitle(selected), '整卷成绩', '这是本卷的参考得分，不是官方成绩，也不会折算到课程进度。开放题在参考答案旁核对。');
+      if (last.timedOut) card.append(el('p', '考试时间已到，系统已交卷。', 'gate-note'));
       const switcher = el('nav', null, 'paper-sections');
       switcher.setAttribute('aria-label', '同一试卷的交卷记录');
       const attemptButtons = history.map((item, index) => {
@@ -410,6 +529,11 @@ window.PAPER_MODE = (() => {
         card.append(panel);
       }
       update();
+      if (selected.minutes) {
+        card.append(button('返回模拟考', 'btn primary', openMockList));
+        if (backToPrep) card.append(button('回备考页', 'btn', backToPrep));
+        return;
+      }
       card.append(button('返回试卷列表', 'btn', () => change('list')));
       if (backToPrep) card.append(button('回备考页', 'btn', backToPrep));
       if (forms.includes(selected)) {
@@ -422,14 +546,26 @@ window.PAPER_MODE = (() => {
         card.append(button(get(paper).draft ? '继续这组专项' : '重做这组专项', 'btn', () => start(paper)));
       }
     }
+    if (mocks.length) {
+      window.setInterval(tickMocks, 1000);
+      document.addEventListener('visibilitychange', tickMocks);
+      window.addEventListener('storage', event => {
+        if (event.key !== key) return;
+        const records = readRecords();
+        for (const paper of mocks) latest(paper, records);
+        tickMocks();
+      });
+      tickMocks();
+    }
     return {
       resetView() { view = 'list'; },
-      show() { ({ list, work, confirm, result })[view](); },
+      show() { ({ list, work, confirm, result, mocks: mockList })[view](); },
+      mockButton() { return mocks.length ? button('进入模拟考', 'btn primary', openMockList) : null; },
       diagnosticButton() { return prepButton(window.EXAM_B || a, '原创 B 卷'); },
       topicButton(paper) { return prepButton(paper, paper.title); },
       startTopic(paper) { enterPaper?.(); start(paper); },
       showResults(parent) {
-        const reports = [...forms, ...topics].filter((paper) => attempts(get(paper)).length);
+        const reports = [...forms, ...topics, ...mocks].filter((paper) => attempts(get(paper)).length);
         if (!reports.length) parent.append(el('p', '还没有原创整卷成绩。去「试卷」做完一份并交卷，这里就会显示。', 'note'));
         for (const paper of reports) {
           const history = attempts(get(paper));
