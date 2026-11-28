@@ -16,15 +16,35 @@ window.EXAM_MOCKS = (() => {
     'BDDBCADCDBBCAABBCCDDBBDAACCACBADACACDDAB',
   ];
 
+  // One primary teaching cue per cloze blank, in the published order for each mock.
+  const clozeSkills = [
+    ['context', 'logic', 'context', 'collocation', 'context',
+      'context', 'logic', 'context', 'context', 'collocation',
+      'context', 'context', 'collocation', 'collocation', 'context'],
+    ['context', 'logic', 'context', 'context', 'logic',
+      'context', 'logic', 'context', 'collocation', 'context',
+      'context', 'collocation', 'logic', 'logic', 'context'],
+    ['context', 'context', 'logic', 'context', 'context',
+      'collocation', 'logic', 'context', 'collocation', 'context',
+      'collocation', 'logic', 'context', 'context', 'context'],
+    ['context', 'context', 'logic', 'context', 'context',
+      'context', 'context', 'context', 'logic', 'context',
+      'context', 'collocation', 'context', 'context', 'context'],
+    ['context', 'context', 'context', 'logic', 'context',
+      'collocation', 'context', 'context', 'collocation', 'context',
+      'context', 'collocation', 'collocation', 'context', 'collocation'],
+  ];
+
   function makePaper(number, bank) {
     let n = 0;
     let choice = 0;
     const sections = bank.map(([id, rows, material, shared]) => {
       const offset = n;
       const passage = material?.trim().replace(/\[(\d+)\]/g, (_, index) => `[${offset + Number(index)}] ____`);
-      const questions = rows.map(([prompt, values, answer, explanation]) => {
+      const questions = rows.map(([prompt, values, answer, explanation], index) => {
         const item = { id: String(++n), prompt: prompt || `填第 ${n} 空。`,
           points: id === 'email' ? 10 : /^(reading|insert|sentence)/.test(id) ? 3 : 2 };
+        if (id === 'cloze') item.clozeSkill = clozeSkills[number - 1][index];
         if (id === 'email') return { ...item, reference: values, rubric: answer, openEnded: true };
         if (id === 'grammar' || id === 'sentence') {
           return { ...item, accepted: values, reference: id === 'grammar' ? `${values[0]}。 ${answer}` : answer,

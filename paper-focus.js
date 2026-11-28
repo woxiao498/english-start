@@ -92,5 +92,36 @@ The group worked on the stands [7] two weeks. Even after making a mistake, Jia k
     reference: 'Dear Alex,\n\nI recommend joining our school book swap. It takes place in the library on Friday. You can bring a book and choose another one to take home. It is a good way to find new stories and meet other readers.\n\nBest wishes,\nLin',
     rubric: ['内容：写出你推荐的活动、能做的事和推荐的理由。', '表达：动作和原因写清楚，检查拼写、时态和句子衔接。', '格式：有称呼、正文和署名；正文约 40 词。'],
   }]);
-  return [cloze, insert, grammar, sentence, email];
+
+  function clozePractice(id, label, rows, passage) {
+    return { ...paper(`cloze-${id}`, `完形复练 · ${label}`, choices(rows, 2), markers(passage)),
+      clozeSkill: id, skillLabel: label };
+  }
+
+  return [cloze, insert, grammar, sentence, email,
+    clozePractice('collocation', '固定搭配', [
+      [['looked', 'asked', 'waited', 'arrived'], 1, '空后是 the teacher for help，用 ask someone for help 表示「向某人求助」。'],
+      [['made', 'gave', 'took', 'put'], 2, 'take turns doing something 表示「轮流做某事」。这里大家轮流试话筒。'],
+      [['away', 'up', 'out', 'off'], 0, '活动结束后把话筒放进储物柜，put something away 表示「把某物收好」。'],
+    ], `
+During a rehearsal, our microphone stopped working. I [1] the teacher for help. She showed the group which switch to press. Then we [2] turns testing the microphone, so each person had a chance to speak.
+
+When we finished, we put the microphone [3] in a cupboard and turned off the lights.`),
+    clozePractice('logic', '逻辑关系', [
+      [['Because', 'Unless', 'If', 'Although'], 3, '零件很少，机器人却仍能走完路线。although 引出让步。'],
+      [['because', 'unless', 'although', 'so'], 1, 'unless 表示「除非」。把开关拨到 ON 才能启动，不拨就无法启动。'],
+      [['However', 'Otherwise', 'Therefore', 'Meanwhile'], 2, '有人看不懂原来的说明，于是小组补上图示。therefore 引出结果。'],
+    ], `
+Our group built a small robot for an open day. [1] it had only a few parts, it could still follow the whole track.
+
+The robot won't start [2] you move the switch to ON. During practice, two visitors could not identify the switch from our written instructions. [3], we added a picture with an arrow pointing to the switch.`),
+    clozePractice('context', '上下文线索', [
+      [['lamp', 'clock', 'plant', 'bag'], 3, '下一句说她打开它、取出两块球拍，能装进球拍的是 bag。'],
+      [['crack', 'label', 'colour', 'number'], 0, '后一句说按住边缘时木头沿细线分开，说明那道细线是一条裂缝。'],
+      [['box', 'tray', 'bin', 'cupboard'], 1, '墙上的告示要求把坏球拍放入红色托盘。the tray 指前一句的 a red tray。'],
+    ], `
+Min carried a [1] into the gym. She opened it and took out two table tennis bats. One bat had a [2] she had not seen before. When she pressed the edge, the wood opened along a thin line.
+
+A notice on the wall said that damaged bats should go in a red tray for repair. Min left the broken bat in the [3] and kept the other one for practice.`),
+  ];
 })();

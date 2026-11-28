@@ -767,7 +767,7 @@
       sentence: '按中文提示写半句，检查空格两边。',
       email: '写一封约 40 词的邮件，再按要点自查。',
     };
-    for (const topic of examTopics) {
+    for (const topic of examTopics.filter(topic => !topic.clozeSkill)) {
       const section = topic.sections[0];
       const item = el('section', null, 'exam-topic-card');
       const title = el('h3', topic.title);
@@ -776,6 +776,13 @@
       grid.append(item);
     }
     card.append(headingTopics, grid);
+    const clozeTopics = examTopics.filter(topic => topic.clozeSkill);
+    if (clozeTopics.length) {
+      const practice = el('section', null, 'course-list');
+      practice.append(el('h2', '按考点练完形'), el('p', '每组 3 空。先做题，交卷后对照解析找线索。', 'note'),
+        ...clozeTopics.map(topic => paperMode.topicButton(topic)));
+      card.append(practice);
+    }
     actions(button('更多点选练习', 'btn', () => { directory = 'choices'; render(true); }),
       button('查看练习成绩', 'btn', () => { directory = 'progress'; render(true); }));
   }

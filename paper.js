@@ -84,6 +84,7 @@ window.PAPER_MODE = (() => {
     const a = buildMixed([window.READING_INTRO, window.READING_STORY, window.READING_GUIDE]);
     const forms = [a, window.EXAM_B].filter(Boolean);
     const topics = window.EXAM_FOCUS || [];
+    const clozePractice = new Map(topics.filter(topic => topic.clozeSkill).map(topic => [topic.clozeSkill, topic]));
     const mocks = window.EXAM_MOCKS || [];
     const formLabel = (paper) => paper === a ? 'A 卷' : 'B 卷';
     const paperTitle = (paper) => paper === a ? `${a.title} · A 卷` : paper.title;
@@ -223,6 +224,7 @@ window.PAPER_MODE = (() => {
         return;
       }
       const groups = new Map();
+      const clozeLosses = new Map();
       for (const { paper, result } of reports) {
         for (const section of paper.sections) {
           const id = section.id.startsWith('reading-') ? 'reading' : section.id;
@@ -247,6 +249,10 @@ window.PAPER_MODE = (() => {
                 group.points += question.points - mark.score;
                 group.missedPapers.add(paper.id);
                 group.links.missed ||= target;
+                if (question.clozeSkill) {
+                  const skill = question.clozeSkill;
+                  clozeLosses.set(skill, (clozeLosses.get(skill) || 0) + 1);
+                }
               }
             }
           }
@@ -278,6 +284,12 @@ window.PAPER_MODE = (() => {
         if (group.missed) {
           const practice = reviewPractice?.(group.id);
           if (practice) actions.append(button(practice.label, 'btn', practice.run));
+        }
+        if (group.id === 'cloze') {
+          for (const [skill, count] of [...clozeLosses].sort((a, b) => b[1] - a[1])) {
+            const topic = clozePractice.get(skill);
+            if (topic) actions.append(button(`练${topic.skillLabel}（${count} 题失分）`, 'btn', () => start(topic)));
+          }
         }
         row.append(actions);
         details.append(row);
@@ -630,6 +642,10 @@ window.PAPER_MODE = (() => {
           row.append(status, promptNode(q), el('p', `你的答案：${displayed}`, 'paper-text'));
           if (q.options && q.reference) row.append(el('p', q.reference, 'note'));
           if (ref) row.append(el('p', `参考答案：${ref}`, 'paper-text'));
+          const clozeTopic = clozePractice.get(q.clozeSkill);
+          if (clozeTopic && mark.kind === 'auto' && mark.score < q.points) {
+            row.append(button(`复练${clozeTopic.skillLabel}`, 'btn', () => start(clozeTopic)));
+          }
           if (q.rubric) {
             const list = el('ul');
             for (const line of q.rubric) list.append(el('li', line));
