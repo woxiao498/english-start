@@ -713,16 +713,17 @@
     const next = recommendedLesson();
     for (const [index, [label, start, end, goal]] of units.entries()) {
       const items = mainLessons.slice(start, end);
-      const practice = unitPractice.find((item) => item.practiceUnit === index + 1);
-      const complete = items.filter((item) => course.lessons[item.id]?.complete).length;
+      const practice = unitPractice.filter((item) => item.practiceUnit === index + 1);
+      const all = items.concat(practice);
+      const complete = all.filter((item) => course.lessons[item.id]?.complete).length;
       const group = el('details', null, 'unit-group');
-      group.open = items.includes(next) || next === practice;
+      group.open = all.includes(next);
       const toggle = el('summary');
       const number = el('span', String(index + 1).padStart(2, '0'), 'lesson-number unit-index');
-      toggle.setAttribute('aria-label', `第 ${index + 1} 单元，${label}，已完成 ${complete} 节，共 ${items.length} 节`);
-      toggle.append(number, el('strong', label), el('span', `${complete}/${items.length} 已完成`, 'lesson-status'));
+      toggle.setAttribute('aria-label', `第 ${index + 1} 单元，${label}，已完成 ${complete} 节，共 ${all.length} 节`);
+      toggle.append(number, el('strong', label), el('span', `${complete}/${all.length} 已完成`, 'lesson-status'));
       group.append(toggle, el('p', `第 ${start + 1}–${end} 课${goal ? ` · ${goal}` : ''}`, 'note'), lessonRows(items));
-      if (practice) group.append(el('p', '单元加练（选做）', 'note'), lessonRows([practice]));
+      if (practice.length) group.append(el('p', `单元加练（选做 · ${practice.length} 节）`, 'note'), lessonRows(practice));
       catalog.append(group);
     }
     card.append(catalog);
@@ -1403,7 +1404,7 @@
     }
     const options = el('div', null, 'options');
     options.setAttribute('role', 'group');
-    options.setAttribute('aria-label', task.blank !== undefined ? (task.sentenceOptions ? '选择填入空格的整句' : '选择填入空格的词') : task.passage ? '选择阅读答案' : task.wordLine ? '选择画线词的意思' : task.englishOptions ? '选择要说的英语' : '选择句子的意思');
+    options.setAttribute('aria-label', task.optionLanguage ? '选择答案' : task.blank !== undefined ? (task.sentenceOptions ? '选择填入空格的整句' : '选择填入空格的词') : task.passage ? '选择阅读答案' : task.wordLine ? '选择画线词的意思' : task.englishOptions ? '选择要说的英语' : '选择句子的意思');
     const note = feedback(`${id}-feedback`);
     const finish = button(nextLabel, 'btn primary', () => {
       if (passed()) advance();
@@ -1464,7 +1465,7 @@
         showResult();
         if (focusWasHere) finish.focus();
       });
-      if (task.englishOptions) english(control);
+      if (task.englishOptions || task.optionLanguage === 'en') english(control);
       controls.set(option.id, control);
       options.append(control);
     }
@@ -1906,6 +1907,8 @@
   function done() {
     const result = lesson.done;
     const next = lesson.practiceUnit ? null : mainLessons[mainLessons.indexOf(lesson) + 1];
+    const nextPractice = lesson.practiceUnit && unitPractice.slice(unitPractice.indexOf(lesson) + 1)
+      .find((item) => item.practiceUnit === lesson.practiceUnit);
     heading(`${lesson.number}完成`, result.title, result.subtitle);
     const practice = el('section', null, 'speech lesson-example');
     const phrase = wordLine('p', result.english, 'sentence');
@@ -1946,15 +1949,16 @@
       && eligibleReviewTasks('learnedReview').some((task) => task.requires.includes(lessonId))) {
       actions(button('练刚学的内容', 'btn', () => openPractice('learnedReview', true, lessonId)));
     }
-    if (lesson.practiceUnit) actions(button('回课程目录', 'btn primary', () => {
-      lesson = null;
-      state = null;
-      directory = 'lessons';
-      render(true);
-      const row = card.querySelector(`[data-lesson="${lessonId}"]`);
-      row.closest('details').open = true;
-      row.focus();
-    }), replay);
+    if (lesson.practiceUnit) actions(...(nextPractice ? [button('下一节加练', 'btn primary', () => openLesson(nextPractice))] : []),
+      button('回课程目录', nextPractice ? 'btn' : 'btn primary', () => {
+        lesson = null;
+        state = null;
+        directory = 'lessons';
+        render(true);
+        const row = card.querySelector(`[data-lesson="${lessonId}"]`);
+        row.closest('details').open = true;
+        row.focus();
+      }), replay);
     else if (next) actions(button(`下一课：${next.title}`, 'btn primary', () => openLesson(next)), replay,
       ...(lesson.id === 'first-conversation' && conversationDone() ? [button(practiceLabel('review'), 'btn', () => openPractice('review'))] : []),
       ...(lesson.id === 'notice-whole' && eligibleNoticeTasks().length ? [button(practiceLabel('noticeReview'), 'btn', () => openPractice('noticeReview'))] : []));
