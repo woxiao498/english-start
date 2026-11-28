@@ -154,6 +154,7 @@ html:has(.masthead.is-learning) { scroll-padding-top: 68px; }
 .lesson-directory { display: grid; gap: 10px; margin-top: 18px; }
 .unit-group { border: 1px solid var(--line); border-radius: 10px; padding: 0 10px; min-width: 0; }
 .unit-group summary { min-height: 46px; padding-block: 11px; cursor: pointer; }
+.unit-group .unit-index { display: inline-grid; margin-inline-end: 7px; vertical-align: baseline; }
 .unit-group summary strong { margin-right: 8px; }
 .unit-group[open] { border-color: #9db6a3; background: var(--surface); }
 .unit-group[open] > summary { color: var(--green-deep); }

@@ -716,7 +716,9 @@
       const group = el('details', null, 'unit-group');
       group.open = items.includes(next) || next === practice;
       const toggle = el('summary');
-      toggle.append(el('strong', `单元 ${index + 1} · ${label}`), el('span', `${complete}/${items.length} 已完成`, 'lesson-status'));
+      const number = el('span', String(index + 1).padStart(2, '0'), 'lesson-number unit-index');
+      toggle.setAttribute('aria-label', `第 ${index + 1} 单元，${label}，已完成 ${complete} 节，共 ${items.length} 节`);
+      toggle.append(number, el('strong', label), el('span', `${complete}/${items.length} 已完成`, 'lesson-status'));
       group.append(toggle, el('p', `第 ${start + 1}–${end} 课${goal ? ` · ${goal}` : ''}`, 'note'), lessonRows(items));
       if (practice) group.append(el('p', '单元加练（选做）', 'note'), lessonRows([practice]));
       catalog.append(group);
