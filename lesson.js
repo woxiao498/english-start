@@ -492,12 +492,12 @@ window.LESSONS = Object.freeze([{
   recap: '三个动作并列时，常用逗号分开，最后一项前加 and。',
 }), teachingLesson({
   id: 'time-duration', number: '第二十六课', title: '分清几点和多久', goal: '具体时刻用 at，持续多久用 for。',
-  example: 'I read at two. I read for one hour.', chinese: '我在两点读书。我读了一个小时。',
+  example: 'Yesterday, I read at two. I read for one hour.', chinese: '昨天我在两点读书。我读了一个小时。',
   terms: [['at two', '在两点'], ['for one hour', '持续一个小时'], ['ten minutes', '十分钟'], ['at three', '在三点']],
   rule: '「几点」是时间上的一个点，用 at。「读了多久」是一段时间，用 for。看到数字，不要急着选介词，先判断是哪种时间。',
-  guided: 'I read ____ one hour.', walkthrough: '一个小时不是钟上的几点，表示长度，所以用 for。',
+  guided: 'Yesterday, I read ____ one hour.', walkthrough: '一个小时不是钟上的几点，表示长度，所以用 for。',
   guidedAnswers: [['for'], ['at', 'at 能接具体时刻，不接这里表示长度的 one hour。']],
-  independent: 'I read ____ three. I read for ten minutes.', checkPrompt: '第一空表达「在三点」，填哪个？',
+  independent: 'Yesterday, I read ____ three. I read for ten minutes.', checkPrompt: '第一空表达「在三点」，填哪个？',
   answers: [['for', 'for ten minutes 才是持续多久。'], ['at']],
   recap: 'at three 是三点；for ten minutes 是十分钟。',
 }), teachingLesson({
@@ -4649,7 +4649,7 @@ window.LESSON_GUIDANCE = Object.freeze({
   ],
   'time-duration': [
     '想象看墙上的钟：at two 告诉你指针指在哪儿。想象用计时器：for one hour 告诉你过了多长时间。',
-    '如果两种信息都要写，可以说 I read at two for one hour.。先标「两点开始」，再标「持续一小时」，就知道两个数字各在做什么。',
+    'Yesterday 说明这是昨天的一次阅读。两个 read 都用过去式，拼写相同，这里读 /rɛd/。时刻 at two 和时长 for one hour 分开记。',
   ],
   'own-things': [
     '先找这张海报是谁的。句首的 Mei 是一个女生，所以最后用 her own 来强调海报归她自己。',
@@ -4668,7 +4668,7 @@ window.LESSON_GUIDANCE = Object.freeze({
     '模仿时按「怎样／够不够／做什么」三格写。换成灯光，可说 The room is bright enough to read in.，enough 仍放在 bright 后面。',
   ],
   'advice-pride': [
-    '先把 had better 整块圈起来，再找建议做的动作 read。读到 You had better read the notice.，可以理解为「你最好读一下通知」。',
+    '先把 had better 整块圈起来，再找建议做的动作 read。这句在给建议，read 是原形，读 /riːd/。整句意思是「你最好读一下通知」。',
     '第二句先用 I am 表明是谁有这个感受，再用 proud of our class 说明为谁感到自豪。把 I 换成 We 时，连着把 am 换成 are。',
   ],
   'phrases-in-context': [

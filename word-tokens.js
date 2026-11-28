@@ -6,6 +6,9 @@
   const voices = { use: 'yooz', close: 'cloze', read: 'reed', 'read:past': 'red', 'used:to': 'yoost', ok: 'okay' };
   // These fixed course lines use the past-tense pronunciation of read.
   const pastReadContexts = new Set([
+    'Yesterday, I read at two. I read for one hour.',
+    'Yesterday, I read ____ one hour.',
+    'Yesterday, I read ____ three. I read for ten minutes.',
     'read a book',
     'Later, he read a book at home.',
     'Yesterday, Lin went to Room 105. Later, she read a book there.',
