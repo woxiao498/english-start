@@ -99,6 +99,10 @@ html:has(.masthead.is-learning) { scroll-padding-top: 68px; }
 .paper-follow-up .btn { margin: 4px 8px 4px 0; }
 .paper-priorities { display: flex; flex-wrap: wrap; align-items: center; gap: 8px; }
 .paper-priorities .btn { min-height: 40px; }
+.paper-review-tools { padding: 10px 13px; margin-bottom: 12px; border: 1px solid var(--line); border-radius: 10px; background: var(--surface); }
+.paper-review-filter { display: flex; align-items: center; gap: 9px; width: fit-content; min-height: 44px; font-weight: 700; cursor: pointer; }
+.paper-review-filter input { width: 18px; height: 18px; margin: 0; accent-color: var(--green); }
+.paper-review-tools .note { margin: 0 0 4px; }
 .paper-jumps { position: sticky; top: 61px; z-index: 1; display: flex; flex-wrap: wrap; gap: 8px; padding: 6px 0; background: var(--panel); }
 .paper-jumps .btn { min-height: 42px; }
 .paper-jump-target { scroll-margin-top: 64px; }

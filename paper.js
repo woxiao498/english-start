@@ -436,8 +436,47 @@ window.PAPER_MODE = (() => {
       card.append(total, comparison);
       const groupLabels = [];
       const followUps = [];
+      const filter = el('input');
+      filter.type = 'checkbox';
+      const filterLabel = el('label', null, 'paper-review-filter');
+      filterLabel.append(filter, '只看失分和待核对');
+      const reviewStatus = el('p', '', 'note');
+      reviewStatus.setAttribute('role', 'status');
+      const allCorrect = el('p', '本卷所有题均已核对并获得满分。', 'note');
+      const filterBar = el('div', null, 'paper-review-tools');
+      filterBar.append(filterLabel, reviewStatus, allCorrect);
+      card.append(filterBar);
       const priorities = el('p', '', 'paper-priorities');
       card.append(priorities);
+      function updateFilter() {
+        const focused = document.activeElement;
+        let lost = 0;
+        let pending = 0;
+        let blank = 0;
+        for (const { panel, rows } of followUps) {
+          let needsReview = false;
+          for (const { question, row } of rows) {
+            const mark = scoreQuestion(question, last);
+            const unchecked = mark.kind === 'pending';
+            const missed = !unchecked && mark.score < question.points;
+            if (unchecked) pending++;
+            if (missed) lost++;
+            if (mark.kind === 'blank') blank++;
+            row.hidden = filter.checked && !unchecked && !missed;
+            needsReview ||= unchecked || missed;
+          }
+          panel.hidden = filter.checked && !needsReview;
+        }
+        reviewStatus.textContent = `失分 ${lost} 题${blank ? `（含未答 ${blank} 题）` : ''} · 待核对 ${pending} 题`;
+        allCorrect.hidden = !filter.checked || lost + pending > 0;
+        if (focused?.closest('[hidden]')) filter.focus();
+      }
+      filter.addEventListener('change', () => {
+        updateFilter();
+        if (!filter.checked || followUps.some(({ panel }) => panel.open && !panel.hidden)) return;
+        const first = followUps.find(({ panel }) => !panel.hidden);
+        if (first) first.panel.open = true;
+      });
       function update() {
         for (const { section, followUp, lesson } of followUps) {
           followUp.hidden = !lesson || !section.questions.some((q) => {
@@ -471,6 +510,7 @@ window.PAPER_MODE = (() => {
           const part = report.sections[index];
           label.textContent = `${part.title} · ${format(part.score)} / ${part.max} 分${part.pending ? `（另 ${part.pending} 分待核对）` : ''}`;
         });
+        updateFilter();
       }
       for (const section of selected.sections) {
         const panel = el('details', null, 'paper-panel');
@@ -480,7 +520,8 @@ window.PAPER_MODE = (() => {
         if (lesson) followUp.append(el('p', '先看错在哪里，再补课或直接复练。', 'note'), lesson);
         if (practice) followUp.append(button(practice.label, 'btn', practice.run));
         panel.append(followUp);
-        followUps.push({ section, followUp, lesson });
+        const rows = [];
+        followUps.push({ section, followUp, lesson, panel, rows });
         if (section.passage) {
           const original = el('details', null, 'paper-source');
           original.append(el('summary', '看这部分原文'), el('div', section.passage, 'speech paper-text'));
@@ -494,7 +535,7 @@ window.PAPER_MODE = (() => {
           const value = last.answers?.[q.id];
           const displayed = q.options?.find((o) => o.id === value)?.label || value || '未答';
           const ref = q.options?.find((o) => o.id === q.answer)?.label || q.reference || q.accepted?.[0];
-          let mark = scoreQuestion(q, last);
+          const mark = scoreQuestion(q, last);
           const status = el('strong', `第 ${q.id} 题 · ${mark.kind === 'pending' ? '待核对' : `${mark.score} / ${q.points} 分`}`);
           row.append(status, promptNode(q), el('p', `你的答案：${displayed}`, 'paper-text'));
           if (q.options && q.reference) row.append(el('p', q.reference, 'note'));
@@ -525,6 +566,7 @@ window.PAPER_MODE = (() => {
             }), message);
           }
           panel.append(row);
+          rows.push({ question: q, row });
         }
         card.append(panel);
       }

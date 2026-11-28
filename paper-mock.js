@@ -11,6 +11,7 @@ window.EXAM_MOCKS = (() => {
   const positions = [
     'DBCDBDCCACCBBCADBDACABBDAACDBBDABCDADCAA',
     'DABDACCBDADCCADBDCDADCBBDABABACACCBBADCB',
+    'CADBACABADDBBACCBADCCDDBBCADDBCABABDCCAD',
   ];
 
   function makePaper(number, bank) {
@@ -286,5 +287,127 @@ My job was to look after a bike pump [8] was near the air station. After [9] (us
     ]]],
   ]);
 
-  return [first, second];
+  const third = makePaper(3, [
+    ['dialogue', [
+      ['—Can I pay by card for this ticket?\n—____ This machine only takes coins.', ['I’m afraid not.', 'Here is your seat.', 'That’s a good price.', 'You’re welcome.'], 0, '机器只收硬币，礼貌地回答不能刷卡。'],
+      ['—I finally finished the model bridge.\n—____ You’ve worked on it for weeks.', ['Never mind.', 'Well done!', 'I hope not.', 'Not this time.'], 1, '对方完成了作品，用 Well done 表示肯定和祝贺。'],
+      ['—I’m looking for a quiet place to work.\n—____ There are usually some empty desks there.', ['Try the room behind the lab.', 'Please turn down your phone.', 'The door is red.', 'Tomorrow is fine.'], 0, '先推荐去实验室后面的房间，there 指回推荐地点。'],
+      ['—Could you speak a little more slowly?\n—____ I’ll say that part again.', ['No, I haven’t.', 'I’d like the blue one.', 'Of course.', 'It’s half past three.'], 2, '后句愿意再说一遍，应先同意放慢语速。'],
+      ['—When would you like me to return the keys?\n—____ The office closes at five.', ['On the second floor.', 'Any time before four today.', 'They are in my bag.', 'With my sister.'], 1, 'When 问时间，选择今天四点前，并与办公室关闭时间核对。'],
+    ]],
+    ['words', [
+      ['The poster is missing the meeting time. Please **add** it before printing.', ['删掉', '核实', '补上', '记住'], 2, '海报缺少时间，打印前要把时间补上。'],
+      ['The number of visitors **dropped** when the rain got heavier.', ['增加了', '下降了', '掉在地上', '排成队'], 1, '主语是人数，dropped 表示人数下降。'],
+      ['The club will **run** a free class in May to teach people how to fix small bikes.', ['奔跑', '驾驶', '关停', '开办'], 3, 'run 的对象是 a free class，在这里表示开办课程。'],
+      ['The stone floor gets **slippery** after rain, so walk slowly.', ['湿滑的', '坚硬的', '平整的', '明亮的'], 0, '雨后需要慢走，说明地面湿滑。'],
+      ['The coach spoke to each player **in turn**, beginning with the youngest.', ['同时', '依次', '意外地', '公开地'], 1, '逐个谈话，从最年轻的人开始，说明是依次进行。'],
+      ['We used a folded towel to **protect** the glass jar in the box.', ['清空', '装满', '保护', '搬运'], 2, '折起的毛巾隔开玻璃罐，起保护作用。'],
+      ['The shop is out of large notebooks, but small ones are still **available**.', ['免费的', '特制的', '用坏的', '能买到的'], 3, 'but 对比大号没货和小号有货，后者仍能买到。'],
+      ['Her plan sounded **practical** because we already had all the tools it needed.', ['可行的', '复杂的', '昂贵的', '奇怪的'], 0, '所需工具已齐，说明方案能实际执行。'],
+      ['The two teams will **share** one computer to finish the report.', ['保管', '共用', '修理', '更换'], 1, '两队只有一台电脑，用 share 表示共用。'],
+      ['Please **point out** any steps in the guide that are hard to follow.', ['猜测', '跳过', '指出', '取消'], 2, '请告诉对方哪些步骤难懂，point out 表示指出。'],
+    ]],
+    ['cloze', [
+      [null, ['collected', 'printed', 'washed', 'ordered'], 0, '同学从各处收集种子，后面再把它们装入纸袋。'],
+      [null, ['directions', 'pictures', 'labels', 'tickets'], 2, '下文说包装上的名字没写清，需要做的是标签。'],
+      [null, ['though', 'unless', 'because', 'before'], 0, '种子虽然已经装好，包装却缺识别信息，用 though 表示让步。'],
+      [null, ['cancel', 'separate', 'return', 'fold'], 1, '先把不同的种子分开，后文才能给每一类制作信息。'],
+      [null, ['price', 'height', 'shape', 'name'], 3, '后文说明要让别人知道种的是哪种植物，最直接的信息是名称。'],
+      [null, ['how', 'who', 'what', 'why'], 0, 'how deep 意为多深，问播种深度。'],
+      [null, ['Instead', 'Therefore', 'Otherwise', 'However'], 3, '写了播种说明，却发现有些图太小，前后转折。'],
+      [null, ['read', 'grow', 'sell', 'mix'], 0, '图片里的字和符号太小，导致难以看清。'],
+      [null, ['guessed', 'refused', 'offered', 'failed'], 2, '同学主动提出把图画大，offered to do 表示主动提出。'],
+      [null, ['reply', 'test', 'price', 'trip'], 1, '让没参加准备的人试用这套说明，相当于做一次测试。'],
+      [null, ['at once', 'once more', 'for sale', 'on time'], 0, '新图一看就懂，at once 表示马上。'],
+      [null, ['if', 'but', 'or', 'so'], 3, '看懂包装后，就能选到真正想种的种子，so 表结果。'],
+      [null, ['forgot', 'shouted', 'returned', 'noticed'], 3, '班级注意到使用前后的区别，后文说明了观察结果。'],
+      [null, ['plain', 'clear', 'warm', 'soft'], 1, '种子本身没有变，使用说明变得清楚。'],
+      [null, ['keep', 'show', 'hide', 'throw'], 0, 'keep one packet 表示留一个样品给下一年参考。'],
+    ], `
+Before the spring fair, our class [1] seeds to exchange with other classes. We put the seeds into paper packets, but we did not make good [2]. At a trial table, visitors could not tell the packets apart, [3] the seeds were ready to take home.
+
+Our first step was to [4] the different kinds of seeds. Then we wrote the [5] of each plant on its packet. We added short notes showing [6] deep to put the seeds in the soil. [7], when two students tried the notes, they found that some of the pictures were too small to [8]. Mai [9] to draw them again in a larger size.
+
+Before the fair, we did one last [10]. We invited two students who had not helped with the packets. They understood the larger pictures [11], [12] they could choose seeds for the plants they actually wanted to grow.
+
+At the fair, we [13] a difference. Fewer people asked what was inside the packets. The seeds were the same, but the new notes were [14]. When the fair ended, we decided to [15] one packet as an example for next year’s group.`],
+    ['reading-1', [
+      ['What had become a problem after heavy rain?', ['The bike racks were too full.', 'Water collected outside the side door.', 'The school ran out of drinking water.', 'The hall floor became too hot.'], 1, '首段说屋顶水流到侧门外，形成难以绕过的大水坑。'],
+      ['What part of the garden slows down water from the roof?', ['A row of painted signs.', 'A new roof over the hall.', 'The main road outside the school.', 'A shallow area with soil and plants.'], 3, '第二段说水流进低处，土和植物共同放慢水流。'],
+      ['Why did the students want water to stay away from the wall?', ['They wanted to protect the building.', 'They were drawing pictures there.', 'They needed a place to park buses.', 'They planned to fill the hall with water.'], 0, '第二段给出改花园位置的目的，避免水积聚在建筑墙边。'],
+      ['What do students do after a storm?', ['Take all the plants out.', 'Measure the height of the roof.', 'Record how quickly the water disappears.', 'Move the wall a little farther back.'], 2, '第三段说学生记水何时消失，并对照降雨量。'],
+      ['Which statement matches the final paragraph?', ['The garden has solved every flooding problem.', 'The school will check the idea across different seasons.', 'All schools are advised to use the same plants.', 'The garden can work anywhere without changes.'], 1, '最后说明要积累不同季节的记录，才考虑推广。'],
+    ], `
+After heavy rain, water from the roof of East Hill School often made a large puddle outside a side door. Students had trouble reaching the door without getting their shoes wet. A science teacher suggested making a small rain garden instead of covering the area with more concrete.
+
+A rain garden is a shallow area filled with soil and plants. Water from the roof flows into it and moves slowly through the soil. The first plan put the garden next to the wall. Students later moved it farther away because they did not want water to collect beside the building.
+
+The class now keeps a record after each storm. They note how much rain fell and how long it took for the water to disappear from the garden. In light rain the water usually disappears quickly. In one heavy storm, some water still reached the path, but the puddle outside the door was smaller.
+
+The students have seen a useful change at their school. They want records from different seasons before saying the same design would work at other schools. The next step is to find out which plants can survive both wet weeks and long dry periods.`],
+    ['reading-2', [
+      ['Why did the museum add “look cards”?', ['To help family groups look more closely at objects.', 'To replace all the museum’s objects.', 'To sell longer guidebooks.', 'To teach people how to lock the doors.'], 0, '首段说明成人读介绍时孩子很快走开，卡片让一家人一起观察。'],
+      ['What did visitors do with the card near the lamp?', ['Buy a lamp to take home.', 'Draw a picture of a boat.', 'Look for marks on its handle.', 'Ask staff to turn off the lights.'], 2, '第二段卡片提示观察提灯把手上的使用痕迹。'],
+      ['Why are the answers printed on a separate sheet?', ['The museum could not find enough cards.', 'Families can make their own guesses first.', 'Visitors have to return the cards unopened.', 'The answers change every day.'], 1, '分开放说明能先自己想，再核对。'],
+      ['What change did staff notice after a month?', ['The museum closed one of its rooms.', 'Families stopped reading altogether.', 'Most visitors bought the objects.', 'More adults and children talked about what they saw.'], 3, '第三段说谈话变多，家长和孩子会互相指出细节。'],
+      ['What is the best title for the text?', ['Small Cards, Closer Looking', 'Buying Your First Old Lamp', 'The Museum Without Labels', 'How to Write a Long Guide'], 0, '中心是小卡片怎样帮助家庭更细致地观察文物。'],
+    ], `
+A small town museum noticed that family groups often spent little time together in front of an object. Adults read the labels while children moved on to the next room. To help them notice the same details, staff put short “look cards” beside a few objects.
+
+Each card asks one question that visitors can answer by looking. Beside an old lamp, the card asks people to look for marks on the handle. The marks show where the owner held it most often. Other cards ask visitors to find a repeated pattern or work out which part of an object has been repaired. Answers are printed on a separate sheet so families can make their own guesses first.
+
+After a month, staff heard more conversations in the rooms. Adults sometimes asked children what they had noticed, and children pointed out details the adults had missed. Not every visitor used the cards, but some families came back and asked which objects had new questions.
+
+The museum still uses its regular labels. Staff plan to add just a few more cards, because they want each question to lead to a careful look. An interesting question, they say, is worth more than a large pile of cards.`],
+    ['insert', [
+      [null, null, 2, '首段提出不熟悉的车站容易迷路，接「出发前做点准备」。'],
+      [null, null, 0, '下句 This note 指手机里记下的车次和时间。'],
+      [null, null, 3, '后文 For example 给出找错乘车区域的例子，需要先确认正确的上车区域。'],
+      [null, null, 1, '后文 a person wearing a station badge 明确了向谁求助。'],
+      [null, null, 4, '下句列出座位号等方便一眼找到的内容，说明上车前再核对车票。'],
+    ], `
+A large train station can feel confusing when you are there for the first time. Signs point in several directions, and it may take longer than you expect to find your train. [1]
+
+Before leaving home, check the departure on your ticket. [2] This note will help if the ticket screen closes or you need to tell someone which train you are taking.
+
+When you reach the station, look up the departure on the main board. [3] For example, one station may have two areas marked north and south, and each may have a Gate 5.
+
+If a sign is hard to understand, stop and ask for help. [4] A person wearing a station badge can check your ticket and tell you where to go.
+
+Stay near the right gate until boarding begins. [5] Find the train number, carriage and seat so that you can move through the line smoothly when it is your turn.`,
+      ['Save the train number and time on your phone.', 'Ask a member of staff if you are still unsure.',
+       'A little preparation before the journey can help.', 'Check which boarding area the gate belongs to.',
+       'Take one more look at the details on your ticket.']],
+    ['grammar', [
+      [null, ['started'], 'Last winter 提示过去，用 started。'],
+      [null, ['an'], 'object 以元音音素开头，第一次提到用 an。'],
+      [null, ['shelves'], 'two 后用复数，shelf 的复数是 shelves。'],
+      [null, ['to describe'], 'ask somebody to do something 表示请某人做某事。'],
+      [null, ['quickly'], '修饰 find，用副词 quickly。'],
+      [null, ['who', 'that'], '指先行词 students，并在从句中作主语。'],
+      [null, ['its'], '指物品本身的标签，label 前用形容词性物主代词 its。'],
+      [null, ['when', 'after'], '这件物品领走时或领走后，负责的同学更新记录。'],
+      [null, ['for'], 'for a month 表示一段时长。'],
+      [null, ['finding'], 'have trouble doing something 表示做某事有困难。'],
+    ], `
+Last winter, our school [1] (start) a lost-property corner. If a student found [2] object in the playground, there was finally a place to take it. The school cleared two [3] (shelf) near the office.
+
+At first, people had trouble telling similar bags apart. The teacher asked volunteers [4] (describe) each item on a small card. With a date and a short description, they could find things more [5] (quick). Students [6] came to look for something could check the list without opening every bag.
+
+One day, a girl found a water bottle with [7] (it) label still attached. A volunteer updated the list [8] the owner picked it up, so the record showed that it had been returned. We have kept the new system in use [9] a month. Fewer students now have trouble [10] (find) their things.`],
+    ['sentence', [
+      ['Do you know ____?（我们在哪里买车票）', ['where we buy tickets', 'where we can buy tickets', 'where we should buy tickets', 'where we can get tickets'], 'where we can buy tickets。where 后先写主语 we。'],
+      ['A new sign ____ near the side door yesterday.（被挂起来了）', ['was put up', 'was hung up', 'was hung'], 'was put up。yesterday 提示过去，物作主语用被动。'],
+      ['My brother ____ dinner when I got home.（正在准备晚饭）', ['was preparing', 'was cooking', 'was making', 'was getting ready for'], 'was preparing。dinner 已印在空格后，空里写过去进行时的动词形式。'],
+      ['Please ____ before you lock the door.（关掉所有的灯）', ['turn off all the lights', 'switch off all the lights', 'turn all the lights off', 'switch all the lights off'], 'turn off all the lights。turn off 是关掉。'],
+      ['She is ____ to join the school team.（足够自信）', ['confident enough'], 'confident enough。enough 放在形容词后。'],
+    ]],
+    ['email', [[
+      '假设你是 Tao。交换生 Sam 想在校内举办一次小组活动。给 Sam 写一封英语邮件，推荐一个适合的时间和地点，介绍可以安排的一项活动，并解释推荐理由。正文约 40 个英语单词。',
+      'Dear Sam,\n\nI suggest meeting in the art room after school on Tuesday. Your group can make a poster about life at our school. The room has large tables and enough paper, so everyone can draw or write at the same time.\n\nBest wishes,\nTao',
+      ['内容（4 分）：给出时间、地点、活动和理由。', '语言（4 分）：建议表达清楚，检查时态、拼写和衔接。', '格式（2 分）：有称呼和署名，正文约 40 词。'],
+    ]]],
+  ]);
+
+  return [first, second, third];
 })();
